@@ -1,0 +1,4 @@
+endpoint: http://prisma:4466
+datamodel: datamodel.prisma
+databaseType: document
+#secret: <Thi$i$######Hashed$ecret/>

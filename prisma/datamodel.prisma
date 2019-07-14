@@ -1,0 +1,77 @@
+type Drug {
+  id: ID! @id
+  name: String! @unique
+  stores: [StoreHaveDrug]!
+}
+
+type Store {
+  id: ID! @id
+  firstName: String!
+  lastName: String!
+  email: String! @unique
+  password: String!
+  storeName: String! @unique
+  city: String!
+  area: String!
+  street: String!
+  phone: String!
+  birthday: DateTime
+  confirmed: Boolean! @default(value: false)
+}
+
+type StoreHaveDrug @embedded {
+  store: ID!
+  price: Float!
+  discount: Float
+  cash: Boolean!
+}
+
+enum OrderStatus {
+  ACCEPTED
+  REFUSED
+  ACTIVE
+  DELIVERED
+  PENDING
+}
+
+type Pharmacy {
+  id: ID! @id
+  firstName: String!
+  lastName: String!
+  pharmacyName: String!
+  email: String! @unique
+  password: String!
+  code: String! @unique
+  lat: Float!
+  long: Float!
+  phone: String!
+  addressNote: String!
+  confirmed: Boolean! @default(value: false)
+}
+
+type Order {
+  id: ID! @id
+  from: Pharmacy! @relation(link: INLINE)
+  to: Store! @relation(link: INLINE)
+  drugsList: [OrderDrugsList!]!
+  orderStatus: OrderStatus!
+  total: Float!
+  createdAt: DateTime! @createdAt
+  acceptingDate: DateTime
+  refusingingDate: DateTime
+  deliveringDate: DateTime
+  refusingNote: String
+}
+
+type OrderDrugsList @embedded {
+  drug: Drug! @relation(link: INLINE)
+  quantity: Int!
+  unitPrice: Float!
+  discount: Float!
+  total: Float!
+}
+
+type Verification {
+  id: ID! @id
+  code: String! @unique
+}

@@ -1,0 +1,2691 @@
+# source: http://localhost:4466
+# timestamp: Fri Jul 12 2019 15:34:35 GMT+0200 (Eastern European Standard Time)
+
+type AggregateDrug {
+  count: Int!
+}
+
+type AggregateOrder {
+  count: Int!
+}
+
+type AggregatePharmacy {
+  count: Int!
+}
+
+type AggregateStore {
+  count: Int!
+}
+
+type AggregateVerification {
+  count: Int!
+}
+
+type BatchPayload {
+  """The number of nodes that have been affected by the Batch operation."""
+  count: Long!
+}
+
+scalar DateTime
+
+type Drug implements Node {
+  id: ID!
+  name: String!
+  stores: [StoreHaveDrug!]
+}
+
+"""A connection to a list of items."""
+type DrugConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [DrugEdge]!
+  aggregate: AggregateDrug!
+}
+
+input DrugCreateInput {
+  id: ID
+  name: String!
+  stores: StoreHaveDrugCreateManyInput
+}
+
+input DrugCreateOneInput {
+  create: DrugCreateInput
+  connect: DrugWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type DrugEdge {
+  """The item at the end of the edge."""
+  node: Drug!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum DrugOrderByInput {
+  id_ASC
+  id_DESC
+  name_ASC
+  name_DESC
+}
+
+type DrugPreviousValues {
+  id: ID!
+  name: String!
+}
+
+type DrugSubscriptionPayload {
+  mutation: MutationType!
+  node: Drug
+  updatedFields: [String!]
+  previousValues: DrugPreviousValues
+}
+
+input DrugSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DrugSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: DrugWhereInput
+}
+
+input DrugUpdateInput {
+  name: String
+  stores: StoreHaveDrugUpdateManyInput
+}
+
+input DrugUpdateManyMutationInput {
+  name: String
+}
+
+input DrugWhereInput {
+  """Logical AND on all given filters."""
+  AND: [DrugWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  name: String
+
+  """All values that are not equal to given value."""
+  name_not: String
+
+  """All values that are contained in given list."""
+  name_in: [String!]
+
+  """All values that are not contained in given list."""
+  name_not_in: [String!]
+
+  """All values less than the given value."""
+  name_lt: String
+
+  """All values less than or equal the given value."""
+  name_lte: String
+
+  """All values greater than the given value."""
+  name_gt: String
+
+  """All values greater than or equal the given value."""
+  name_gte: String
+
+  """All values containing the given string."""
+  name_contains: String
+
+  """All values not containing the given string."""
+  name_not_contains: String
+
+  """All values starting with the given string."""
+  name_starts_with: String
+
+  """All values not starting with the given string."""
+  name_not_starts_with: String
+
+  """All values ending with the given string."""
+  name_ends_with: String
+
+  """All values not ending with the given string."""
+  name_not_ends_with: String
+  stores_some: StoreHaveDrugWhereInput
+  stores_every: StoreHaveDrugRestrictedWhereInput
+  stores_none: StoreHaveDrugRestrictedWhereInput
+}
+
+input DrugWhereUniqueInput {
+  id: ID
+  name: String
+}
+
+"""
+The `Long` scalar type represents non-fractional signed whole numeric values.
+Long can represent values between -(2^63) and 2^63 - 1.
+"""
+scalar Long
+
+type Mutation {
+  createOrder(data: OrderCreateInput!): Order!
+  createVerification(data: VerificationCreateInput!): Verification!
+  createDrug(data: DrugCreateInput!): Drug!
+  createStore(data: StoreCreateInput!): Store!
+  createPharmacy(data: PharmacyCreateInput!): Pharmacy!
+  updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
+  updateVerification(data: VerificationUpdateInput!, where: VerificationWhereUniqueInput!): Verification
+  updateDrug(data: DrugUpdateInput!, where: DrugWhereUniqueInput!): Drug
+  updateStore(data: StoreUpdateInput!, where: StoreWhereUniqueInput!): Store
+  updatePharmacy(data: PharmacyUpdateInput!, where: PharmacyWhereUniqueInput!): Pharmacy
+  deleteOrder(where: OrderWhereUniqueInput!): Order
+  deleteVerification(where: VerificationWhereUniqueInput!): Verification
+  deleteDrug(where: DrugWhereUniqueInput!): Drug
+  deleteStore(where: StoreWhereUniqueInput!): Store
+  deletePharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
+  upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
+  upsertVerification(where: VerificationWhereUniqueInput!, create: VerificationCreateInput!, update: VerificationUpdateInput!): Verification!
+  upsertDrug(where: DrugWhereUniqueInput!, create: DrugCreateInput!, update: DrugUpdateInput!): Drug!
+  upsertStore(where: StoreWhereUniqueInput!, create: StoreCreateInput!, update: StoreUpdateInput!): Store!
+  upsertPharmacy(where: PharmacyWhereUniqueInput!, create: PharmacyCreateInput!, update: PharmacyUpdateInput!): Pharmacy!
+  updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
+  updateManyVerifications(data: VerificationUpdateManyMutationInput!, where: VerificationWhereInput): BatchPayload!
+  updateManyDrugs(data: DrugUpdateManyMutationInput!, where: DrugWhereInput): BatchPayload!
+  updateManyStores(data: StoreUpdateManyMutationInput!, where: StoreWhereInput): BatchPayload!
+  updateManyPharmacies(data: PharmacyUpdateManyMutationInput!, where: PharmacyWhereInput): BatchPayload!
+  deleteManyOrders(where: OrderWhereInput): BatchPayload!
+  deleteManyVerifications(where: VerificationWhereInput): BatchPayload!
+  deleteManyDrugs(where: DrugWhereInput): BatchPayload!
+  deleteManyStores(where: StoreWhereInput): BatchPayload!
+  deleteManyPharmacies(where: PharmacyWhereInput): BatchPayload!
+}
+
+enum MutationType {
+  CREATED
+  UPDATED
+  DELETED
+}
+
+"""An object with an ID"""
+interface Node {
+  """The id of the object."""
+  id: ID!
+}
+
+type Order implements Node {
+  id: ID!
+  from: Pharmacy!
+  to: Store!
+  drugsList: [OrderDrugsList!]
+  orderStatus: OrderStatus!
+  total: Float!
+  createdAt: DateTime!
+  acceptingDate: DateTime
+  refusingingDate: DateTime
+  deliveringDate: DateTime
+  refusingNote: String
+}
+
+"""A connection to a list of items."""
+type OrderConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [OrderEdge]!
+  aggregate: AggregateOrder!
+}
+
+input OrderCreateInput {
+  id: ID
+  orderStatus: OrderStatus!
+  total: Float!
+  acceptingDate: DateTime
+  refusingingDate: DateTime
+  deliveringDate: DateTime
+  refusingNote: String
+  from: PharmacyCreateOneInput!
+  to: StoreCreateOneInput!
+  drugsList: OrderDrugsListCreateManyInput
+}
+
+type OrderDrugsList {
+  drug: Drug!
+  quantity: Int!
+  unitPrice: Float!
+  discount: Float!
+  total: Float!
+}
+
+input OrderDrugsListCreateInput {
+  quantity: Int!
+  unitPrice: Float!
+  discount: Float!
+  total: Float!
+  drug: DrugCreateOneInput!
+}
+
+input OrderDrugsListCreateManyInput {
+  create: [OrderDrugsListCreateInput!]
+}
+
+input OrderDrugsListRestrictedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OrderDrugsListRestrictedWhereInput!]
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  unitPrice: Float
+
+  """All values that are not equal to given value."""
+  unitPrice_not: Float
+
+  """All values that are contained in given list."""
+  unitPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  unitPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  unitPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  unitPrice_lte: Float
+
+  """All values greater than the given value."""
+  unitPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  unitPrice_gte: Float
+  discount: Float
+
+  """All values that are not equal to given value."""
+  discount_not: Float
+
+  """All values that are contained in given list."""
+  discount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discount_not_in: [Float!]
+
+  """All values less than the given value."""
+  discount_lt: Float
+
+  """All values less than or equal the given value."""
+  discount_lte: Float
+
+  """All values greater than the given value."""
+  discount_gt: Float
+
+  """All values greater than or equal the given value."""
+  discount_gte: Float
+  total: Float
+
+  """All values that are not equal to given value."""
+  total_not: Float
+
+  """All values that are contained in given list."""
+  total_in: [Float!]
+
+  """All values that are not contained in given list."""
+  total_not_in: [Float!]
+
+  """All values less than the given value."""
+  total_lt: Float
+
+  """All values less than or equal the given value."""
+  total_lte: Float
+
+  """All values greater than the given value."""
+  total_gt: Float
+
+  """All values greater than or equal the given value."""
+  total_gte: Float
+}
+
+input OrderDrugsListScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OrderDrugsListScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [OrderDrugsListScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [OrderDrugsListScalarWhereInput!]
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  unitPrice: Float
+
+  """All values that are not equal to given value."""
+  unitPrice_not: Float
+
+  """All values that are contained in given list."""
+  unitPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  unitPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  unitPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  unitPrice_lte: Float
+
+  """All values greater than the given value."""
+  unitPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  unitPrice_gte: Float
+  discount: Float
+
+  """All values that are not equal to given value."""
+  discount_not: Float
+
+  """All values that are contained in given list."""
+  discount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discount_not_in: [Float!]
+
+  """All values less than the given value."""
+  discount_lt: Float
+
+  """All values less than or equal the given value."""
+  discount_lte: Float
+
+  """All values greater than the given value."""
+  discount_gt: Float
+
+  """All values greater than or equal the given value."""
+  discount_gte: Float
+  total: Float
+
+  """All values that are not equal to given value."""
+  total_not: Float
+
+  """All values that are contained in given list."""
+  total_in: [Float!]
+
+  """All values that are not contained in given list."""
+  total_not_in: [Float!]
+
+  """All values less than the given value."""
+  total_lt: Float
+
+  """All values less than or equal the given value."""
+  total_lte: Float
+
+  """All values greater than the given value."""
+  total_gt: Float
+
+  """All values greater than or equal the given value."""
+  total_gte: Float
+}
+
+input OrderDrugsListUpdateManyDataInput {
+  quantity: Int
+  unitPrice: Float
+  discount: Float
+  total: Float
+}
+
+input OrderDrugsListUpdateManyInput {
+  create: [OrderDrugsListCreateInput!]
+  updateMany: [OrderDrugsListUpdateManyWithWhereNestedInput!]
+  deleteMany: [OrderDrugsListScalarWhereInput!]
+}
+
+input OrderDrugsListUpdateManyWithWhereNestedInput {
+  where: OrderDrugsListScalarWhereInput!
+  data: OrderDrugsListUpdateManyDataInput!
+}
+
+input OrderDrugsListWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OrderDrugsListWhereInput!]
+  quantity: Int
+
+  """All values that are not equal to given value."""
+  quantity_not: Int
+
+  """All values that are contained in given list."""
+  quantity_in: [Int!]
+
+  """All values that are not contained in given list."""
+  quantity_not_in: [Int!]
+
+  """All values less than the given value."""
+  quantity_lt: Int
+
+  """All values less than or equal the given value."""
+  quantity_lte: Int
+
+  """All values greater than the given value."""
+  quantity_gt: Int
+
+  """All values greater than or equal the given value."""
+  quantity_gte: Int
+  unitPrice: Float
+
+  """All values that are not equal to given value."""
+  unitPrice_not: Float
+
+  """All values that are contained in given list."""
+  unitPrice_in: [Float!]
+
+  """All values that are not contained in given list."""
+  unitPrice_not_in: [Float!]
+
+  """All values less than the given value."""
+  unitPrice_lt: Float
+
+  """All values less than or equal the given value."""
+  unitPrice_lte: Float
+
+  """All values greater than the given value."""
+  unitPrice_gt: Float
+
+  """All values greater than or equal the given value."""
+  unitPrice_gte: Float
+  discount: Float
+
+  """All values that are not equal to given value."""
+  discount_not: Float
+
+  """All values that are contained in given list."""
+  discount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discount_not_in: [Float!]
+
+  """All values less than the given value."""
+  discount_lt: Float
+
+  """All values less than or equal the given value."""
+  discount_lte: Float
+
+  """All values greater than the given value."""
+  discount_gt: Float
+
+  """All values greater than or equal the given value."""
+  discount_gte: Float
+  total: Float
+
+  """All values that are not equal to given value."""
+  total_not: Float
+
+  """All values that are contained in given list."""
+  total_in: [Float!]
+
+  """All values that are not contained in given list."""
+  total_not_in: [Float!]
+
+  """All values less than the given value."""
+  total_lt: Float
+
+  """All values less than or equal the given value."""
+  total_lte: Float
+
+  """All values greater than the given value."""
+  total_gt: Float
+
+  """All values greater than or equal the given value."""
+  total_gte: Float
+  drug: DrugWhereInput
+}
+
+"""An edge in a connection."""
+type OrderEdge {
+  """The item at the end of the edge."""
+  node: Order!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum OrderOrderByInput {
+  id_ASC
+  id_DESC
+  orderStatus_ASC
+  orderStatus_DESC
+  total_ASC
+  total_DESC
+  createdAt_ASC
+  createdAt_DESC
+  acceptingDate_ASC
+  acceptingDate_DESC
+  refusingingDate_ASC
+  refusingingDate_DESC
+  deliveringDate_ASC
+  deliveringDate_DESC
+  refusingNote_ASC
+  refusingNote_DESC
+}
+
+type OrderPreviousValues {
+  id: ID!
+  orderStatus: OrderStatus!
+  total: Float!
+  createdAt: DateTime!
+  acceptingDate: DateTime
+  refusingingDate: DateTime
+  deliveringDate: DateTime
+  refusingNote: String
+}
+
+enum OrderStatus {
+  ACCEPTED
+  REFUSED
+  ACTIVE
+  DELIVERED
+  PENDING
+}
+
+type OrderSubscriptionPayload {
+  mutation: MutationType!
+  node: Order
+  updatedFields: [String!]
+  previousValues: OrderPreviousValues
+}
+
+input OrderSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OrderSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: OrderWhereInput
+}
+
+input OrderUpdateInput {
+  orderStatus: OrderStatus
+  total: Float
+  acceptingDate: DateTime
+  refusingingDate: DateTime
+  deliveringDate: DateTime
+  refusingNote: String
+  from: PharmacyUpdateOneRequiredInput
+  to: StoreUpdateOneRequiredInput
+  drugsList: OrderDrugsListUpdateManyInput
+}
+
+input OrderUpdateManyMutationInput {
+  orderStatus: OrderStatus
+  total: Float
+  acceptingDate: DateTime
+  refusingingDate: DateTime
+  deliveringDate: DateTime
+  refusingNote: String
+}
+
+input OrderWhereInput {
+  """Logical AND on all given filters."""
+  AND: [OrderWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  orderStatus: OrderStatus
+
+  """All values that are not equal to given value."""
+  orderStatus_not: OrderStatus
+
+  """All values that are contained in given list."""
+  orderStatus_in: [OrderStatus!]
+
+  """All values that are not contained in given list."""
+  orderStatus_not_in: [OrderStatus!]
+  total: Float
+
+  """All values that are not equal to given value."""
+  total_not: Float
+
+  """All values that are contained in given list."""
+  total_in: [Float!]
+
+  """All values that are not contained in given list."""
+  total_not_in: [Float!]
+
+  """All values less than the given value."""
+  total_lt: Float
+
+  """All values less than or equal the given value."""
+  total_lte: Float
+
+  """All values greater than the given value."""
+  total_gt: Float
+
+  """All values greater than or equal the given value."""
+  total_gte: Float
+  createdAt: DateTime
+
+  """All values that are not equal to given value."""
+  createdAt_not: DateTime
+
+  """All values that are contained in given list."""
+  createdAt_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  createdAt_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  createdAt_lt: DateTime
+
+  """All values less than or equal the given value."""
+  createdAt_lte: DateTime
+
+  """All values greater than the given value."""
+  createdAt_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  createdAt_gte: DateTime
+  acceptingDate: DateTime
+
+  """All values that are not equal to given value."""
+  acceptingDate_not: DateTime
+
+  """All values that are contained in given list."""
+  acceptingDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  acceptingDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  acceptingDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  acceptingDate_lte: DateTime
+
+  """All values greater than the given value."""
+  acceptingDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  acceptingDate_gte: DateTime
+  refusingingDate: DateTime
+
+  """All values that are not equal to given value."""
+  refusingingDate_not: DateTime
+
+  """All values that are contained in given list."""
+  refusingingDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  refusingingDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  refusingingDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  refusingingDate_lte: DateTime
+
+  """All values greater than the given value."""
+  refusingingDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  refusingingDate_gte: DateTime
+  deliveringDate: DateTime
+
+  """All values that are not equal to given value."""
+  deliveringDate_not: DateTime
+
+  """All values that are contained in given list."""
+  deliveringDate_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  deliveringDate_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  deliveringDate_lt: DateTime
+
+  """All values less than or equal the given value."""
+  deliveringDate_lte: DateTime
+
+  """All values greater than the given value."""
+  deliveringDate_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  deliveringDate_gte: DateTime
+  refusingNote: String
+
+  """All values that are not equal to given value."""
+  refusingNote_not: String
+
+  """All values that are contained in given list."""
+  refusingNote_in: [String!]
+
+  """All values that are not contained in given list."""
+  refusingNote_not_in: [String!]
+
+  """All values less than the given value."""
+  refusingNote_lt: String
+
+  """All values less than or equal the given value."""
+  refusingNote_lte: String
+
+  """All values greater than the given value."""
+  refusingNote_gt: String
+
+  """All values greater than or equal the given value."""
+  refusingNote_gte: String
+
+  """All values containing the given string."""
+  refusingNote_contains: String
+
+  """All values not containing the given string."""
+  refusingNote_not_contains: String
+
+  """All values starting with the given string."""
+  refusingNote_starts_with: String
+
+  """All values not starting with the given string."""
+  refusingNote_not_starts_with: String
+
+  """All values ending with the given string."""
+  refusingNote_ends_with: String
+
+  """All values not ending with the given string."""
+  refusingNote_not_ends_with: String
+  from: PharmacyWhereInput
+  to: StoreWhereInput
+  drugsList_some: OrderDrugsListWhereInput
+  drugsList_every: OrderDrugsListRestrictedWhereInput
+  drugsList_none: OrderDrugsListRestrictedWhereInput
+}
+
+input OrderWhereUniqueInput {
+  id: ID
+}
+
+"""Information about pagination in a connection."""
+type PageInfo {
+  """When paginating forwards, are there more items?"""
+  hasNextPage: Boolean!
+
+  """When paginating backwards, are there more items?"""
+  hasPreviousPage: Boolean!
+
+  """When paginating backwards, the cursor to continue."""
+  startCursor: String
+
+  """When paginating forwards, the cursor to continue."""
+  endCursor: String
+}
+
+type Pharmacy implements Node {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  pharmacyName: String!
+  email: String!
+  password: String!
+  code: String!
+  lat: Float!
+  long: Float!
+  phone: String!
+  addressNote: String!
+  confirmed: Boolean!
+}
+
+"""A connection to a list of items."""
+type PharmacyConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [PharmacyEdge]!
+  aggregate: AggregatePharmacy!
+}
+
+input PharmacyCreateInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  pharmacyName: String!
+  email: String!
+  password: String!
+  code: String!
+  lat: Float!
+  long: Float!
+  phone: String!
+  addressNote: String!
+  confirmed: Boolean
+}
+
+input PharmacyCreateOneInput {
+  create: PharmacyCreateInput
+  connect: PharmacyWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type PharmacyEdge {
+  """The item at the end of the edge."""
+  node: Pharmacy!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum PharmacyOrderByInput {
+  id_ASC
+  id_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  pharmacyName_ASC
+  pharmacyName_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  code_ASC
+  code_DESC
+  lat_ASC
+  lat_DESC
+  long_ASC
+  long_DESC
+  phone_ASC
+  phone_DESC
+  addressNote_ASC
+  addressNote_DESC
+  confirmed_ASC
+  confirmed_DESC
+}
+
+type PharmacyPreviousValues {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  pharmacyName: String!
+  email: String!
+  password: String!
+  code: String!
+  lat: Float!
+  long: Float!
+  phone: String!
+  addressNote: String!
+  confirmed: Boolean!
+}
+
+type PharmacySubscriptionPayload {
+  mutation: MutationType!
+  node: Pharmacy
+  updatedFields: [String!]
+  previousValues: PharmacyPreviousValues
+}
+
+input PharmacySubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PharmacySubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: PharmacyWhereInput
+}
+
+input PharmacyUpdateDataInput {
+  firstName: String
+  lastName: String
+  pharmacyName: String
+  email: String
+  password: String
+  code: String
+  lat: Float
+  long: Float
+  phone: String
+  addressNote: String
+  confirmed: Boolean
+}
+
+input PharmacyUpdateInput {
+  firstName: String
+  lastName: String
+  pharmacyName: String
+  email: String
+  password: String
+  code: String
+  lat: Float
+  long: Float
+  phone: String
+  addressNote: String
+  confirmed: Boolean
+}
+
+input PharmacyUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  pharmacyName: String
+  email: String
+  password: String
+  code: String
+  lat: Float
+  long: Float
+  phone: String
+  addressNote: String
+  confirmed: Boolean
+}
+
+input PharmacyUpdateOneRequiredInput {
+  create: PharmacyCreateInput
+  connect: PharmacyWhereUniqueInput
+  update: PharmacyUpdateDataInput
+  upsert: PharmacyUpsertNestedInput
+}
+
+input PharmacyUpsertNestedInput {
+  update: PharmacyUpdateDataInput!
+  create: PharmacyCreateInput!
+}
+
+input PharmacyWhereInput {
+  """Logical AND on all given filters."""
+  AND: [PharmacyWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  firstName: String
+
+  """All values that are not equal to given value."""
+  firstName_not: String
+
+  """All values that are contained in given list."""
+  firstName_in: [String!]
+
+  """All values that are not contained in given list."""
+  firstName_not_in: [String!]
+
+  """All values less than the given value."""
+  firstName_lt: String
+
+  """All values less than or equal the given value."""
+  firstName_lte: String
+
+  """All values greater than the given value."""
+  firstName_gt: String
+
+  """All values greater than or equal the given value."""
+  firstName_gte: String
+
+  """All values containing the given string."""
+  firstName_contains: String
+
+  """All values not containing the given string."""
+  firstName_not_contains: String
+
+  """All values starting with the given string."""
+  firstName_starts_with: String
+
+  """All values not starting with the given string."""
+  firstName_not_starts_with: String
+
+  """All values ending with the given string."""
+  firstName_ends_with: String
+
+  """All values not ending with the given string."""
+  firstName_not_ends_with: String
+  lastName: String
+
+  """All values that are not equal to given value."""
+  lastName_not: String
+
+  """All values that are contained in given list."""
+  lastName_in: [String!]
+
+  """All values that are not contained in given list."""
+  lastName_not_in: [String!]
+
+  """All values less than the given value."""
+  lastName_lt: String
+
+  """All values less than or equal the given value."""
+  lastName_lte: String
+
+  """All values greater than the given value."""
+  lastName_gt: String
+
+  """All values greater than or equal the given value."""
+  lastName_gte: String
+
+  """All values containing the given string."""
+  lastName_contains: String
+
+  """All values not containing the given string."""
+  lastName_not_contains: String
+
+  """All values starting with the given string."""
+  lastName_starts_with: String
+
+  """All values not starting with the given string."""
+  lastName_not_starts_with: String
+
+  """All values ending with the given string."""
+  lastName_ends_with: String
+
+  """All values not ending with the given string."""
+  lastName_not_ends_with: String
+  pharmacyName: String
+
+  """All values that are not equal to given value."""
+  pharmacyName_not: String
+
+  """All values that are contained in given list."""
+  pharmacyName_in: [String!]
+
+  """All values that are not contained in given list."""
+  pharmacyName_not_in: [String!]
+
+  """All values less than the given value."""
+  pharmacyName_lt: String
+
+  """All values less than or equal the given value."""
+  pharmacyName_lte: String
+
+  """All values greater than the given value."""
+  pharmacyName_gt: String
+
+  """All values greater than or equal the given value."""
+  pharmacyName_gte: String
+
+  """All values containing the given string."""
+  pharmacyName_contains: String
+
+  """All values not containing the given string."""
+  pharmacyName_not_contains: String
+
+  """All values starting with the given string."""
+  pharmacyName_starts_with: String
+
+  """All values not starting with the given string."""
+  pharmacyName_not_starts_with: String
+
+  """All values ending with the given string."""
+  pharmacyName_ends_with: String
+
+  """All values not ending with the given string."""
+  pharmacyName_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
+  lat: Float
+
+  """All values that are not equal to given value."""
+  lat_not: Float
+
+  """All values that are contained in given list."""
+  lat_in: [Float!]
+
+  """All values that are not contained in given list."""
+  lat_not_in: [Float!]
+
+  """All values less than the given value."""
+  lat_lt: Float
+
+  """All values less than or equal the given value."""
+  lat_lte: Float
+
+  """All values greater than the given value."""
+  lat_gt: Float
+
+  """All values greater than or equal the given value."""
+  lat_gte: Float
+  long: Float
+
+  """All values that are not equal to given value."""
+  long_not: Float
+
+  """All values that are contained in given list."""
+  long_in: [Float!]
+
+  """All values that are not contained in given list."""
+  long_not_in: [Float!]
+
+  """All values less than the given value."""
+  long_lt: Float
+
+  """All values less than or equal the given value."""
+  long_lte: Float
+
+  """All values greater than the given value."""
+  long_gt: Float
+
+  """All values greater than or equal the given value."""
+  long_gte: Float
+  phone: String
+
+  """All values that are not equal to given value."""
+  phone_not: String
+
+  """All values that are contained in given list."""
+  phone_in: [String!]
+
+  """All values that are not contained in given list."""
+  phone_not_in: [String!]
+
+  """All values less than the given value."""
+  phone_lt: String
+
+  """All values less than or equal the given value."""
+  phone_lte: String
+
+  """All values greater than the given value."""
+  phone_gt: String
+
+  """All values greater than or equal the given value."""
+  phone_gte: String
+
+  """All values containing the given string."""
+  phone_contains: String
+
+  """All values not containing the given string."""
+  phone_not_contains: String
+
+  """All values starting with the given string."""
+  phone_starts_with: String
+
+  """All values not starting with the given string."""
+  phone_not_starts_with: String
+
+  """All values ending with the given string."""
+  phone_ends_with: String
+
+  """All values not ending with the given string."""
+  phone_not_ends_with: String
+  addressNote: String
+
+  """All values that are not equal to given value."""
+  addressNote_not: String
+
+  """All values that are contained in given list."""
+  addressNote_in: [String!]
+
+  """All values that are not contained in given list."""
+  addressNote_not_in: [String!]
+
+  """All values less than the given value."""
+  addressNote_lt: String
+
+  """All values less than or equal the given value."""
+  addressNote_lte: String
+
+  """All values greater than the given value."""
+  addressNote_gt: String
+
+  """All values greater than or equal the given value."""
+  addressNote_gte: String
+
+  """All values containing the given string."""
+  addressNote_contains: String
+
+  """All values not containing the given string."""
+  addressNote_not_contains: String
+
+  """All values starting with the given string."""
+  addressNote_starts_with: String
+
+  """All values not starting with the given string."""
+  addressNote_not_starts_with: String
+
+  """All values ending with the given string."""
+  addressNote_ends_with: String
+
+  """All values not ending with the given string."""
+  addressNote_not_ends_with: String
+  confirmed: Boolean
+
+  """All values that are not equal to given value."""
+  confirmed_not: Boolean
+}
+
+input PharmacyWhereUniqueInput {
+  id: ID
+  email: String
+  code: String
+}
+
+type Query {
+  orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
+  verifications(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Verification]!
+  drugs(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Drug]!
+  stores(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Store]!
+  pharmacies(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pharmacy]!
+  order(where: OrderWhereUniqueInput!): Order
+  verification(where: VerificationWhereUniqueInput!): Verification
+  drug(where: DrugWhereUniqueInput!): Drug
+  store(where: StoreWhereUniqueInput!): Store
+  pharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
+  ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
+  verificationsConnection(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VerificationConnection!
+  drugsConnection(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DrugConnection!
+  storesConnection(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreConnection!
+  pharmaciesConnection(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PharmacyConnection!
+
+  """Fetches an object given its ID"""
+  node(
+    """The ID of an object"""
+    id: ID!
+  ): Node
+}
+
+type Store implements Node {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  storeName: String!
+  city: String!
+  area: String!
+  street: String!
+  phone: String!
+  birthday: DateTime
+  confirmed: Boolean!
+}
+
+"""A connection to a list of items."""
+type StoreConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [StoreEdge]!
+  aggregate: AggregateStore!
+}
+
+input StoreCreateInput {
+  id: ID
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  storeName: String!
+  city: String!
+  area: String!
+  street: String!
+  phone: String!
+  birthday: DateTime
+  confirmed: Boolean
+}
+
+input StoreCreateOneInput {
+  create: StoreCreateInput
+  connect: StoreWhereUniqueInput
+}
+
+"""An edge in a connection."""
+type StoreEdge {
+  """The item at the end of the edge."""
+  node: Store!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+type StoreHaveDrug {
+  store: ID!
+  price: Float!
+  discount: Float
+  cash: Boolean!
+}
+
+input StoreHaveDrugCreateInput {
+  store: ID!
+  price: Float!
+  discount: Float
+  cash: Boolean!
+}
+
+input StoreHaveDrugCreateManyInput {
+  create: [StoreHaveDrugCreateInput!]
+}
+
+input StoreHaveDrugRestrictedWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StoreHaveDrugRestrictedWhereInput!]
+  store: ID
+
+  """All values that are not equal to given value."""
+  store_not: ID
+
+  """All values that are contained in given list."""
+  store_in: [ID!]
+
+  """All values that are not contained in given list."""
+  store_not_in: [ID!]
+
+  """All values less than the given value."""
+  store_lt: ID
+
+  """All values less than or equal the given value."""
+  store_lte: ID
+
+  """All values greater than the given value."""
+  store_gt: ID
+
+  """All values greater than or equal the given value."""
+  store_gte: ID
+
+  """All values containing the given string."""
+  store_contains: ID
+
+  """All values not containing the given string."""
+  store_not_contains: ID
+
+  """All values starting with the given string."""
+  store_starts_with: ID
+
+  """All values not starting with the given string."""
+  store_not_starts_with: ID
+
+  """All values ending with the given string."""
+  store_ends_with: ID
+
+  """All values not ending with the given string."""
+  store_not_ends_with: ID
+  price: Float
+
+  """All values that are not equal to given value."""
+  price_not: Float
+
+  """All values that are contained in given list."""
+  price_in: [Float!]
+
+  """All values that are not contained in given list."""
+  price_not_in: [Float!]
+
+  """All values less than the given value."""
+  price_lt: Float
+
+  """All values less than or equal the given value."""
+  price_lte: Float
+
+  """All values greater than the given value."""
+  price_gt: Float
+
+  """All values greater than or equal the given value."""
+  price_gte: Float
+  discount: Float
+
+  """All values that are not equal to given value."""
+  discount_not: Float
+
+  """All values that are contained in given list."""
+  discount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discount_not_in: [Float!]
+
+  """All values less than the given value."""
+  discount_lt: Float
+
+  """All values less than or equal the given value."""
+  discount_lte: Float
+
+  """All values greater than the given value."""
+  discount_gt: Float
+
+  """All values greater than or equal the given value."""
+  discount_gte: Float
+  cash: Boolean
+
+  """All values that are not equal to given value."""
+  cash_not: Boolean
+}
+
+input StoreHaveDrugScalarWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StoreHaveDrugScalarWhereInput!]
+
+  """Logical OR on all given filters."""
+  OR: [StoreHaveDrugScalarWhereInput!]
+
+  """Logical NOT on all given filters combined by AND."""
+  NOT: [StoreHaveDrugScalarWhereInput!]
+  store: ID
+
+  """All values that are not equal to given value."""
+  store_not: ID
+
+  """All values that are contained in given list."""
+  store_in: [ID!]
+
+  """All values that are not contained in given list."""
+  store_not_in: [ID!]
+
+  """All values less than the given value."""
+  store_lt: ID
+
+  """All values less than or equal the given value."""
+  store_lte: ID
+
+  """All values greater than the given value."""
+  store_gt: ID
+
+  """All values greater than or equal the given value."""
+  store_gte: ID
+
+  """All values containing the given string."""
+  store_contains: ID
+
+  """All values not containing the given string."""
+  store_not_contains: ID
+
+  """All values starting with the given string."""
+  store_starts_with: ID
+
+  """All values not starting with the given string."""
+  store_not_starts_with: ID
+
+  """All values ending with the given string."""
+  store_ends_with: ID
+
+  """All values not ending with the given string."""
+  store_not_ends_with: ID
+  price: Float
+
+  """All values that are not equal to given value."""
+  price_not: Float
+
+  """All values that are contained in given list."""
+  price_in: [Float!]
+
+  """All values that are not contained in given list."""
+  price_not_in: [Float!]
+
+  """All values less than the given value."""
+  price_lt: Float
+
+  """All values less than or equal the given value."""
+  price_lte: Float
+
+  """All values greater than the given value."""
+  price_gt: Float
+
+  """All values greater than or equal the given value."""
+  price_gte: Float
+  discount: Float
+
+  """All values that are not equal to given value."""
+  discount_not: Float
+
+  """All values that are contained in given list."""
+  discount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discount_not_in: [Float!]
+
+  """All values less than the given value."""
+  discount_lt: Float
+
+  """All values less than or equal the given value."""
+  discount_lte: Float
+
+  """All values greater than the given value."""
+  discount_gt: Float
+
+  """All values greater than or equal the given value."""
+  discount_gte: Float
+  cash: Boolean
+
+  """All values that are not equal to given value."""
+  cash_not: Boolean
+}
+
+input StoreHaveDrugUpdateManyDataInput {
+  store: ID
+  price: Float
+  discount: Float
+  cash: Boolean
+}
+
+input StoreHaveDrugUpdateManyInput {
+  create: [StoreHaveDrugCreateInput!]
+  updateMany: [StoreHaveDrugUpdateManyWithWhereNestedInput!]
+  deleteMany: [StoreHaveDrugScalarWhereInput!]
+}
+
+input StoreHaveDrugUpdateManyWithWhereNestedInput {
+  where: StoreHaveDrugScalarWhereInput!
+  data: StoreHaveDrugUpdateManyDataInput!
+}
+
+input StoreHaveDrugWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StoreHaveDrugWhereInput!]
+  store: ID
+
+  """All values that are not equal to given value."""
+  store_not: ID
+
+  """All values that are contained in given list."""
+  store_in: [ID!]
+
+  """All values that are not contained in given list."""
+  store_not_in: [ID!]
+
+  """All values less than the given value."""
+  store_lt: ID
+
+  """All values less than or equal the given value."""
+  store_lte: ID
+
+  """All values greater than the given value."""
+  store_gt: ID
+
+  """All values greater than or equal the given value."""
+  store_gte: ID
+
+  """All values containing the given string."""
+  store_contains: ID
+
+  """All values not containing the given string."""
+  store_not_contains: ID
+
+  """All values starting with the given string."""
+  store_starts_with: ID
+
+  """All values not starting with the given string."""
+  store_not_starts_with: ID
+
+  """All values ending with the given string."""
+  store_ends_with: ID
+
+  """All values not ending with the given string."""
+  store_not_ends_with: ID
+  price: Float
+
+  """All values that are not equal to given value."""
+  price_not: Float
+
+  """All values that are contained in given list."""
+  price_in: [Float!]
+
+  """All values that are not contained in given list."""
+  price_not_in: [Float!]
+
+  """All values less than the given value."""
+  price_lt: Float
+
+  """All values less than or equal the given value."""
+  price_lte: Float
+
+  """All values greater than the given value."""
+  price_gt: Float
+
+  """All values greater than or equal the given value."""
+  price_gte: Float
+  discount: Float
+
+  """All values that are not equal to given value."""
+  discount_not: Float
+
+  """All values that are contained in given list."""
+  discount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  discount_not_in: [Float!]
+
+  """All values less than the given value."""
+  discount_lt: Float
+
+  """All values less than or equal the given value."""
+  discount_lte: Float
+
+  """All values greater than the given value."""
+  discount_gt: Float
+
+  """All values greater than or equal the given value."""
+  discount_gte: Float
+  cash: Boolean
+
+  """All values that are not equal to given value."""
+  cash_not: Boolean
+}
+
+enum StoreOrderByInput {
+  id_ASC
+  id_DESC
+  firstName_ASC
+  firstName_DESC
+  lastName_ASC
+  lastName_DESC
+  email_ASC
+  email_DESC
+  password_ASC
+  password_DESC
+  storeName_ASC
+  storeName_DESC
+  city_ASC
+  city_DESC
+  area_ASC
+  area_DESC
+  street_ASC
+  street_DESC
+  phone_ASC
+  phone_DESC
+  birthday_ASC
+  birthday_DESC
+  confirmed_ASC
+  confirmed_DESC
+}
+
+type StorePreviousValues {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  password: String!
+  storeName: String!
+  city: String!
+  area: String!
+  street: String!
+  phone: String!
+  birthday: DateTime
+  confirmed: Boolean!
+}
+
+type StoreSubscriptionPayload {
+  mutation: MutationType!
+  node: Store
+  updatedFields: [String!]
+  previousValues: StorePreviousValues
+}
+
+input StoreSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StoreSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: StoreWhereInput
+}
+
+input StoreUpdateDataInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  storeName: String
+  city: String
+  area: String
+  street: String
+  phone: String
+  birthday: DateTime
+  confirmed: Boolean
+}
+
+input StoreUpdateInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  storeName: String
+  city: String
+  area: String
+  street: String
+  phone: String
+  birthday: DateTime
+  confirmed: Boolean
+}
+
+input StoreUpdateManyMutationInput {
+  firstName: String
+  lastName: String
+  email: String
+  password: String
+  storeName: String
+  city: String
+  area: String
+  street: String
+  phone: String
+  birthday: DateTime
+  confirmed: Boolean
+}
+
+input StoreUpdateOneRequiredInput {
+  create: StoreCreateInput
+  connect: StoreWhereUniqueInput
+  update: StoreUpdateDataInput
+  upsert: StoreUpsertNestedInput
+}
+
+input StoreUpsertNestedInput {
+  update: StoreUpdateDataInput!
+  create: StoreCreateInput!
+}
+
+input StoreWhereInput {
+  """Logical AND on all given filters."""
+  AND: [StoreWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  firstName: String
+
+  """All values that are not equal to given value."""
+  firstName_not: String
+
+  """All values that are contained in given list."""
+  firstName_in: [String!]
+
+  """All values that are not contained in given list."""
+  firstName_not_in: [String!]
+
+  """All values less than the given value."""
+  firstName_lt: String
+
+  """All values less than or equal the given value."""
+  firstName_lte: String
+
+  """All values greater than the given value."""
+  firstName_gt: String
+
+  """All values greater than or equal the given value."""
+  firstName_gte: String
+
+  """All values containing the given string."""
+  firstName_contains: String
+
+  """All values not containing the given string."""
+  firstName_not_contains: String
+
+  """All values starting with the given string."""
+  firstName_starts_with: String
+
+  """All values not starting with the given string."""
+  firstName_not_starts_with: String
+
+  """All values ending with the given string."""
+  firstName_ends_with: String
+
+  """All values not ending with the given string."""
+  firstName_not_ends_with: String
+  lastName: String
+
+  """All values that are not equal to given value."""
+  lastName_not: String
+
+  """All values that are contained in given list."""
+  lastName_in: [String!]
+
+  """All values that are not contained in given list."""
+  lastName_not_in: [String!]
+
+  """All values less than the given value."""
+  lastName_lt: String
+
+  """All values less than or equal the given value."""
+  lastName_lte: String
+
+  """All values greater than the given value."""
+  lastName_gt: String
+
+  """All values greater than or equal the given value."""
+  lastName_gte: String
+
+  """All values containing the given string."""
+  lastName_contains: String
+
+  """All values not containing the given string."""
+  lastName_not_contains: String
+
+  """All values starting with the given string."""
+  lastName_starts_with: String
+
+  """All values not starting with the given string."""
+  lastName_not_starts_with: String
+
+  """All values ending with the given string."""
+  lastName_ends_with: String
+
+  """All values not ending with the given string."""
+  lastName_not_ends_with: String
+  email: String
+
+  """All values that are not equal to given value."""
+  email_not: String
+
+  """All values that are contained in given list."""
+  email_in: [String!]
+
+  """All values that are not contained in given list."""
+  email_not_in: [String!]
+
+  """All values less than the given value."""
+  email_lt: String
+
+  """All values less than or equal the given value."""
+  email_lte: String
+
+  """All values greater than the given value."""
+  email_gt: String
+
+  """All values greater than or equal the given value."""
+  email_gte: String
+
+  """All values containing the given string."""
+  email_contains: String
+
+  """All values not containing the given string."""
+  email_not_contains: String
+
+  """All values starting with the given string."""
+  email_starts_with: String
+
+  """All values not starting with the given string."""
+  email_not_starts_with: String
+
+  """All values ending with the given string."""
+  email_ends_with: String
+
+  """All values not ending with the given string."""
+  email_not_ends_with: String
+  password: String
+
+  """All values that are not equal to given value."""
+  password_not: String
+
+  """All values that are contained in given list."""
+  password_in: [String!]
+
+  """All values that are not contained in given list."""
+  password_not_in: [String!]
+
+  """All values less than the given value."""
+  password_lt: String
+
+  """All values less than or equal the given value."""
+  password_lte: String
+
+  """All values greater than the given value."""
+  password_gt: String
+
+  """All values greater than or equal the given value."""
+  password_gte: String
+
+  """All values containing the given string."""
+  password_contains: String
+
+  """All values not containing the given string."""
+  password_not_contains: String
+
+  """All values starting with the given string."""
+  password_starts_with: String
+
+  """All values not starting with the given string."""
+  password_not_starts_with: String
+
+  """All values ending with the given string."""
+  password_ends_with: String
+
+  """All values not ending with the given string."""
+  password_not_ends_with: String
+  storeName: String
+
+  """All values that are not equal to given value."""
+  storeName_not: String
+
+  """All values that are contained in given list."""
+  storeName_in: [String!]
+
+  """All values that are not contained in given list."""
+  storeName_not_in: [String!]
+
+  """All values less than the given value."""
+  storeName_lt: String
+
+  """All values less than or equal the given value."""
+  storeName_lte: String
+
+  """All values greater than the given value."""
+  storeName_gt: String
+
+  """All values greater than or equal the given value."""
+  storeName_gte: String
+
+  """All values containing the given string."""
+  storeName_contains: String
+
+  """All values not containing the given string."""
+  storeName_not_contains: String
+
+  """All values starting with the given string."""
+  storeName_starts_with: String
+
+  """All values not starting with the given string."""
+  storeName_not_starts_with: String
+
+  """All values ending with the given string."""
+  storeName_ends_with: String
+
+  """All values not ending with the given string."""
+  storeName_not_ends_with: String
+  city: String
+
+  """All values that are not equal to given value."""
+  city_not: String
+
+  """All values that are contained in given list."""
+  city_in: [String!]
+
+  """All values that are not contained in given list."""
+  city_not_in: [String!]
+
+  """All values less than the given value."""
+  city_lt: String
+
+  """All values less than or equal the given value."""
+  city_lte: String
+
+  """All values greater than the given value."""
+  city_gt: String
+
+  """All values greater than or equal the given value."""
+  city_gte: String
+
+  """All values containing the given string."""
+  city_contains: String
+
+  """All values not containing the given string."""
+  city_not_contains: String
+
+  """All values starting with the given string."""
+  city_starts_with: String
+
+  """All values not starting with the given string."""
+  city_not_starts_with: String
+
+  """All values ending with the given string."""
+  city_ends_with: String
+
+  """All values not ending with the given string."""
+  city_not_ends_with: String
+  area: String
+
+  """All values that are not equal to given value."""
+  area_not: String
+
+  """All values that are contained in given list."""
+  area_in: [String!]
+
+  """All values that are not contained in given list."""
+  area_not_in: [String!]
+
+  """All values less than the given value."""
+  area_lt: String
+
+  """All values less than or equal the given value."""
+  area_lte: String
+
+  """All values greater than the given value."""
+  area_gt: String
+
+  """All values greater than or equal the given value."""
+  area_gte: String
+
+  """All values containing the given string."""
+  area_contains: String
+
+  """All values not containing the given string."""
+  area_not_contains: String
+
+  """All values starting with the given string."""
+  area_starts_with: String
+
+  """All values not starting with the given string."""
+  area_not_starts_with: String
+
+  """All values ending with the given string."""
+  area_ends_with: String
+
+  """All values not ending with the given string."""
+  area_not_ends_with: String
+  street: String
+
+  """All values that are not equal to given value."""
+  street_not: String
+
+  """All values that are contained in given list."""
+  street_in: [String!]
+
+  """All values that are not contained in given list."""
+  street_not_in: [String!]
+
+  """All values less than the given value."""
+  street_lt: String
+
+  """All values less than or equal the given value."""
+  street_lte: String
+
+  """All values greater than the given value."""
+  street_gt: String
+
+  """All values greater than or equal the given value."""
+  street_gte: String
+
+  """All values containing the given string."""
+  street_contains: String
+
+  """All values not containing the given string."""
+  street_not_contains: String
+
+  """All values starting with the given string."""
+  street_starts_with: String
+
+  """All values not starting with the given string."""
+  street_not_starts_with: String
+
+  """All values ending with the given string."""
+  street_ends_with: String
+
+  """All values not ending with the given string."""
+  street_not_ends_with: String
+  phone: String
+
+  """All values that are not equal to given value."""
+  phone_not: String
+
+  """All values that are contained in given list."""
+  phone_in: [String!]
+
+  """All values that are not contained in given list."""
+  phone_not_in: [String!]
+
+  """All values less than the given value."""
+  phone_lt: String
+
+  """All values less than or equal the given value."""
+  phone_lte: String
+
+  """All values greater than the given value."""
+  phone_gt: String
+
+  """All values greater than or equal the given value."""
+  phone_gte: String
+
+  """All values containing the given string."""
+  phone_contains: String
+
+  """All values not containing the given string."""
+  phone_not_contains: String
+
+  """All values starting with the given string."""
+  phone_starts_with: String
+
+  """All values not starting with the given string."""
+  phone_not_starts_with: String
+
+  """All values ending with the given string."""
+  phone_ends_with: String
+
+  """All values not ending with the given string."""
+  phone_not_ends_with: String
+  birthday: DateTime
+
+  """All values that are not equal to given value."""
+  birthday_not: DateTime
+
+  """All values that are contained in given list."""
+  birthday_in: [DateTime!]
+
+  """All values that are not contained in given list."""
+  birthday_not_in: [DateTime!]
+
+  """All values less than the given value."""
+  birthday_lt: DateTime
+
+  """All values less than or equal the given value."""
+  birthday_lte: DateTime
+
+  """All values greater than the given value."""
+  birthday_gt: DateTime
+
+  """All values greater than or equal the given value."""
+  birthday_gte: DateTime
+  confirmed: Boolean
+
+  """All values that are not equal to given value."""
+  confirmed_not: Boolean
+}
+
+input StoreWhereUniqueInput {
+  id: ID
+  email: String
+  storeName: String
+}
+
+type Subscription {
+  order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
+  verification(where: VerificationSubscriptionWhereInput): VerificationSubscriptionPayload
+  drug(where: DrugSubscriptionWhereInput): DrugSubscriptionPayload
+  store(where: StoreSubscriptionWhereInput): StoreSubscriptionPayload
+  pharmacy(where: PharmacySubscriptionWhereInput): PharmacySubscriptionPayload
+}
+
+type Verification implements Node {
+  id: ID!
+  code: String!
+}
+
+"""A connection to a list of items."""
+type VerificationConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [VerificationEdge]!
+  aggregate: AggregateVerification!
+}
+
+input VerificationCreateInput {
+  id: ID
+  code: String!
+}
+
+"""An edge in a connection."""
+type VerificationEdge {
+  """The item at the end of the edge."""
+  node: Verification!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum VerificationOrderByInput {
+  id_ASC
+  id_DESC
+  code_ASC
+  code_DESC
+}
+
+type VerificationPreviousValues {
+  id: ID!
+  code: String!
+}
+
+type VerificationSubscriptionPayload {
+  mutation: MutationType!
+  node: Verification
+  updatedFields: [String!]
+  previousValues: VerificationPreviousValues
+}
+
+input VerificationSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VerificationSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: VerificationWhereInput
+}
+
+input VerificationUpdateInput {
+  code: String
+}
+
+input VerificationUpdateManyMutationInput {
+  code: String
+}
+
+input VerificationWhereInput {
+  """Logical AND on all given filters."""
+  AND: [VerificationWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
+}
+
+input VerificationWhereUniqueInput {
+  id: ID
+  code: String
+}

@@ -1,0 +1,5 @@
+const Pharmacy = {
+
+}
+
+export { Pharmacy }
