@@ -30,8 +30,8 @@ type Mutation {
   
   pharmacyVerification(code: String!): Boolean
   
-  addPharmacy(fName: String!,
-    lName: String!,
+  addPharmacy(firstName: String!,
+    lastName: String!,
     pharmacyName: String!,
     email: String!,
     birthdate: Date,

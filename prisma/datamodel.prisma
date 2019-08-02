@@ -45,7 +45,6 @@ type Pharmacy {
   lat: Float!
   long: Float!
   phone: String!
-  addressNote: String!
   confirmed: Boolean! @default(value: false)
 }
 

@@ -5,11 +5,14 @@ const mailer = async (name, code, email, isStore) => {
 
     const transporter = nodemailer.createTransport({
         service: 'Gmail',
+        port: 25,
         auth: {
             user: 'khalidgad23@gmail.com',
-            pass: 'password&&7elw'
+            pass: 'Password&&&7elwfa45'
         }
     });
+    //client id: 134971666526-c8r2b1ctp18sdc4uc07mciq0ed303eg2.apps.googleusercontent.com
+    //client token: SfKbgJJBztyylPArfeHHFZKe
 
     ejs.renderFile(__dirname+'/../../asset/mail/mail.ejs', { name, code }, (err, data)=> {
         if(err) {

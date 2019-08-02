@@ -67,8 +67,13 @@ const Mutations = {
             }
         }, info)
         const verificationCode = await shortid.generate()
-        mailer(store.firstName, verificationCode, store.email, false)
-
+        mailer(pharmacy.firstName, verificationCode, pharmacy.email, false)
+        await prisma.mutation.createVerification({
+            data: {
+                id: pharmacy.id,
+                code: verificationCode
+            }
+        })
         return pharmacy
     },
     async addDrug(parent, args, {
@@ -192,25 +197,25 @@ const Mutations = {
     async pharmacyVerification(parent, { code }, {
         prisma
     }, info){
-        const storeId = await prisma.query.verification({
+        const pharmacy = await prisma.query.verification({
             where: {
                 code
             }
-        }, { id })
+        }, '{ id }')
 
-        if(!storeId){
+        if(!pharmacy.id){
             throw new Error('Bad cardinatlites!')
         }
 
         prisma.mutation.deleteVerification({
             where: {
-                id: storeId
+                id: pharmacy.id
             }
         })
 
         await prisma.mutation.updatePharmacy({
             where: {
-                id: storeId
+                id: pharmacy.id
             },
             data: {
                 confirmed: true
