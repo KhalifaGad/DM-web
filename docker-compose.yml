@@ -23,6 +23,7 @@ services:
           default:
             connector: mongo
             uri: mongodb://prisma:prisma@mongo
+            migrations: true
     command: /bin/sh.sh
   mongo:
     image: mongo:3.6
@@ -36,6 +37,7 @@ services:
       - "27017:27017"
     volumes:
       - mongo:/var/lib/mongo
+      - ./db/mongoDB:/data/db
 volumes:
   mongo:
 networks: 

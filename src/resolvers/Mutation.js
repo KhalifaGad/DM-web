@@ -4,6 +4,11 @@ import getUserId from '../utils/getUserId'
 import generateToken from '../utils/generateToken'
 import hashPassword from '../utils//hashPassword'
 import mailer from '../utils/sendVerification'
+import {
+    queryUser,
+    queryDrugs,
+    queryVerification
+} from '../utils/queriesHelpers'
 
 const Mutations = {
     async addStore(parent, args, {
@@ -11,7 +16,7 @@ const Mutations = {
     }, info) {
 
         const password = await hashPassword(args.password)
-        
+
         const store = await prisma.mutation.createStore({
             data: {
                 ...args,
@@ -37,7 +42,7 @@ const Mutations = {
             throw new Error('Unable to login!')
         }
 
-        if(!user.confirmed){
+        if (!user.confirmed) {
             throw new Error('Please verify your account!.')
         }
 
@@ -81,7 +86,7 @@ const Mutations = {
         req
     }, info) {
 
-        getUserId(req)
+        //getUserId(req) *********************************
 
         return prisma.mutation.createDrug({
             data: {
@@ -95,7 +100,7 @@ const Mutations = {
     }, info) {
         const storeId = getUserId(req)
 
-        const storesObj = await prisma.query.drugs(null, '{ stores { store } }')
+        const storesObj = await queryDrugs(prisma)
 
         const storesHaveDrugList = storesObj[0]['stores']
         const isExist = storesHaveDrugList.find(obj => obj.store === storeId)
@@ -124,7 +129,7 @@ const Mutations = {
         req
     }, info) {
         getUserId(req)
-        
+
         return prisma.mutation.updateOrder({
             data: {
                 ...args.orderActionInput
@@ -161,20 +166,16 @@ const Mutations = {
             }
         }, info)
     },
-    async storeVerification(parent, { code }, {
+    async storeVerification(parent, {
+        code
+    }, {
         prisma
-    }, info){
+    }, info) {
         console.log('hitted')
-        const res = await prisma.query.verification({
-            where: {
-                code
-            }
-        }, '{ id }')
+        const res = await queryVerification(prisma, code)
         const storeId = res.id
-        console.log(storeId)
-        console.log(code)
-        
-        if(!storeId){
+
+        if (!storeId) {
             throw new Error('Bad cardinatlites!')
         }
 
@@ -194,16 +195,14 @@ const Mutations = {
         })
         return true
     },
-    async pharmacyVerification(parent, { code }, {
+    async pharmacyVerification(parent, {
+        code
+    }, {
         prisma
-    }, info){
-        const pharmacy = await prisma.query.verification({
-            where: {
-                code
-            }
-        }, '{ id }')
+    }, info) {
+        const pharmacy = await queryVerification(prisma, code)
 
-        if(!pharmacy.id){
+        if (!pharmacy.id) {
             throw new Error('Bad cardinatlites!')
         }
 
@@ -224,21 +223,7 @@ const Mutations = {
         return true
     }
 }
-function queryUser(areYouStore, email, prisma){
-    if(areYouStore) {
-        return prisma.query.store({
-            where: {
-                email: email
-            }
-        })
-    } else {
-        return prisma.query.pharmacy({
-            where: {
-                email: email
-            }
-        })
-    }
-}
+
 export {
     Mutations as
     default
