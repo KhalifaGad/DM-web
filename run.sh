@@ -4,5 +4,6 @@ echo "prisma deploy command "
 prisma deploy
 echo "get-schema command"
 yarn run get-schema
-echo "get schema command"
+echo "end get schema command"
+yarn run rest-api-node
 yarn run start

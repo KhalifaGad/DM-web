@@ -1,5 +1,12 @@
 version: '3'
 services:
+  web-helper:
+    build: rest/
+    networks: 
+      net:
+    ports:
+      - "3000:3000"
+    command: yarn run rest-api-node
   web:
     build: .
     networks: 
