@@ -23,7 +23,7 @@ type StoreHaveDrug @embedded {
   store: ID!
   price: Float!
   discount: Float
-  cash: Boolean!
+  onlyCash: Boolean!
 }
 
 enum OrderStatus {

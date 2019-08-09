@@ -1,17 +1,9 @@
 import {
   Router
 } from 'express'
-import ApolloClient from 'apollo-boost'
-import gql from 'graphql-tag'
-import 'cross-fetch/polyfill'
-import excelToJson from 'convert-excel-to-json'
-import fs from 'fs'
+import { fromXCL2JSON } from '../../utils/drugsFilehelpers'
 
 const drugsFileRouter = Router()
-
-const client = new ApolloClient({
-  uri: 'http://web:4000'
-})
 
 drugsFileRouter.get('/', (req, res) => {
   res.send('drugsFileRouter')
@@ -28,25 +20,14 @@ drugsFileRouter.post('/', (req, res) => {
     console.log("Successfully moved File.")
     let result = fromXCL2JSON(filePath)
     console.log(result.Sheet1)
+    
+
   })
 
 
   res.send('drugsFileRouter')
 })
 
-function fromXCL2JSON(sourceFile){
-  let result = excelToJson({
-    sourceFile,
-    header: {
-      rows: 1
-    },
-    columnToKey: {
-      A: 'name'
-    }
-  })
-
-  return result
-}
 
 export {
   drugsFileRouter

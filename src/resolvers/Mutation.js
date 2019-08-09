@@ -86,7 +86,7 @@ const Mutations = {
         req
     }, info) {
 
-        //getUserId(req) *********************************
+        //getUserId(req) *******************************************************************
 
         return prisma.mutation.createDrug({
             data: {
@@ -98,7 +98,7 @@ const Mutations = {
         prisma,
         req
     }, info) {
-        const storeId = getUserId(req)
+        const storeId = args.storeId
 
         const storesObj = await queryDrugs(prisma)
 
@@ -115,7 +115,7 @@ const Mutations = {
                         store: storeId,
                         price: args.price,
                         discount: args.discount,
-                        cash: args.cash
+                        onlyCash: args.onlyCash
                     }
                 }
             },

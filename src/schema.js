@@ -6,7 +6,7 @@ const typeDefs = gql `
 type Query {
   orders(areYouStore: Boolean!, orderStatus: OrderStatus): [Order]!
   order(id: ID!): Order
-  drugs: [Drug]!
+  drugs(skip: int, first: int, name: String): [Drug]!
   drug(drugQueryInput: DrugQueryInput!): Drug
   stores: [Store]!
   store(id: ID, storeName: String): Store
@@ -42,10 +42,12 @@ type Mutation {
 
   addDrug(name: String!): Drug!
 
-  addDrugtoStore(drugId: ID!,
+  addDrugtoStore(
+    storeId: ID!,
+    drugId: ID!,
     price: Float!, 
     discount: Float!, 
-    cash: Boolean!): Drug
+    onlyCash: Boolean!): Drug
 
   makeOrder( total: Float!,
     to: ID!,

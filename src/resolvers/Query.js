@@ -36,13 +36,17 @@ const Query = {
         }, info)
     },
     drugs: (parent, args, {
-            prisma
-        }, info) =>
-        prisma.query.drugs({
+        prisma
+    }, info) => {
+        const opArgs = {
+            skip: args.skip,
+            first: args.first,
             where: {
-                ...args
+                name_contains: args.name
             }
-        }, info),
+        }
+        prisma.query.drugs(opArgs, info)
+    },
     drug: (parent, args, {
             prisma
         }, info) =>
@@ -51,7 +55,7 @@ const Query = {
                 ...args.drugQueryInput
             }
         }, info),
-    stores (parent, args, {
+    stores(parent, args, {
         prisma
     }, info) {
         // This function won't work until main dashboard is created
