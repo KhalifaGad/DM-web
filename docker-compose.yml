@@ -6,11 +6,16 @@ services:
       net:
     ports:
       - "3000:3000"
-    command: yarn run rest-api-node
+    volumes:
+      - ./rest/:/rest/
+      - ./filesDB:/rest/v1/routes/filez
+    command: yarn run rest-api-nodemon
   web:
     build: .
     networks: 
       net:
+    volumes: 
+      - ./src/:/app/src
     ports:
     - "80:4000"
     command: wait-for-it/wait-for-it.sh -h prisma -p 4466 -t 30 -- ./run.sh

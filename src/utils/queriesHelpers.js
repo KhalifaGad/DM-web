@@ -11,11 +11,24 @@ function queryUser(areYouStore, email, prisma) {
                 email: email
             }
         })
+        
     }
 }
 
-function queryDrugs(prisma) {
-    return prisma.query.drugs(null, '{ stores { store } }')
+function queryDrugById(prisma, drugId) {
+    return prisma.query.drug({
+        where: {
+            id: drugId
+        }
+    }, '{ stores { store } }')
+}
+
+function queryDrugByName(prisma, drugName) {
+    return prisma.query.drug({
+        where: {
+            name: drugName
+        }
+    }, '{ id }')
 }
 
 function queryVerification(prisma, code) {
@@ -28,6 +41,7 @@ function queryVerification(prisma, code) {
 
 export {
     queryUser,
-    queryDrugs,
+    queryDrugById,
+    queryDrugByName,
     queryVerification
 }

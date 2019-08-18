@@ -6,7 +6,8 @@ import hashPassword from '../utils//hashPassword'
 import mailer from '../utils/sendVerification'
 import {
     queryUser,
-    queryDrugs,
+    queryDrugById,
+    queryDrugByName,
     queryVerification
 } from '../utils/queriesHelpers'
 
@@ -33,10 +34,23 @@ const Mutations = {
         })
         return store
     },
+    async addStoreLogoURL(parent, args, {
+        prisma
+    }, info){
+        return prisma.mutation.updateStore({
+            data: {
+                logoURL: args.url
+            },
+            where: {
+                id: args.storeId
+            }
+        }, info)
+    },
     async login(parent, args, {
         prisma
     }, info) {
         let user = await queryUser(args.areYouStore, args.email, prisma)
+        console.log(JSON.stringify(user))
 
         if (!user) {
             throw new Error('Unable to login!')
@@ -51,9 +65,15 @@ const Mutations = {
         if (!isMatch) {
             throw new Error('Unable to login!')
         }
-
+        let pharmacy = null, store = null
+        if(args.areYouStore){
+            store = user
+        } else {
+            pharmacy = user
+        }
         return {
-            user,
+            store,
+            pharmacy,
             token: await generateToken(user.id)
         }
     },
@@ -87,12 +107,49 @@ const Mutations = {
     }, info) {
 
         //getUserId(req) *******************************************************************
+        const drugName = args.name.toLowerCase()
+        const checkExistance = await queryDrugByName(prisma, drugName)
+        console.log(JSON.stringify(checkExistance, 4))
+        if(checkExistance.id){
+            return Error('drug already exist!.')
+        }
 
-        return prisma.mutation.createDrug({
+        const creatDrugRes = await prisma.mutation.createDrug({
             data: {
-                name: args.name
+                name: drugName
             }
-        }, info)
+        }, '{ id }')
+
+        console.log(JSON.stringify(creatDrugRes, 4))
+        
+        if (args.newDrugStoreInfo) {
+
+            let {
+                storeId,
+                price,
+                discount,
+                onlyCash
+            } = args.newDrugStoreInfo
+
+            const updateDrugRes = await prisma.mutation.updateDrug({
+                data: {
+                    stores: {
+                        create: {
+                            store: storeId,
+                            price,
+                            discount,
+                            onlyCash
+                        }
+                    }
+                },
+                where: {
+                    id: creatDrugRes.id
+                }
+            }, info) 
+            console.log(JSON.stringify(updateDrugRes, 4))
+            return creatDrugRes.id 
+        }        
+        return creatDrugRes.id
     },
     async addDrugtoStore(parent, args, {
         prisma,
@@ -100,13 +157,12 @@ const Mutations = {
     }, info) {
         const storeId = args.storeId
 
-        const storesObj = await queryDrugs(prisma)
-
-        const storesHaveDrugList = storesObj[0]['stores']
+        const storesObj = await queryDrugById(prisma, args.drugId)
+        const storesHaveDrugList = storesObj['stores']
         const isExist = storesHaveDrugList.find(obj => obj.store === storeId)
 
         if (isExist) {
-            throw new Error('Store already have the drug, Try to update it!.')
+            return Error('Store already have the drug, Try to update it!.')
         }
         return prisma.mutation.updateDrug({
             data: {

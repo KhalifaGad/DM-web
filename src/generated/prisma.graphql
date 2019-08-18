@@ -1,5 +1,5 @@
-# source: http://localhost:4466
-# timestamp: Fri Jul 12 2019 15:34:35 GMT+0200 (Eastern European Standard Time)
+# source: http://prisma:4466
+# timestamp: Sat Aug 10 2019 12:44:06 GMT+0000 (Coordinated Universal Time)
 
 type AggregateDrug {
   count: Int!
@@ -960,7 +960,6 @@ type Pharmacy implements Node {
   lat: Float!
   long: Float!
   phone: String!
-  addressNote: String!
   confirmed: Boolean!
 }
 
@@ -985,7 +984,6 @@ input PharmacyCreateInput {
   lat: Float!
   long: Float!
   phone: String!
-  addressNote: String!
   confirmed: Boolean
 }
 
@@ -1024,8 +1022,6 @@ enum PharmacyOrderByInput {
   long_DESC
   phone_ASC
   phone_DESC
-  addressNote_ASC
-  addressNote_DESC
   confirmed_ASC
   confirmed_DESC
 }
@@ -1041,7 +1037,6 @@ type PharmacyPreviousValues {
   lat: Float!
   long: Float!
   phone: String!
-  addressNote: String!
   confirmed: Boolean!
 }
 
@@ -1086,7 +1081,6 @@ input PharmacyUpdateDataInput {
   lat: Float
   long: Float
   phone: String
-  addressNote: String
   confirmed: Boolean
 }
 
@@ -1100,7 +1094,6 @@ input PharmacyUpdateInput {
   lat: Float
   long: Float
   phone: String
-  addressNote: String
   confirmed: Boolean
 }
 
@@ -1114,7 +1107,6 @@ input PharmacyUpdateManyMutationInput {
   lat: Float
   long: Float
   phone: String
-  addressNote: String
   confirmed: Boolean
 }
 
@@ -1497,46 +1489,6 @@ input PharmacyWhereInput {
 
   """All values not ending with the given string."""
   phone_not_ends_with: String
-  addressNote: String
-
-  """All values that are not equal to given value."""
-  addressNote_not: String
-
-  """All values that are contained in given list."""
-  addressNote_in: [String!]
-
-  """All values that are not contained in given list."""
-  addressNote_not_in: [String!]
-
-  """All values less than the given value."""
-  addressNote_lt: String
-
-  """All values less than or equal the given value."""
-  addressNote_lte: String
-
-  """All values greater than the given value."""
-  addressNote_gt: String
-
-  """All values greater than or equal the given value."""
-  addressNote_gte: String
-
-  """All values containing the given string."""
-  addressNote_contains: String
-
-  """All values not containing the given string."""
-  addressNote_not_contains: String
-
-  """All values starting with the given string."""
-  addressNote_starts_with: String
-
-  """All values not starting with the given string."""
-  addressNote_not_starts_with: String
-
-  """All values ending with the given string."""
-  addressNote_ends_with: String
-
-  """All values not ending with the given string."""
-  addressNote_not_ends_with: String
   confirmed: Boolean
 
   """All values that are not equal to given value."""
@@ -1585,6 +1537,7 @@ type Store implements Node {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean!
 }
 
@@ -1610,6 +1563,7 @@ input StoreCreateInput {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -1631,14 +1585,14 @@ type StoreHaveDrug {
   store: ID!
   price: Float!
   discount: Float
-  cash: Boolean!
+  onlyCash: Boolean!
 }
 
 input StoreHaveDrugCreateInput {
   store: ID!
   price: Float!
   discount: Float
-  cash: Boolean!
+  onlyCash: Boolean!
 }
 
 input StoreHaveDrugCreateManyInput {
@@ -1732,10 +1686,10 @@ input StoreHaveDrugRestrictedWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
-  cash: Boolean
+  onlyCash: Boolean
 
   """All values that are not equal to given value."""
-  cash_not: Boolean
+  onlyCash_not: Boolean
 }
 
 input StoreHaveDrugScalarWhereInput {
@@ -1831,17 +1785,17 @@ input StoreHaveDrugScalarWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
-  cash: Boolean
+  onlyCash: Boolean
 
   """All values that are not equal to given value."""
-  cash_not: Boolean
+  onlyCash_not: Boolean
 }
 
 input StoreHaveDrugUpdateManyDataInput {
   store: ID
   price: Float
   discount: Float
-  cash: Boolean
+  onlyCash: Boolean
 }
 
 input StoreHaveDrugUpdateManyInput {
@@ -1942,10 +1896,10 @@ input StoreHaveDrugWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
-  cash: Boolean
+  onlyCash: Boolean
 
   """All values that are not equal to given value."""
-  cash_not: Boolean
+  onlyCash_not: Boolean
 }
 
 enum StoreOrderByInput {
@@ -1971,6 +1925,8 @@ enum StoreOrderByInput {
   phone_DESC
   birthday_ASC
   birthday_DESC
+  logoURL_ASC
+  logoURL_DESC
   confirmed_ASC
   confirmed_DESC
 }
@@ -1987,6 +1943,7 @@ type StorePreviousValues {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean!
 }
 
@@ -2032,6 +1989,7 @@ input StoreUpdateDataInput {
   street: String
   phone: String
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -2046,6 +2004,7 @@ input StoreUpdateInput {
   street: String
   phone: String
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -2060,6 +2019,7 @@ input StoreUpdateManyMutationInput {
   street: String
   phone: String
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -2500,6 +2460,46 @@ input StoreWhereInput {
 
   """All values greater than or equal the given value."""
   birthday_gte: DateTime
+  logoURL: String
+
+  """All values that are not equal to given value."""
+  logoURL_not: String
+
+  """All values that are contained in given list."""
+  logoURL_in: [String!]
+
+  """All values that are not contained in given list."""
+  logoURL_not_in: [String!]
+
+  """All values less than the given value."""
+  logoURL_lt: String
+
+  """All values less than or equal the given value."""
+  logoURL_lte: String
+
+  """All values greater than the given value."""
+  logoURL_gt: String
+
+  """All values greater than or equal the given value."""
+  logoURL_gte: String
+
+  """All values containing the given string."""
+  logoURL_contains: String
+
+  """All values not containing the given string."""
+  logoURL_not_contains: String
+
+  """All values starting with the given string."""
+  logoURL_starts_with: String
+
+  """All values not starting with the given string."""
+  logoURL_not_starts_with: String
+
+  """All values ending with the given string."""
+  logoURL_ends_with: String
+
+  """All values not ending with the given string."""
+  logoURL_not_ends_with: String
   confirmed: Boolean
 
   """All values that are not equal to given value."""

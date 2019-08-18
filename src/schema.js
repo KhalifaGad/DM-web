@@ -4,9 +4,10 @@ const typeDefs = gql `
 
 #<------------------------- Mutation, Query & Subscription ------------------------->
 type Query {
-  orders(areYouStore: Boolean!, orderStatus: OrderStatus): [Order]!
+  orders(areYouStore: Boolean!, orderStatus: OrderStatus,
+  skip: Int, first: Int): [Order]!
   order(id: ID!): Order
-  drugs(skip: int, first: int, name: String): [Drug]!
+  drugs(skip: Int, first: Int, name: String): [Drug]!
   drug(drugQueryInput: DrugQueryInput!): Drug
   stores: [Store]!
   store(id: ID, storeName: String): Store
@@ -21,8 +22,10 @@ type Mutation {
     city: String!, 
     area: String!, 
     street: String!, 
-    birthdate: Date, 
+    birthday: Date, 
     phone: String!): Store!
+
+  addStoreLogoURL(storeId: ID!, url: String!): Store
 
   login(email: String!, password: String!, areYouStore: Boolean!): AuthPayload!
   
@@ -40,7 +43,8 @@ type Mutation {
     long: Float!, 
     phone: String!): Pharmacy!
 
-  addDrug(name: String!): Drug!
+  addDrug(name: String!,
+    newDrugStoreInfo: newDrugStoreInfoInput): ID!
 
   addDrugtoStore(
     storeId: ID!,
@@ -92,6 +96,13 @@ input DrugQueryInput {
   name: String
 }
 
+input newDrugStoreInfoInput{
+    storeId: ID!,
+    price: Float!, 
+    discount: Float!, 
+    onlyCash: Boolean!
+}
+
 # <---------------------- End 0f Non-types declaration ------------------------->
 # <--------------------------- Types declaration ------------------------------->
 
@@ -113,13 +124,14 @@ type Store {
   street: String!
   phone: String!
   birthday: Date
+  logoURL: String
 }
 
 type StoreHaveDrug {
   store: ID!
   price: Float!
   discount: Float
-  cash: Boolean!
+  onlyCash: Boolean!
 }
 
 type Pharmacy {
@@ -127,6 +139,7 @@ type Pharmacy {
   firstName: String!
   lastName: String!
   email: String!
+  pharmacyName: String!
   password: String!
   code: String!
   lat: Float!
@@ -156,8 +169,13 @@ type OrderDrugsList {
   total: Float!
 }
 
+type addDrugPayload{
+  id: ID,
+  drug: Drug
+}
+
 type AuthPayload {
-  sotre: Store
+  store: Store
   pharmacy: Pharmacy
   token: String!
 }

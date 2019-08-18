@@ -7,7 +7,10 @@ const Query = {
     }, info) {
 
         const userId = getUserId(req)
-
+        const opArgs = {
+            skip: args.skip,
+            first: args.first
+        }
         let fetchingOption = {}
         if (args.orderStatus) fetchingOption.orderStatus = args.orderStatus
 
@@ -18,10 +21,11 @@ const Query = {
             fetchingOption.to = {}
             fetchingOption.to.id = userId
         }
+        opArgs.where = {
+            ...fetchingOption
+        }
         return prisma.query.orders({
-            where: {
-                ...fetchingOption
-            }
+            opArgs
         }, info)
     },
     order: (parent, args, {
@@ -40,12 +44,14 @@ const Query = {
     }, info) => {
         const opArgs = {
             skip: args.skip,
-            first: args.first,
-            where: {
+            first: args.first
+        }
+        if(args.name) {
+            opArgs.where = {
                 name_contains: args.name
             }
         }
-        prisma.query.drugs(opArgs, info)
+        return prisma.query.drugs(opArgs, info)
     },
     drug: (parent, args, {
             prisma

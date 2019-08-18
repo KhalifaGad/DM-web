@@ -16,6 +16,7 @@ type Store {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean! @default(value: false)
 }
 
