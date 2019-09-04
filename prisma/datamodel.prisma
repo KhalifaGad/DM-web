@@ -23,7 +23,8 @@ type Store {
 type StoreHaveDrug @embedded {
   store: ID!
   price: Float!
-  discount: Float
+  discount: Float @default(value: 0)
+  deferredDiscount: Float @default(value: 0)
   onlyCash: Boolean!
 }
 

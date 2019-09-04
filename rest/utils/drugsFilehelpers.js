@@ -17,7 +17,8 @@ function fromXCL2JSON(sourceFile) {
             A: 'name',
             B: 'price',
             C: 'discount',
-            D: 'onlyCash'
+            D: 'deferredDiscount',
+            E: 'onlyCash'
         }
     })
     return result
@@ -36,7 +37,8 @@ async function drugsArrayProcessing(drugsArr, storeId) {
         if (checkingData.data != null) {
             drugId = checkingData.data.drug.id
             isAdded2Store = await addDrug2Store(storeId, drugId, drugsArr[i].price,
-                drugsArr[i].discount, drugsArr[i].onlyCash.toLowerCase())
+                drugsArr[i].discount, drugsArr[i].deferredDiscount,
+                drugsArr[i].onlyCash.toLowerCase())
             if (isAdded2Store.data) {
                 successArr.push(drugsArr[i].name)
             } else {
@@ -59,8 +61,13 @@ async function newDrugsArrayProcessing(drugsArr, storeId, storeInfoProvided) {
         successArr = [],
         failureArr = [],
         existedArr = []
+    let drugName
     for (let i = 0; i < drugsArr.length; i++) {
-        checkingData = await check4Drug(drugsArr[i].name)
+        drugName = drugsArr[i].name.replace(/[^a-zA-Z0-9- ]/g, "").replace(/\s+/g, ' ').trim()
+        if (drugName === '') {
+            continue;
+        }
+        checkingData = await check4Drug(drugName)
         console.log(JSON.stringify(checkingData, 4))
         if (checkingData.data.drug == null) {
             if (storeInfoProvided) {
@@ -68,14 +75,15 @@ async function newDrugsArrayProcessing(drugsArr, storeId, storeInfoProvided) {
                     storeId,
                     price: drugsArr[i].price,
                     discount: drugsArr[i].discount,
+                    deferredDiscount: drugsArr[i].deferredDiscount,
                     onlyCash: drugsArr[i].onlyCash.toLowerCase()
                 }
                 isAdded2Store = await
-                createDrugAndAddStore(drugsArr[i].name, newDrugStoreInfo)
+                createDrugAndAddStore(drugName, newDrugStoreInfo)
 
             } else {
                 isAdded2Store = await
-                createDrugAndAddStore(drugsArr[i].name)
+                createDrugAndAddStore(drugName)
             }
 
             if (isAdded2Store.data) {
@@ -116,7 +124,8 @@ function check4Drug(drugName) {
         })
 }
 
-function addDrug2Store(storeId, drugId, price, discount, onlyCash) {
+function addDrug2Store(storeId, drugId, price, discount = 0,
+    deferredDiscount = 0, onlyCash) {
     return apolloClient.mutate({
             mutation: gql `
       mutation {
@@ -125,6 +134,7 @@ function addDrug2Store(storeId, drugId, price, discount, onlyCash) {
             drugId: "${drugId}",
             price: ${price},
             discount: ${discount},
+            deferredDiscount: ${deferredDiscount},
             onlyCash: ${onlyCash}
         ){
           id

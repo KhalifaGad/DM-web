@@ -1,5 +1,5 @@
 # source: http://prisma:4466
-# timestamp: Sat Aug 10 2019 12:44:06 GMT+0000 (Coordinated Universal Time)
+# timestamp: Thu Aug 22 2019 11:56:23 GMT+0000 (Coordinated Universal Time)
 
 type AggregateDrug {
   count: Int!
@@ -1585,6 +1585,7 @@ type StoreHaveDrug {
   store: ID!
   price: Float!
   discount: Float
+  deferredDiscount: Float
   onlyCash: Boolean!
 }
 
@@ -1592,6 +1593,7 @@ input StoreHaveDrugCreateInput {
   store: ID!
   price: Float!
   discount: Float
+  deferredDiscount: Float
   onlyCash: Boolean!
 }
 
@@ -1686,6 +1688,28 @@ input StoreHaveDrugRestrictedWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
+  deferredDiscount: Float
+
+  """All values that are not equal to given value."""
+  deferredDiscount_not: Float
+
+  """All values that are contained in given list."""
+  deferredDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  deferredDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  deferredDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  deferredDiscount_lte: Float
+
+  """All values greater than the given value."""
+  deferredDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  deferredDiscount_gte: Float
   onlyCash: Boolean
 
   """All values that are not equal to given value."""
@@ -1785,6 +1809,28 @@ input StoreHaveDrugScalarWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
+  deferredDiscount: Float
+
+  """All values that are not equal to given value."""
+  deferredDiscount_not: Float
+
+  """All values that are contained in given list."""
+  deferredDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  deferredDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  deferredDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  deferredDiscount_lte: Float
+
+  """All values greater than the given value."""
+  deferredDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  deferredDiscount_gte: Float
   onlyCash: Boolean
 
   """All values that are not equal to given value."""
@@ -1795,6 +1841,7 @@ input StoreHaveDrugUpdateManyDataInput {
   store: ID
   price: Float
   discount: Float
+  deferredDiscount: Float
   onlyCash: Boolean
 }
 
@@ -1896,6 +1943,28 @@ input StoreHaveDrugWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
+  deferredDiscount: Float
+
+  """All values that are not equal to given value."""
+  deferredDiscount_not: Float
+
+  """All values that are contained in given list."""
+  deferredDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  deferredDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  deferredDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  deferredDiscount_lte: Float
+
+  """All values greater than the given value."""
+  deferredDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  deferredDiscount_gte: Float
   onlyCash: Boolean
 
   """All values that are not equal to given value."""

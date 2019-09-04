@@ -18,7 +18,7 @@ const resolvers = {
         name: 'Date',
         description: 'A Date object',
         serialize(value) {
-            return value.getTime(); // value sent to the client
+            return new Date(value); // value sent to the client
         },
         parseValue(value) {
             return new Date(value); // value from the client

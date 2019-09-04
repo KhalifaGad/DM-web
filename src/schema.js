@@ -6,10 +6,13 @@ const typeDefs = gql `
 type Query {
   orders(areYouStore: Boolean!, orderStatus: OrderStatus,
   skip: Int, first: Int): [Order]!
+  ordersByMonth(createdAt: Date, acceptingDate: Date, refusingingDate: Date,
+  deliveringDate: Date): [Order]!
   order(id: ID!): Order
-  drugs(skip: Int, first: Int, name: String): [Drug]!
+  drugs(skip: Int, first: Int, name: String, onlyCash: Boolean,storeId: ID): [Drug]!
+  drugsHaveStores(skip: Int, first: Int): [Drug]!
   drug(drugQueryInput: DrugQueryInput!): Drug
-  stores: [Store]!
+  stores(city: String, area: String): [Store]!
   store(id: ID, storeName: String): Store
 }
 
@@ -24,6 +27,17 @@ type Mutation {
     street: String!, 
     birthday: Date, 
     phone: String!): Store!
+
+  updateStore(firstName: String,
+    lastName: String,
+    email: String,
+    password: String,
+    storeName: String,
+    city: String, 
+    area: String, 
+    street: String, 
+    birthday: Date, 
+    phone: String): Store!  
 
   addStoreLogoURL(storeId: ID!, url: String!): Store
 
@@ -43,6 +57,16 @@ type Mutation {
     long: Float!, 
     phone: String!): Pharmacy!
 
+  updatePharmacy(firstName: String,
+    lastName: String,
+    pharmacyName: String,
+    email: String,
+    birthdate: Date,
+    password: String,
+    lat: Float,
+    long: Float, 
+    phone: String): Pharmacy!
+
   addDrug(name: String!,
     newDrugStoreInfo: newDrugStoreInfoInput): ID!
 
@@ -51,6 +75,7 @@ type Mutation {
     drugId: ID!,
     price: Float!, 
     discount: Float!, 
+    deferredDiscount: Float, 
     onlyCash: Boolean!): Drug
 
   makeOrder( total: Float!,
@@ -97,10 +122,27 @@ input DrugQueryInput {
 }
 
 input newDrugStoreInfoInput{
-    storeId: ID!,
-    price: Float!, 
-    discount: Float!, 
+    storeId: ID!
+    price: Float! 
+    discount: Float
+    deferredDiscount: Float
     onlyCash: Boolean!
+}
+
+input orderConnectDrugId {
+  id: ID!
+}
+
+input orderConnectDrug {
+  connect: orderConnectDrugId!
+}
+
+input OrderDrugsListInput {
+  drug: orderConnectDrug!
+  quantity: Int!
+  unitPrice: Float!
+  discount: Float!
+  total: Float!
 }
 
 # <---------------------- End 0f Non-types declaration ------------------------->
@@ -131,6 +173,7 @@ type StoreHaveDrug {
   store: ID!
   price: Float!
   discount: Float
+  deferredDiscount: Float
   onlyCash: Boolean!
 }
 

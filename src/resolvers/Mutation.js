@@ -34,6 +34,34 @@ const Mutations = {
         })
         return store
     },
+    async updateStore(parent, args, {
+        prisma,
+        req
+    }, info){
+        let storeId = await getUserId(req)
+        return prisma.mutation.updateStore({
+            where: {
+                id: storeId
+            },
+            data: {
+                ...args
+            }
+        }, info)
+    },
+    async updatePharmacy(parent, args, {
+        prisma,
+        req
+    }, info){
+        let pharmacyId = await getUserId(req)
+        return prisma.mutation.updatePharmacy({
+            where: {
+                id: pharmacyId
+            },
+            data: {
+                ...args
+            }
+        }, info)
+    },
     async addStoreLogoURL(parent, args, {
         prisma
     }, info){
@@ -109,8 +137,7 @@ const Mutations = {
         //getUserId(req) *******************************************************************
         const drugName = args.name.toLowerCase()
         const checkExistance = await queryDrugByName(prisma, drugName)
-        console.log(JSON.stringify(checkExistance, 4))
-        if(checkExistance.id){
+        if(checkExistance !== null && checkExistance.id){
             return Error('drug already exist!.')
         }
 
@@ -119,8 +146,6 @@ const Mutations = {
                 name: drugName
             }
         }, '{ id }')
-
-        console.log(JSON.stringify(creatDrugRes, 4))
         
         if (args.newDrugStoreInfo) {
 
@@ -128,6 +153,7 @@ const Mutations = {
                 storeId,
                 price,
                 discount,
+                deferredDiscount,
                 onlyCash
             } = args.newDrugStoreInfo
 
@@ -138,6 +164,7 @@ const Mutations = {
                             store: storeId,
                             price,
                             discount,
+                            deferredDiscount,
                             onlyCash
                         }
                     }
@@ -145,8 +172,8 @@ const Mutations = {
                 where: {
                     id: creatDrugRes.id
                 }
-            }, info) 
-            console.log(JSON.stringify(updateDrugRes, 4))
+            })
+            console.log(JSON.stringify(updateDrugRes))
             return creatDrugRes.id 
         }        
         return creatDrugRes.id
@@ -162,7 +189,7 @@ const Mutations = {
         const isExist = storesHaveDrugList.find(obj => obj.store === storeId)
 
         if (isExist) {
-            return Error('Store already have the drug, Try to update it!.')
+            throw new Error('Store already have the drug, Try to update it!.')
         }
         return prisma.mutation.updateDrug({
             data: {
@@ -171,6 +198,7 @@ const Mutations = {
                         store: storeId,
                         price: args.price,
                         discount: args.discount,
+                        deferredDiscount: args.deferredDiscount,
                         onlyCash: args.onlyCash
                     }
                 }
@@ -217,7 +245,7 @@ const Mutations = {
                     }
                 },
                 drugList: {
-                    connect: args.drugList
+                    create: args.drugList
                 }
             }
         }, info)
