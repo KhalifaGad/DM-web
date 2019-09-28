@@ -8,8 +8,11 @@ import {
     queryUser,
     queryDrugById,
     queryDrugByName,
-    queryVerification
-} from '../utils/queriesHelpers'
+    queryVerification,
+    checkPharmacyCode,
+    queryPharmacyWallet
+} from '../utils/helperQueries'
+import { updatePharmacyWallet } from '../utils/helperMutations'
 
 const Mutations = {
     async addStore(parent, args, {
@@ -34,11 +37,14 @@ const Mutations = {
         })
         return store
     },
-    async updateStore(parent, args, {
+    async updateStore(parent, args, { //********************************************************** */
         prisma,
         req
     }, info){
         let storeId = await getUserId(req)
+        if (args.password) {
+            args.password = await hashPassword(args.password)
+        }
         return prisma.mutation.updateStore({
             where: {
                 id: storeId
@@ -53,6 +59,9 @@ const Mutations = {
         req
     }, info){
         let pharmacyId = await getUserId(req)
+        if (args.password) {
+            args.password = await hashPassword(args.password)
+        }
         return prisma.mutation.updatePharmacy({
             where: {
                 id: pharmacyId
@@ -78,7 +87,6 @@ const Mutations = {
         prisma
     }, info) {
         let user = await queryUser(args.areYouStore, args.email, prisma)
-        console.log(JSON.stringify(user))
 
         if (!user) {
             throw new Error('Unable to login!')
@@ -255,7 +263,7 @@ const Mutations = {
     }, {
         prisma
     }, info) {
-        console.log('hitted')
+
         const res = await queryVerification(prisma, code)
         const storeId = res.id
 
@@ -305,6 +313,43 @@ const Mutations = {
             }
         })
         return true
+    },
+    async addPharmacyPromo(parent, args, {
+        prisma,
+        req
+    }, info){
+        let newPharmacyId = args.id
+
+        let data = await checkPharmacyCode(prisma, args.oldPharmacyCode)
+        
+        if(data.pharmacy.id){
+            await updatePharmacyWallet(data.pharmacy.id, data.pharmacy.wallet, prisma)
+            await updatePharmacyWallet(newPharmacyId, 0, prisma)
+            return true
+        } else {
+            return false
+        }
+    },
+    async decreasePharmacyWallet(parent, args, {
+        prisma,
+        req
+    }, info){
+        const userId = getUserId(req)
+
+        let data = await queryPharmacyWallet(userId)
+        if(data.pharmacy.wallet === 0){
+            return false
+        } else {
+            await prisma.mutation.updatePharmacy({
+                where: {
+                    id: userId
+                },
+                data: {
+                    wallet: data.pharmacy.wallet - 1
+                }
+            })
+            return true
+        }
     }
 }
 

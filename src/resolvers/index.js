@@ -7,9 +7,11 @@ import Subscription from './Subscription'
 import Pharmacy from './resolversMap/Pharmacy'
 import Order from './resolversMap/Order'
 import Drug from './resolversMap/Drug'
+import GraphQLJSON from 'graphql-type-json'
 
 
 const resolvers = {
+    JSON: GraphQLJSON,
     Query,
     Mutation,
     Subscription,

@@ -1,4 +1,7 @@
 import getUserId from '../utils/getUserId'
+import {
+    getTopDrugs
+} from '../utils/topDrugsSellingHelper'
 
 const Query = {
     async orders(parent, args, {
@@ -34,11 +37,11 @@ const Query = {
     }, info) {
         let opArgs = {}
         let userId = await getUserId(req)
-        if(args.createdAt){
+        if (args.createdAt) {
             let dateParts = args.createdAt.split('-')
             opArgs.where = {
-                createdAt_gte: new Date(dateParts[0], dateParts[1]),
-                createdAt_lt: new Date(dateParts[0], dateParts[1] + 1),
+                createdAt_gte: new Date(dateParts[0], parseInt(dateParts[1], 10) - 1),
+                createdAt_lt: new Date(dateParts[0], dateParts[1]),
                 to: {
                     id: userId
                 }
@@ -46,8 +49,8 @@ const Query = {
         } else if (args.acceptingDate) {
             let dateParts = args.createdAt.split('-')
             opArgs.where = {
-                acceptingDate_gte: new Date(dateParts[0], dateParts[1]),
-                acceptingDate_lt: new Date(dateParts[0], dateParts[1] + 1),
+                acceptingDate_gte: new Date(dateParts[0], parseInt(dateParts[1], 10) - 1),
+                acceptingDate_lt: new Date(dateParts[0], dateParts[1]),
                 to: {
                     id: userId
                 }
@@ -55,17 +58,17 @@ const Query = {
         } else if (args.refusingingDate) {
             let dateParts = args.createdAt.split('-')
             opArgs.where = {
-                refusingingDate_gte: new Date(dateParts[0], dateParts[1]),
-                refusingingDate_lt: new Date(dateParts[0], dateParts[1] + 1),
+                refusingingDate_gte: new Date(dateParts[0], parseInt(dateParts[1], 10) - 1),
+                refusingingDate_lt: new Date(dateParts[0], dateParts[1]),
                 to: {
                     id: userId
                 }
-            } 
+            }
         } else if (args.deliveringDate) {
             let dateParts = args.createdAt.split('-')
             opArgs.where = {
-                deliveringDate_gte: new Date(dateParts[0], dateParts[1]),
-                deliveringDate_lt: new Date(dateParts[0], dateParts[1] + 1),
+                deliveringDate_gte: new Date(dateParts[0], parseInt(dateParts[1], 10) - 1),
+                deliveringDate_lt: new Date(dateParts[0], dateParts[1]),
                 to: {
                     id: userId
                 }
@@ -74,8 +77,33 @@ const Query = {
         return prisma.query.orders({
             opArgs
         }, info)
-    }
-    ,
+    },
+    async ordersOfStore(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let userId = await getUserId(req)
+        return prisma.query.orders({
+            where: {
+                to: {
+                    id: userId
+                }
+            }
+        }, info)
+    },
+    async ordersOfPharmacy(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let userId = await getUserId(req)
+        return prisma.query.orders({
+            where: {
+                from: {
+                    id: userId
+                }
+            }
+        }, info)
+    },
     order: (parent, args, {
         prisma,
         req
@@ -107,7 +135,7 @@ const Query = {
                 }
             }
         }
-        if(args.storeId){
+        if (args.storeId) {
             opArgs.where = {
                 stores_every: {
                     store: args.storeId
@@ -129,7 +157,7 @@ const Query = {
                 price_gte: 0
             }
         }
-        
+
         return prisma.query.drugs(opArgs, info)
     },
     drug: (parent, args, {
@@ -149,16 +177,52 @@ const Query = {
             }
         }, info)
     },
-    store: (parent, args, {
+    store: async (parent, args, {
         prisma,
         req
     }, info) => {
-        getUserId(req)
+        await getUserId(req)
         return prisma.query.store({
             where: {
                 ...args
             }
         }, info)
+    },
+    async pharmacy(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let pharmacyId = await getUserId(req)
+        return prisma.query.pharmacy({
+            where: {
+                id: pharmacyId
+            }
+        }, info)
+    },
+    async topDrugsSelling(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let storeId = await getUserId(req)
+        let orderDrugsListArrOfObj = await prisma.query.orders({
+            where: {
+                to: {
+                    id: storeId
+                }
+            },
+            AND: {
+                acceptingDate_gte: new Date('2019')
+            }
+        }, '{ drugsList{ drug { id } quantity } }')
+
+        
+        let drugsLists = []
+        await orderDrugsListArrOfObj.forEach((order) => {
+            drugsLists.push(order.drugsList)
+        })
+
+        let topDrugs = await getTopDrugs(drugsLists)
+        return topDrugs
     }
 }
 
@@ -166,3 +230,27 @@ export {
     Query as
     default
 }
+
+/* 
+[
+    {"drugsList":[
+        {
+            "drug":{
+                "id":"5d596dadc450450007a93467"
+            },
+            "quantity":2
+        }
+        ]
+    },
+    {
+        "drugsList":[
+            {
+                "drug": {
+                    "id":"5d596dadc450450007a93468"
+                },
+                "quantity":2
+            }
+        ]
+    }
+]
+*/

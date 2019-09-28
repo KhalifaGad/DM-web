@@ -46,6 +46,10 @@ type Pharmacy {
   code: String! @unique
   lat: Float!
   long: Float!
+  city: String!
+  area: String!
+  street: String!
+  wallet: Float! @default(value: 0.0)
   phone: String!
   confirmed: Boolean! @default(value: false)
 }

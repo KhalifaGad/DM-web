@@ -11,7 +11,7 @@ function queryUser(areYouStore, email, prisma) {
                 email: email
             }
         })
-        
+
     }
 }
 
@@ -39,9 +39,27 @@ function queryVerification(prisma, code) {
     }, '{ id }')
 }
 
+function checkPharmacyCode(prisma, code) {
+    return prisma.query.pharmacy({
+        where: {
+            code: code
+        }
+    }, '{ id wallet }')
+}
+
+function queryPharmacyWallet(prisma, id) {
+    return prisma.query.pharmacy({
+        where: {
+            id: id
+        }
+    }, '{ wallet }')
+}
+
 export {
     queryUser,
     queryDrugById,
     queryDrugByName,
-    queryVerification
+    queryVerification,
+    checkPharmacyCode,
+    queryPharmacyWallet
 }

@@ -23,6 +23,7 @@
     "eslint": "5.16.0",
     "graphql": "14.3.1",
     "graphql-cli": "^3.0.12",
+    "graphql-type-json": "^0.3.0",
     "jsonwebtoken": "8.5.1",
     "nodemailer": "6.2.1",
     "nodemon": "1.19.1",

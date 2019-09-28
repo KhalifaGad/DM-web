@@ -6,14 +6,18 @@ const typeDefs = gql `
 type Query {
   orders(areYouStore: Boolean!, orderStatus: OrderStatus,
   skip: Int, first: Int): [Order]!
-  ordersByMonth(createdAt: Date, acceptingDate: Date, refusingingDate: Date,
-  deliveringDate: Date): [Order]!
+  ordersByMonth(createdAt: String, acceptingDate: String, refusingingDate: String,
+  deliveringDate: String): [Order]!
+  ordersOfStore:[Order]!
+  ordersOfPharmacy:[Order]!
   order(id: ID!): Order
   drugs(skip: Int, first: Int, name: String, onlyCash: Boolean,storeId: ID): [Drug]!
   drugsHaveStores(skip: Int, first: Int): [Drug]!
   drug(drugQueryInput: DrugQueryInput!): Drug
   stores(city: String, area: String): [Store]!
   store(id: ID, storeName: String): Store
+  pharmacy: Pharmacy!
+  topDrugsSelling: []!
 }
 
 type Mutation {
@@ -54,7 +58,11 @@ type Mutation {
     birthdate: Date,
     password: String!,
     lat: Float!,
-    long: Float!, 
+    long: Float!,
+    city: String!,
+    area: String!,
+    street: String!,
+    wallet: Float!, 
     phone: String!): Pharmacy!
 
   updatePharmacy(firstName: String,
@@ -64,7 +72,11 @@ type Mutation {
     birthdate: Date,
     password: String,
     lat: Float,
-    long: Float, 
+    long: Float,
+    city: String!,
+    area: String!,
+    street: String!,
+    wallet: Float!, 
     phone: String): Pharmacy!
 
   addDrug(name: String!,
@@ -86,6 +98,10 @@ type Mutation {
   orderAction(orderId: ID!, 
     orderActionInput: OrderActionInput!): Order!
 
+  addPharmacyPromo(id: ID!, oldPharmacyCode: String!): Boolean!
+
+  decreasePharmacyWallet: Boolean!  
+
 }
 
 type Subscription {
@@ -96,6 +112,7 @@ type Subscription {
 #<---------------------------- Non-types declaration ------------------------------->
 
 scalar Date
+scalar JSON
 
 enum OrderStatus {
   ACCEPTED
@@ -187,6 +204,10 @@ type Pharmacy {
   code: String!
   lat: Float!
   long: Float!
+  city: String!
+  area: String!
+  street: String!
+  wallet: Float!
   phone: String!
 }
 
