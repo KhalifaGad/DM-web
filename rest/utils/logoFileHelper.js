@@ -7,7 +7,7 @@ const apolloClient = new ApolloClient({
 })
 
 function addLogoURL(filePath, storeId) {
-    console.log(filePath)
+    
     return apolloClient.mutate({
             mutation: gql `
                 mutation {

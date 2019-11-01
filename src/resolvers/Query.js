@@ -27,9 +27,9 @@ const Query = {
         opArgs.where = {
             ...fetchingOption
         }
-        return prisma.query.orders({
+        return prisma.query.orders(
             opArgs
-        }, info)
+        , info)
     },
     async ordersByMonth(parent, args, {
         prisma,
@@ -121,18 +121,10 @@ const Query = {
         const opArgs = {
             skip: args.skip,
             first: args.first,
-            where: {
-                stores_every: {
-                    onlyCash: args.onlyCash
-                }
-            }
         }
         if (args.name) {
             opArgs.where = {
                 name_contains: args.name,
-                stores_every: {
-                    onlyCash: args.onlyCash
-                }
             }
         }
         if (args.storeId) {
@@ -162,12 +154,17 @@ const Query = {
     },
     drug: (parent, args, {
             prisma
-        }, info) =>
-        prisma.query.drug({
+        }, info) =>{
+
+        return prisma.query.drugs({
             where: {
-                ...args.drugQueryInput
+                ...args.drugQueryInput,
+                stores_some: {
+                    onlyCash: args.onlyCash
+                }
             }
-        }, info),
+        }, info)
+    },
     stores(parent, args, {
         prisma
     }, info) {
@@ -223,6 +220,22 @@ const Query = {
 
         let topDrugs = await getTopDrugs(drugsLists)
         return topDrugs
+    },
+    async drugsWithoutStores(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.drugs({}, 'id name')
+    },
+    async pharmacyFromCode(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.pharmacy({
+            where: {
+                code: args.code
+            }
+        }, info)
     }
 }
 

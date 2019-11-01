@@ -8,7 +8,7 @@ const mailer = async (name, code, email, isStore) => {
         port: 25,
         auth: {
             user: 'khalidgad23@gmail.com',
-            pass: 'Password&&&7elwfa45'
+            pass: 'Password&&7elw'
         }
     });
     //client id: 134971666526-c8r2b1ctp18sdc4uc07mciq0ed303eg2.apps.googleusercontent.com

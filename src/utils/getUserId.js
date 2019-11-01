@@ -1,8 +1,13 @@
 import jwt from 'jsonwebtoken'
 
 // This is an authentication function
-const getUserId = (req) => {
-    const header = req.req.headers.authorization
+const getUserId = (req, fromSubscription = false) => {
+    let header
+    if(fromSubscription){
+        header = req.connection.context.authorization
+    } else {
+        header = req.req.headers.authorization
+    }
     
     if(!header) {
         throw new Error('Authentication required!.')

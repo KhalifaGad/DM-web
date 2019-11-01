@@ -13,11 +13,13 @@ type Query {
   order(id: ID!): Order
   drugs(skip: Int, first: Int, name: String, onlyCash: Boolean,storeId: ID): [Drug]!
   drugsHaveStores(skip: Int, first: Int): [Drug]!
-  drug(drugQueryInput: DrugQueryInput!): Drug
+  drug(drugQueryInput: DrugQueryInput!, onlyCash: Boolean!): [Drug]!
   stores(city: String, area: String): [Store]!
   store(id: ID, storeName: String): Store
   pharmacy: Pharmacy!
-  topDrugsSelling: []!
+  topDrugsSelling: JSON!
+  drugsWithoutStores: [Drug]!
+  pharmacyFromCode(code: String!): Pharmacy
 }
 
 type Mutation {
@@ -92,20 +94,21 @@ type Mutation {
 
   makeOrder( total: Float!,
     to: ID!,
-    drugList: [ID!]!
+    drugList: [OrderDrugsListInput!]!,
+    walletDiscount: Float!
     ): Order!
 
   orderAction(orderId: ID!, 
     orderActionInput: OrderActionInput!): Order!
 
-  addPharmacyPromo(id: ID!, oldPharmacyCode: String!): Boolean!
+  addPharmacyPromo(oldPharmacyCode: String!): Boolean!
 
-  decreasePharmacyWallet: Boolean!  
+  decreasePharmacyWallet(val: Int): Boolean!  
 
 }
 
 type Subscription {
-  order: OrderSubsciptionPayload!
+  order(areYouStore: Boolean!): OrderSubsciptionPayload!
 }
 
 #<--------------------- End of Mutation, Query & Subscription ---------------------->
@@ -217,6 +220,9 @@ type Order {
   to: Store!
   drugsList: [OrderDrugsList]!
   orderStatus: OrderStatus!
+  code: String!
+  DMFees: Float!
+  WalletDiscount: Float
   total: Float!
   createdAt: Date!
   acceptingDate: Date

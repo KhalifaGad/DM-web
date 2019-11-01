@@ -60,6 +60,9 @@ type Order {
   to: Store! @relation(link: INLINE)
   drugsList: [OrderDrugsList!]!
   orderStatus: OrderStatus!
+  code: String! @unique
+  DMFees: Float! @default(value: 5.0)
+  walletDiscount: Float @default(value: 0.0)
   total: Float!
   createdAt: DateTime! @createdAt
   acceptingDate: DateTime

@@ -129,6 +129,7 @@ const Mutations = {
         }, info)
         const verificationCode = await shortid.generate()
         mailer(pharmacy.firstName, verificationCode, pharmacy.email, false)
+        console.log(JSON.stringify(pharmacy))
         await prisma.mutation.createVerification({
             data: {
                 id: pharmacy.id,
@@ -237,6 +238,7 @@ const Mutations = {
     }, info) {
 
         const userId = getUserId(req)
+        const orderCode = shortid.generate()
 
         return prisma.mutation.createOder({
             data: {
@@ -254,7 +256,9 @@ const Mutations = {
                 },
                 drugList: {
                     create: args.drugList
-                }
+                },
+                code: orderCode,
+                walletDiscount: args.walletDiscount
             }
         }, info)
     },
@@ -318,7 +322,7 @@ const Mutations = {
         prisma,
         req
     }, info){
-        let newPharmacyId = args.id
+        let newPharmacyId = getUserId(req)
 
         let data = await checkPharmacyCode(prisma, args.oldPharmacyCode)
         
@@ -336,7 +340,7 @@ const Mutations = {
     }, info){
         const userId = getUserId(req)
 
-        let data = await queryPharmacyWallet(userId)
+        let data = await queryPharmacyWallet(prisma, userId)
         if(data.pharmacy.wallet === 0){
             return false
         } else {
@@ -345,7 +349,7 @@ const Mutations = {
                     id: userId
                 },
                 data: {
-                    wallet: data.pharmacy.wallet - 1
+                    wallet: data.pharmacy.wallet - args.val
                 }
             })
             return true

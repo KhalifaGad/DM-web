@@ -34,7 +34,7 @@ async function drugsArrayProcessing(drugsArr, storeId) {
         notExistedArr = []
     for (let i = 0; i < drugsArr.length; i++) {
         checkingData = await check4Drug(drugsArr[i].name)
-        if (checkingData.data != null) {
+        if (checkingData.data.drug != null) {
             drugId = checkingData.data.drug.id
             isAdded2Store = await addDrug2Store(storeId, drugId, drugsArr[i].price,
                 drugsArr[i].discount, drugsArr[i].deferredDiscount,
