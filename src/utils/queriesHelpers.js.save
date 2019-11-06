@@ -46,19 +46,9 @@ function checkPharmacyCode(prisma, code) {
     }, '{ id wallet }')
 }
 
-function queryPharmacyWallet(prisma, id) {
-    return prisma.query.pharmacy({
-        where: {
-            id: id
-        }
-    }, '{ wallet }')
-}
-
 export {
     queryUser,
     queryDrugById,
     queryDrugByName,
-    queryVerification,
-    checkPharmacyCode,
-    queryPharmacyWallet
+    queryVerification
 }

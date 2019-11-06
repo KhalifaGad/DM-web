@@ -7,9 +7,10 @@ import Subscription from './Subscription'
 import Pharmacy from './resolversMap/Pharmacy'
 import Order from './resolversMap/Order'
 import Drug from './resolversMap/Drug'
-
+import GraphQLJSON from 'graphql-type-json'
 
 const resolvers = {
+    JSON: GraphQLJSON,
     Query,
     Mutation,
     Subscription,
@@ -18,7 +19,7 @@ const resolvers = {
         name: 'Date',
         description: 'A Date object',
         serialize(value) {
-            return value.getTime(); // value sent to the client
+            return new Date(value); // value sent to the client
         },
         parseValue(value) {
             return new Date(value); // value from the client

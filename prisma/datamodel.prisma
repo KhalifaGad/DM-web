@@ -16,13 +16,15 @@ type Store {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean! @default(value: false)
 }
 
 type StoreHaveDrug @embedded {
   store: ID!
   price: Float!
-  discount: Float
+  discount: Float @default(value: 0)
+  deferredDiscount: Float @default(value: 0)
   onlyCash: Boolean!
 }
 
@@ -44,6 +46,10 @@ type Pharmacy {
   code: String! @unique
   lat: Float!
   long: Float!
+  city: String @default(value: "unknown")
+  area: String @default(value: "unknown")
+  street: String @default(value: "unknown")
+  wallet: Float @default(value: 0.0)
   phone: String!
   confirmed: Boolean! @default(value: false)
 }
@@ -54,6 +60,9 @@ type Order {
   to: Store! @relation(link: INLINE)
   drugsList: [OrderDrugsList!]!
   orderStatus: OrderStatus!
+  code: String! @unique
+  DMFees: Float! @default(value: 5.0)
+  walletDiscount: Float @default(value: 0.0)
   total: Float!
   createdAt: DateTime! @createdAt
   acceptingDate: DateTime

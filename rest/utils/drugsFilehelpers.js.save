@@ -17,8 +17,7 @@ function fromXCL2JSON(sourceFile) {
             A: 'name',
             B: 'price',
             C: 'discount',
-	    D: 'deferredDiscount',
-            E: 'onlyCash'
+            D: 'onlyCash'
         }
     })
     return result
@@ -34,19 +33,17 @@ async function drugsArrayProcessing(drugsArr, storeId) {
         notExistedArr = []
     for (let i = 0; i < drugsArr.length; i++) {
         checkingData = await check4Drug(drugsArr[i].name)
-        if (checkingData.data.drug != null) {
-	console.log('CCCCCCCcccccCCCCCCCccc')
-	console.log(checkingData.data)
+        if (checkingData.data != null) {
             drugId = checkingData.data.drug.id
             isAdded2Store = await addDrug2Store(storeId, drugId, drugsArr[i].price,
-                drugsArr[i].discount, drugsArr[i].deferredDiscount, drugsArr[i].onlyCash.toLowerCase())
+                drugsArr[i].discount, drugsArr[i].onlyCash.toLowerCase())
             if (isAdded2Store.data) {
-                successArr.push(drugsArr[i])
+                successArr.push(drugsArr[i].name)
             } else {
-                failureArr.push(drugsArr[i])
+                failureArr.push(drugsArr[i].name)
             }
         } else {
-            notExistedArr.push(drugsArr[i])
+            notExistedArr.push(drugsArr[i].name)
         }
     }
     return {
@@ -63,37 +60,33 @@ async function newDrugsArrayProcessing(drugsArr, storeId, storeInfoProvided) {
         failureArr = [],
         existedArr = []
     let drugName
-	console.log('hitted')
     for (let i = 0; i < drugsArr.length; i++) {
-        drugName = drugsArr[i].name.replace(/[^a-zA-Z0-9- ]/g, "").replace(/\s+/g, ' ').trim()
-	
-	if(drugName === '') {continue;}
-	checkingData = await check4Drug(drugName)
-        
+	drugName = drugsArr[i].name.replace(/[^a-zA-Z0-9- ]/g, "").replace(/\s+/g, ' ').trim()
+        checkingDdrugNameata = await check4Drug(drugsArr[i].name)
+        console.log(JSON.stringify(checkingData, 4))
         if (checkingData.data.drug == null) {
             if (storeInfoProvided) {
                 let newDrugStoreInfo = {
                     storeId,
                     price: drugsArr[i].price,
                     discount: drugsArr[i].discount,
-		    deferredDiscount: drugsArr[i].deferredDiscount,
                     onlyCash: drugsArr[i].onlyCash.toLowerCase()
                 }
                 isAdded2Store = await
-                createDrugAndAddStore(drugName, newDrugStoreInfo)
+                createDrugAndAddStore(drugsArr[i].name.toLowerCase(), newDrugStoreInfo)
 
             } else {
                 isAdded2Store = await
-                createDrugAndAddStore(drugName)
+                createDrugAndAddStore(drugsArr[i].name.toLowerCase())
             }
 
             if (isAdded2Store.data) {
-                successArr.push(drugName)
+                successArr.push(drugsArr[i].name)
             } else {
-                failureArr.push(drugName)
+                failureArr.push(drugsArr[i].name)
             }
         } else {
-            existedArr.push(drugName)
+            existedArr.push(drugsArr[i].name)
         }
     }
     return {
@@ -125,7 +118,7 @@ function check4Drug(drugName) {
         })
 }
 
-function addDrug2Store(storeId, drugId, price, discount, deferredDiscount=0, onlyCash) {
+function addDrug2Store(storeId, drugId, price, discount, onlyCash) {
     return apolloClient.mutate({
             mutation: gql `
       mutation {
@@ -134,7 +127,6 @@ function addDrug2Store(storeId, drugId, price, discount, deferredDiscount=0, onl
             drugId: "${drugId}",
             price: ${price},
             discount: ${discount},
-	    deferredDiscount: ${deferredDiscount},
             onlyCash: ${onlyCash}
         ){
           id
@@ -177,17 +169,8 @@ function createDrugAndAddStore(name, newDrugStoreInfo = null) {
 }
 
 function refactorRequest(req) {
-console.log(req.body)
-console.log(req.body.id)
     let drugsFile = req.files.drugsFile
-    let storeId
-    if(req.body.id){
-	storeId = req.body.id
-} else {
-	console.log('XXXXXXXXxxxxxx test faild')
-	throw new Error('id not found')
-	return
-}
+    let storeId = req.body.id
     let storeIdHyphenated = storeId + '-'
     let filePath = __dirname + '/../v1/routes/filez/' + storeIdHyphenated +
         drugsFile.name

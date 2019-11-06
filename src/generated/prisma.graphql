@@ -1,5 +1,5 @@
-# source: http://localhost:4466
-# timestamp: Fri Jul 12 2019 15:34:35 GMT+0200 (Eastern European Standard Time)
+# source: http://prisma:4466
+# timestamp: Sun Oct 06 2019 11:33:15 GMT+0000 (Coordinated Universal Time)
 
 type AggregateDrug {
   count: Int!
@@ -266,6 +266,9 @@ type Order implements Node {
   to: Store!
   drugsList: [OrderDrugsList!]
   orderStatus: OrderStatus!
+  code: String!
+  DMFees: Float!
+  walletDiscount: Float
   total: Float!
   createdAt: DateTime!
   acceptingDate: DateTime
@@ -287,6 +290,9 @@ type OrderConnection {
 input OrderCreateInput {
   id: ID
   orderStatus: OrderStatus!
+  code: String!
+  DMFees: Float
+  walletDiscount: Float
   total: Float!
   acceptingDate: DateTime
   refusingingDate: DateTime
@@ -635,6 +641,12 @@ enum OrderOrderByInput {
   id_DESC
   orderStatus_ASC
   orderStatus_DESC
+  code_ASC
+  code_DESC
+  DMFees_ASC
+  DMFees_DESC
+  walletDiscount_ASC
+  walletDiscount_DESC
   total_ASC
   total_DESC
   createdAt_ASC
@@ -652,6 +664,9 @@ enum OrderOrderByInput {
 type OrderPreviousValues {
   id: ID!
   orderStatus: OrderStatus!
+  code: String!
+  DMFees: Float!
+  walletDiscount: Float
   total: Float!
   createdAt: DateTime!
   acceptingDate: DateTime
@@ -701,6 +716,9 @@ input OrderSubscriptionWhereInput {
 
 input OrderUpdateInput {
   orderStatus: OrderStatus
+  code: String
+  DMFees: Float
+  walletDiscount: Float
   total: Float
   acceptingDate: DateTime
   refusingingDate: DateTime
@@ -713,6 +731,9 @@ input OrderUpdateInput {
 
 input OrderUpdateManyMutationInput {
   orderStatus: OrderStatus
+  code: String
+  DMFees: Float
+  walletDiscount: Float
   total: Float
   acceptingDate: DateTime
   refusingingDate: DateTime
@@ -773,6 +794,90 @@ input OrderWhereInput {
 
   """All values that are not contained in given list."""
   orderStatus_not_in: [OrderStatus!]
+  code: String
+
+  """All values that are not equal to given value."""
+  code_not: String
+
+  """All values that are contained in given list."""
+  code_in: [String!]
+
+  """All values that are not contained in given list."""
+  code_not_in: [String!]
+
+  """All values less than the given value."""
+  code_lt: String
+
+  """All values less than or equal the given value."""
+  code_lte: String
+
+  """All values greater than the given value."""
+  code_gt: String
+
+  """All values greater than or equal the given value."""
+  code_gte: String
+
+  """All values containing the given string."""
+  code_contains: String
+
+  """All values not containing the given string."""
+  code_not_contains: String
+
+  """All values starting with the given string."""
+  code_starts_with: String
+
+  """All values not starting with the given string."""
+  code_not_starts_with: String
+
+  """All values ending with the given string."""
+  code_ends_with: String
+
+  """All values not ending with the given string."""
+  code_not_ends_with: String
+  DMFees: Float
+
+  """All values that are not equal to given value."""
+  DMFees_not: Float
+
+  """All values that are contained in given list."""
+  DMFees_in: [Float!]
+
+  """All values that are not contained in given list."""
+  DMFees_not_in: [Float!]
+
+  """All values less than the given value."""
+  DMFees_lt: Float
+
+  """All values less than or equal the given value."""
+  DMFees_lte: Float
+
+  """All values greater than the given value."""
+  DMFees_gt: Float
+
+  """All values greater than or equal the given value."""
+  DMFees_gte: Float
+  walletDiscount: Float
+
+  """All values that are not equal to given value."""
+  walletDiscount_not: Float
+
+  """All values that are contained in given list."""
+  walletDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  walletDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  walletDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  walletDiscount_lte: Float
+
+  """All values greater than the given value."""
+  walletDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  walletDiscount_gte: Float
   total: Float
 
   """All values that are not equal to given value."""
@@ -932,6 +1037,7 @@ input OrderWhereInput {
 
 input OrderWhereUniqueInput {
   id: ID
+  code: String
 }
 
 """Information about pagination in a connection."""
@@ -959,8 +1065,11 @@ type Pharmacy implements Node {
   code: String!
   lat: Float!
   long: Float!
+  city: String
+  area: String
+  street: String
+  wallet: Float
   phone: String!
-  addressNote: String!
   confirmed: Boolean!
 }
 
@@ -984,8 +1093,11 @@ input PharmacyCreateInput {
   code: String!
   lat: Float!
   long: Float!
+  city: String
+  area: String
+  street: String
+  wallet: Float
   phone: String!
-  addressNote: String!
   confirmed: Boolean
 }
 
@@ -1022,10 +1134,16 @@ enum PharmacyOrderByInput {
   lat_DESC
   long_ASC
   long_DESC
+  city_ASC
+  city_DESC
+  area_ASC
+  area_DESC
+  street_ASC
+  street_DESC
+  wallet_ASC
+  wallet_DESC
   phone_ASC
   phone_DESC
-  addressNote_ASC
-  addressNote_DESC
   confirmed_ASC
   confirmed_DESC
 }
@@ -1040,8 +1158,11 @@ type PharmacyPreviousValues {
   code: String!
   lat: Float!
   long: Float!
+  city: String
+  area: String
+  street: String
+  wallet: Float
   phone: String!
-  addressNote: String!
   confirmed: Boolean!
 }
 
@@ -1085,8 +1206,11 @@ input PharmacyUpdateDataInput {
   code: String
   lat: Float
   long: Float
+  city: String
+  area: String
+  street: String
+  wallet: Float
   phone: String
-  addressNote: String
   confirmed: Boolean
 }
 
@@ -1099,8 +1223,11 @@ input PharmacyUpdateInput {
   code: String
   lat: Float
   long: Float
+  city: String
+  area: String
+  street: String
+  wallet: Float
   phone: String
-  addressNote: String
   confirmed: Boolean
 }
 
@@ -1113,8 +1240,11 @@ input PharmacyUpdateManyMutationInput {
   code: String
   lat: Float
   long: Float
+  city: String
+  area: String
+  street: String
+  wallet: Float
   phone: String
-  addressNote: String
   confirmed: Boolean
 }
 
@@ -1457,6 +1587,148 @@ input PharmacyWhereInput {
 
   """All values greater than or equal the given value."""
   long_gte: Float
+  city: String
+
+  """All values that are not equal to given value."""
+  city_not: String
+
+  """All values that are contained in given list."""
+  city_in: [String!]
+
+  """All values that are not contained in given list."""
+  city_not_in: [String!]
+
+  """All values less than the given value."""
+  city_lt: String
+
+  """All values less than or equal the given value."""
+  city_lte: String
+
+  """All values greater than the given value."""
+  city_gt: String
+
+  """All values greater than or equal the given value."""
+  city_gte: String
+
+  """All values containing the given string."""
+  city_contains: String
+
+  """All values not containing the given string."""
+  city_not_contains: String
+
+  """All values starting with the given string."""
+  city_starts_with: String
+
+  """All values not starting with the given string."""
+  city_not_starts_with: String
+
+  """All values ending with the given string."""
+  city_ends_with: String
+
+  """All values not ending with the given string."""
+  city_not_ends_with: String
+  area: String
+
+  """All values that are not equal to given value."""
+  area_not: String
+
+  """All values that are contained in given list."""
+  area_in: [String!]
+
+  """All values that are not contained in given list."""
+  area_not_in: [String!]
+
+  """All values less than the given value."""
+  area_lt: String
+
+  """All values less than or equal the given value."""
+  area_lte: String
+
+  """All values greater than the given value."""
+  area_gt: String
+
+  """All values greater than or equal the given value."""
+  area_gte: String
+
+  """All values containing the given string."""
+  area_contains: String
+
+  """All values not containing the given string."""
+  area_not_contains: String
+
+  """All values starting with the given string."""
+  area_starts_with: String
+
+  """All values not starting with the given string."""
+  area_not_starts_with: String
+
+  """All values ending with the given string."""
+  area_ends_with: String
+
+  """All values not ending with the given string."""
+  area_not_ends_with: String
+  street: String
+
+  """All values that are not equal to given value."""
+  street_not: String
+
+  """All values that are contained in given list."""
+  street_in: [String!]
+
+  """All values that are not contained in given list."""
+  street_not_in: [String!]
+
+  """All values less than the given value."""
+  street_lt: String
+
+  """All values less than or equal the given value."""
+  street_lte: String
+
+  """All values greater than the given value."""
+  street_gt: String
+
+  """All values greater than or equal the given value."""
+  street_gte: String
+
+  """All values containing the given string."""
+  street_contains: String
+
+  """All values not containing the given string."""
+  street_not_contains: String
+
+  """All values starting with the given string."""
+  street_starts_with: String
+
+  """All values not starting with the given string."""
+  street_not_starts_with: String
+
+  """All values ending with the given string."""
+  street_ends_with: String
+
+  """All values not ending with the given string."""
+  street_not_ends_with: String
+  wallet: Float
+
+  """All values that are not equal to given value."""
+  wallet_not: Float
+
+  """All values that are contained in given list."""
+  wallet_in: [Float!]
+
+  """All values that are not contained in given list."""
+  wallet_not_in: [Float!]
+
+  """All values less than the given value."""
+  wallet_lt: Float
+
+  """All values less than or equal the given value."""
+  wallet_lte: Float
+
+  """All values greater than the given value."""
+  wallet_gt: Float
+
+  """All values greater than or equal the given value."""
+  wallet_gte: Float
   phone: String
 
   """All values that are not equal to given value."""
@@ -1497,46 +1769,6 @@ input PharmacyWhereInput {
 
   """All values not ending with the given string."""
   phone_not_ends_with: String
-  addressNote: String
-
-  """All values that are not equal to given value."""
-  addressNote_not: String
-
-  """All values that are contained in given list."""
-  addressNote_in: [String!]
-
-  """All values that are not contained in given list."""
-  addressNote_not_in: [String!]
-
-  """All values less than the given value."""
-  addressNote_lt: String
-
-  """All values less than or equal the given value."""
-  addressNote_lte: String
-
-  """All values greater than the given value."""
-  addressNote_gt: String
-
-  """All values greater than or equal the given value."""
-  addressNote_gte: String
-
-  """All values containing the given string."""
-  addressNote_contains: String
-
-  """All values not containing the given string."""
-  addressNote_not_contains: String
-
-  """All values starting with the given string."""
-  addressNote_starts_with: String
-
-  """All values not starting with the given string."""
-  addressNote_not_starts_with: String
-
-  """All values ending with the given string."""
-  addressNote_ends_with: String
-
-  """All values not ending with the given string."""
-  addressNote_not_ends_with: String
   confirmed: Boolean
 
   """All values that are not equal to given value."""
@@ -1585,6 +1817,7 @@ type Store implements Node {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean!
 }
 
@@ -1610,6 +1843,7 @@ input StoreCreateInput {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -1631,14 +1865,16 @@ type StoreHaveDrug {
   store: ID!
   price: Float!
   discount: Float
-  cash: Boolean!
+  deferredDiscount: Float
+  onlyCash: Boolean!
 }
 
 input StoreHaveDrugCreateInput {
   store: ID!
   price: Float!
   discount: Float
-  cash: Boolean!
+  deferredDiscount: Float
+  onlyCash: Boolean!
 }
 
 input StoreHaveDrugCreateManyInput {
@@ -1732,10 +1968,32 @@ input StoreHaveDrugRestrictedWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
-  cash: Boolean
+  deferredDiscount: Float
 
   """All values that are not equal to given value."""
-  cash_not: Boolean
+  deferredDiscount_not: Float
+
+  """All values that are contained in given list."""
+  deferredDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  deferredDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  deferredDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  deferredDiscount_lte: Float
+
+  """All values greater than the given value."""
+  deferredDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  deferredDiscount_gte: Float
+  onlyCash: Boolean
+
+  """All values that are not equal to given value."""
+  onlyCash_not: Boolean
 }
 
 input StoreHaveDrugScalarWhereInput {
@@ -1831,17 +2089,40 @@ input StoreHaveDrugScalarWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
-  cash: Boolean
+  deferredDiscount: Float
 
   """All values that are not equal to given value."""
-  cash_not: Boolean
+  deferredDiscount_not: Float
+
+  """All values that are contained in given list."""
+  deferredDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  deferredDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  deferredDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  deferredDiscount_lte: Float
+
+  """All values greater than the given value."""
+  deferredDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  deferredDiscount_gte: Float
+  onlyCash: Boolean
+
+  """All values that are not equal to given value."""
+  onlyCash_not: Boolean
 }
 
 input StoreHaveDrugUpdateManyDataInput {
   store: ID
   price: Float
   discount: Float
-  cash: Boolean
+  deferredDiscount: Float
+  onlyCash: Boolean
 }
 
 input StoreHaveDrugUpdateManyInput {
@@ -1942,10 +2223,32 @@ input StoreHaveDrugWhereInput {
 
   """All values greater than or equal the given value."""
   discount_gte: Float
-  cash: Boolean
+  deferredDiscount: Float
 
   """All values that are not equal to given value."""
-  cash_not: Boolean
+  deferredDiscount_not: Float
+
+  """All values that are contained in given list."""
+  deferredDiscount_in: [Float!]
+
+  """All values that are not contained in given list."""
+  deferredDiscount_not_in: [Float!]
+
+  """All values less than the given value."""
+  deferredDiscount_lt: Float
+
+  """All values less than or equal the given value."""
+  deferredDiscount_lte: Float
+
+  """All values greater than the given value."""
+  deferredDiscount_gt: Float
+
+  """All values greater than or equal the given value."""
+  deferredDiscount_gte: Float
+  onlyCash: Boolean
+
+  """All values that are not equal to given value."""
+  onlyCash_not: Boolean
 }
 
 enum StoreOrderByInput {
@@ -1971,6 +2274,8 @@ enum StoreOrderByInput {
   phone_DESC
   birthday_ASC
   birthday_DESC
+  logoURL_ASC
+  logoURL_DESC
   confirmed_ASC
   confirmed_DESC
 }
@@ -1987,6 +2292,7 @@ type StorePreviousValues {
   street: String!
   phone: String!
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean!
 }
 
@@ -2032,6 +2338,7 @@ input StoreUpdateDataInput {
   street: String
   phone: String
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -2046,6 +2353,7 @@ input StoreUpdateInput {
   street: String
   phone: String
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -2060,6 +2368,7 @@ input StoreUpdateManyMutationInput {
   street: String
   phone: String
   birthday: DateTime
+  logoURL: String
   confirmed: Boolean
 }
 
@@ -2500,6 +2809,46 @@ input StoreWhereInput {
 
   """All values greater than or equal the given value."""
   birthday_gte: DateTime
+  logoURL: String
+
+  """All values that are not equal to given value."""
+  logoURL_not: String
+
+  """All values that are contained in given list."""
+  logoURL_in: [String!]
+
+  """All values that are not contained in given list."""
+  logoURL_not_in: [String!]
+
+  """All values less than the given value."""
+  logoURL_lt: String
+
+  """All values less than or equal the given value."""
+  logoURL_lte: String
+
+  """All values greater than the given value."""
+  logoURL_gt: String
+
+  """All values greater than or equal the given value."""
+  logoURL_gte: String
+
+  """All values containing the given string."""
+  logoURL_contains: String
+
+  """All values not containing the given string."""
+  logoURL_not_contains: String
+
+  """All values starting with the given string."""
+  logoURL_starts_with: String
+
+  """All values not starting with the given string."""
+  logoURL_not_starts_with: String
+
+  """All values ending with the given string."""
+  logoURL_ends_with: String
+
+  """All values not ending with the given string."""
+  logoURL_not_ends_with: String
   confirmed: Boolean
 
   """All values that are not equal to given value."""

@@ -5,5 +5,4 @@ prisma deploy
 echo "get-schema command"
 yarn run get-schema
 echo "end get schema command"
-yarn run rest-api-node
 yarn run start

@@ -3,11 +3,12 @@ import getUserId from '../utils/getUserId'
 const Subscription = {
     order: {
         subscribe(parent, args, { prisma, req }, info) {
-            const userId = getUserId(req)
+		//console.log(req)
+            const userId = getUserId(req, true)
 
             let subscribeOption = {}
 
-            if (args.areYouStore) {
+            if (!args.areYouStore) {
                 subscribeOption.from = {}
                 subscribeOption.from.id = userId
             } else {
