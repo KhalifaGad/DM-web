@@ -4,6 +4,8 @@ import getUserId from '../utils/getUserId'
 import generateToken from '../utils/generateToken'
 import hashPassword from '../utils//hashPassword'
 import mailer from '../utils/sendVerification'
+import passwordMailer from '../utils/sendNewPass'
+
 import {
     queryUser,
     queryDrugById,
@@ -326,8 +328,8 @@ const Mutations = {
 
         let data = await checkPharmacyCode(prisma, args.oldPharmacyCode)
         
-        if(data.pharmacy.id){
-            await updatePharmacyWallet(data.pharmacy.id, data.pharmacy.wallet, prisma)
+        if(data.id){
+            await updatePharmacyWallet(data.id, data.wallet, prisma)
             await updatePharmacyWallet(newPharmacyId, 0, prisma)
             return true
         } else {
@@ -354,6 +356,30 @@ const Mutations = {
             })
             return true
         }
+    },
+    async resetPassword(parent, args, {
+        prisma,
+        req
+    }, info){
+
+        const newPassword = await shortid.generate()
+        let hashedPass = await hashPassword(newPassword)
+        let res = await prisma.mutation.updatePharmacy({
+            data: {
+                password: hashedPass
+            },
+            where: {
+                email: args.email
+            }
+        }, '{ firstName }')
+
+        if(res.firstName){
+            passwordMailer(res.data.updatePharmacy.firstName, newPassword, args.email)
+            return true
+        } else {
+            return false
+        }
+
     }
 }
 

@@ -20,6 +20,7 @@ type Query {
   topDrugsSelling: JSON!
   drugsWithoutStores: [Drug]!
   pharmacyFromCode(code: String!): Pharmacy
+  checkPharmacyEmail(email: String!): Boolean!
 }
 
 type Mutation {
@@ -103,7 +104,9 @@ type Mutation {
 
   addPharmacyPromo(oldPharmacyCode: String!): Boolean!
 
-  decreasePharmacyWallet(val: Int): Boolean!  
+  decreasePharmacyWallet(val: Int): Boolean!
+
+  resetPassword(email: String!): Boolean!
 
 }
 

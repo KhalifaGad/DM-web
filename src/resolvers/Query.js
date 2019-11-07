@@ -236,6 +236,22 @@ const Query = {
                 code: args.code
             }
         }, info)
+    },
+    async checkPharmacyEmail(parent, args, {
+        prisma,
+        req
+    }, info){
+
+        let pharmacy = await prisma.query.pharmacy({
+            where: {
+                email: args.email   
+            }
+        }, '{ id }')
+        if(pharmacy){
+            return true
+        } else {
+            return false
+        }
     }
 }
 
