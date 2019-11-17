@@ -3,7 +3,6 @@ import prisma from './prisma'
 import typeDefs from './schema'
 import {resolvers, fragmentReplacements } from './resolvers/index'
 
-
 const server = new ApolloServer({ 
     typeDefs,
     resolvers, 

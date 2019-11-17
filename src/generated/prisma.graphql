@@ -1,5 +1,9 @@
 # source: http://prisma:4466
-# timestamp: Sun Oct 06 2019 11:33:15 GMT+0000 (Coordinated Universal Time)
+# timestamp: Tue Nov 12 2019 08:54:53 GMT+0000 (Coordinated Universal Time)
+
+type AggregateBlockList {
+  count: Int!
+}
 
 type AggregateDrug {
   count: Int!
@@ -24,6 +28,129 @@ type AggregateVerification {
 type BatchPayload {
   """The number of nodes that have been affected by the Batch operation."""
   count: Long!
+}
+
+type BlockList implements Node {
+  id: ID!
+  pharmacy: Pharmacy!
+}
+
+"""A connection to a list of items."""
+type BlockListConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [BlockListEdge]!
+  aggregate: AggregateBlockList!
+}
+
+input BlockListCreateInput {
+  id: ID
+  pharmacy: PharmacyCreateOneInput!
+}
+
+"""An edge in a connection."""
+type BlockListEdge {
+  """The item at the end of the edge."""
+  node: BlockList!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum BlockListOrderByInput {
+  id_ASC
+  id_DESC
+}
+
+type BlockListPreviousValues {
+  id: ID!
+}
+
+type BlockListSubscriptionPayload {
+  mutation: MutationType!
+  node: BlockList
+  updatedFields: [String!]
+  previousValues: BlockListPreviousValues
+}
+
+input BlockListSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BlockListSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: BlockListWhereInput
+}
+
+input BlockListUpdateInput {
+  pharmacy: PharmacyUpdateOneRequiredInput
+}
+
+input BlockListWhereInput {
+  """Logical AND on all given filters."""
+  AND: [BlockListWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  pharmacy: PharmacyWhereInput
+}
+
+input BlockListWhereUniqueInput {
+  id: ID
 }
 
 scalar DateTime
@@ -218,21 +345,25 @@ scalar Long
 type Mutation {
   createOrder(data: OrderCreateInput!): Order!
   createVerification(data: VerificationCreateInput!): Verification!
+  createBlockList(data: BlockListCreateInput!): BlockList!
   createDrug(data: DrugCreateInput!): Drug!
   createStore(data: StoreCreateInput!): Store!
   createPharmacy(data: PharmacyCreateInput!): Pharmacy!
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
   updateVerification(data: VerificationUpdateInput!, where: VerificationWhereUniqueInput!): Verification
+  updateBlockList(data: BlockListUpdateInput!, where: BlockListWhereUniqueInput!): BlockList
   updateDrug(data: DrugUpdateInput!, where: DrugWhereUniqueInput!): Drug
   updateStore(data: StoreUpdateInput!, where: StoreWhereUniqueInput!): Store
   updatePharmacy(data: PharmacyUpdateInput!, where: PharmacyWhereUniqueInput!): Pharmacy
   deleteOrder(where: OrderWhereUniqueInput!): Order
   deleteVerification(where: VerificationWhereUniqueInput!): Verification
+  deleteBlockList(where: BlockListWhereUniqueInput!): BlockList
   deleteDrug(where: DrugWhereUniqueInput!): Drug
   deleteStore(where: StoreWhereUniqueInput!): Store
   deletePharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
   upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
   upsertVerification(where: VerificationWhereUniqueInput!, create: VerificationCreateInput!, update: VerificationUpdateInput!): Verification!
+  upsertBlockList(where: BlockListWhereUniqueInput!, create: BlockListCreateInput!, update: BlockListUpdateInput!): BlockList!
   upsertDrug(where: DrugWhereUniqueInput!, create: DrugCreateInput!, update: DrugUpdateInput!): Drug!
   upsertStore(where: StoreWhereUniqueInput!, create: StoreCreateInput!, update: StoreUpdateInput!): Store!
   upsertPharmacy(where: PharmacyWhereUniqueInput!, create: PharmacyCreateInput!, update: PharmacyUpdateInput!): Pharmacy!
@@ -243,6 +374,7 @@ type Mutation {
   updateManyPharmacies(data: PharmacyUpdateManyMutationInput!, where: PharmacyWhereInput): BatchPayload!
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
   deleteManyVerifications(where: VerificationWhereInput): BatchPayload!
+  deleteManyBlockLists(where: BlockListWhereInput): BatchPayload!
   deleteManyDrugs(where: DrugWhereInput): BatchPayload!
   deleteManyStores(where: StoreWhereInput): BatchPayload!
   deleteManyPharmacies(where: PharmacyWhereInput): BatchPayload!
@@ -1071,6 +1203,7 @@ type Pharmacy implements Node {
   wallet: Float
   phone: String!
   confirmed: Boolean!
+  registerationToken: String
 }
 
 """A connection to a list of items."""
@@ -1099,6 +1232,7 @@ input PharmacyCreateInput {
   wallet: Float
   phone: String!
   confirmed: Boolean
+  registerationToken: String
 }
 
 input PharmacyCreateOneInput {
@@ -1146,6 +1280,8 @@ enum PharmacyOrderByInput {
   phone_DESC
   confirmed_ASC
   confirmed_DESC
+  registerationToken_ASC
+  registerationToken_DESC
 }
 
 type PharmacyPreviousValues {
@@ -1164,6 +1300,7 @@ type PharmacyPreviousValues {
   wallet: Float
   phone: String!
   confirmed: Boolean!
+  registerationToken: String
 }
 
 type PharmacySubscriptionPayload {
@@ -1212,6 +1349,7 @@ input PharmacyUpdateDataInput {
   wallet: Float
   phone: String
   confirmed: Boolean
+  registerationToken: String
 }
 
 input PharmacyUpdateInput {
@@ -1229,6 +1367,7 @@ input PharmacyUpdateInput {
   wallet: Float
   phone: String
   confirmed: Boolean
+  registerationToken: String
 }
 
 input PharmacyUpdateManyMutationInput {
@@ -1246,6 +1385,7 @@ input PharmacyUpdateManyMutationInput {
   wallet: Float
   phone: String
   confirmed: Boolean
+  registerationToken: String
 }
 
 input PharmacyUpdateOneRequiredInput {
@@ -1773,6 +1913,46 @@ input PharmacyWhereInput {
 
   """All values that are not equal to given value."""
   confirmed_not: Boolean
+  registerationToken: String
+
+  """All values that are not equal to given value."""
+  registerationToken_not: String
+
+  """All values that are contained in given list."""
+  registerationToken_in: [String!]
+
+  """All values that are not contained in given list."""
+  registerationToken_not_in: [String!]
+
+  """All values less than the given value."""
+  registerationToken_lt: String
+
+  """All values less than or equal the given value."""
+  registerationToken_lte: String
+
+  """All values greater than the given value."""
+  registerationToken_gt: String
+
+  """All values greater than or equal the given value."""
+  registerationToken_gte: String
+
+  """All values containing the given string."""
+  registerationToken_contains: String
+
+  """All values not containing the given string."""
+  registerationToken_not_contains: String
+
+  """All values starting with the given string."""
+  registerationToken_starts_with: String
+
+  """All values not starting with the given string."""
+  registerationToken_not_starts_with: String
+
+  """All values ending with the given string."""
+  registerationToken_ends_with: String
+
+  """All values not ending with the given string."""
+  registerationToken_not_ends_with: String
 }
 
 input PharmacyWhereUniqueInput {
@@ -1784,16 +1964,19 @@ input PharmacyWhereUniqueInput {
 type Query {
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
   verifications(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Verification]!
+  blockLists(where: BlockListWhereInput, orderBy: BlockListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlockList]!
   drugs(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Drug]!
   stores(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Store]!
   pharmacies(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pharmacy]!
   order(where: OrderWhereUniqueInput!): Order
   verification(where: VerificationWhereUniqueInput!): Verification
+  blockList(where: BlockListWhereUniqueInput!): BlockList
   drug(where: DrugWhereUniqueInput!): Drug
   store(where: StoreWhereUniqueInput!): Store
   pharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
   verificationsConnection(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VerificationConnection!
+  blockListsConnection(where: BlockListWhereInput, orderBy: BlockListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlockListConnection!
   drugsConnection(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DrugConnection!
   storesConnection(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreConnection!
   pharmaciesConnection(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PharmacyConnection!
@@ -1867,6 +2050,7 @@ type StoreHaveDrug {
   discount: Float
   deferredDiscount: Float
   onlyCash: Boolean!
+  count: Int!
 }
 
 input StoreHaveDrugCreateInput {
@@ -1875,6 +2059,7 @@ input StoreHaveDrugCreateInput {
   discount: Float
   deferredDiscount: Float
   onlyCash: Boolean!
+  count: Int
 }
 
 input StoreHaveDrugCreateManyInput {
@@ -1994,6 +2179,28 @@ input StoreHaveDrugRestrictedWhereInput {
 
   """All values that are not equal to given value."""
   onlyCash_not: Boolean
+  count: Int
+
+  """All values that are not equal to given value."""
+  count_not: Int
+
+  """All values that are contained in given list."""
+  count_in: [Int!]
+
+  """All values that are not contained in given list."""
+  count_not_in: [Int!]
+
+  """All values less than the given value."""
+  count_lt: Int
+
+  """All values less than or equal the given value."""
+  count_lte: Int
+
+  """All values greater than the given value."""
+  count_gt: Int
+
+  """All values greater than or equal the given value."""
+  count_gte: Int
 }
 
 input StoreHaveDrugScalarWhereInput {
@@ -2115,6 +2322,28 @@ input StoreHaveDrugScalarWhereInput {
 
   """All values that are not equal to given value."""
   onlyCash_not: Boolean
+  count: Int
+
+  """All values that are not equal to given value."""
+  count_not: Int
+
+  """All values that are contained in given list."""
+  count_in: [Int!]
+
+  """All values that are not contained in given list."""
+  count_not_in: [Int!]
+
+  """All values less than the given value."""
+  count_lt: Int
+
+  """All values less than or equal the given value."""
+  count_lte: Int
+
+  """All values greater than the given value."""
+  count_gt: Int
+
+  """All values greater than or equal the given value."""
+  count_gte: Int
 }
 
 input StoreHaveDrugUpdateManyDataInput {
@@ -2123,6 +2352,7 @@ input StoreHaveDrugUpdateManyDataInput {
   discount: Float
   deferredDiscount: Float
   onlyCash: Boolean
+  count: Int
 }
 
 input StoreHaveDrugUpdateManyInput {
@@ -2249,6 +2479,28 @@ input StoreHaveDrugWhereInput {
 
   """All values that are not equal to given value."""
   onlyCash_not: Boolean
+  count: Int
+
+  """All values that are not equal to given value."""
+  count_not: Int
+
+  """All values that are contained in given list."""
+  count_in: [Int!]
+
+  """All values that are not contained in given list."""
+  count_not_in: [Int!]
+
+  """All values less than the given value."""
+  count_lt: Int
+
+  """All values less than or equal the given value."""
+  count_lte: Int
+
+  """All values greater than the given value."""
+  count_gt: Int
+
+  """All values greater than or equal the given value."""
+  count_gte: Int
 }
 
 enum StoreOrderByInput {
@@ -2864,6 +3116,7 @@ input StoreWhereUniqueInput {
 type Subscription {
   order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
   verification(where: VerificationSubscriptionWhereInput): VerificationSubscriptionPayload
+  blockList(where: BlockListSubscriptionWhereInput): BlockListSubscriptionPayload
   drug(where: DrugSubscriptionWhereInput): DrugSubscriptionPayload
   store(where: StoreSubscriptionWhereInput): StoreSubscriptionPayload
   pharmacy(where: PharmacySubscriptionWhereInput): PharmacySubscriptionPayload

@@ -23,6 +23,15 @@ type Query {
   drugsWithoutStores: [Drug]!
   pharmacyFromCode(code: String!): Pharmacy
   checkPharmacyEmail(email: String!): Boolean!
+  admin_ordersInADay(date: String!): [Order]!
+  admin_topDrugsSelling: JSON!
+  admin_monthTopDrugsSelling(month: String!): JSON!
+  admin_fromMonthTopDrugsSelling(month: String!): JSON!
+  admin_fromToMonthTopDrugsSelling(from: String!, to: String!): JSON!
+  admin_topDrugsSellingByValue: JSON!
+  admin_monthTopDrugsSellingByValue(month: String!): JSON!
+  admin_fromToMonthTopDrugsSellingByValue(from: String!, to: String!): JSON!
+  admin_fromMonthTopDrugsSellingByValue(month: String!): JSON!
 }
 
 type Mutation {
@@ -106,6 +115,13 @@ type Mutation {
   decreasePharmacyWallet(val: Float!): Boolean! 
 
   resetPassword(email: String!): Boolean!
+
+  addRegisToken(registToken: String!): Pharmacy
+
+  admin_addDiscountByArea(area: String!, ratio: Float!): Boolean!
+  admin_addDiscount2Pharmacy(id: ID!, ratio: Float!): Boolean!
+
+  admin_sendNotificationByArea(area: String!, title: String!, body: String!): Boolean!
 
 }
 

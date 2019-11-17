@@ -54,11 +54,29 @@ function queryPharmacyWallet(prisma, id) {
     }, '{ wallet }')
 }
 
+function qureyPhramaciesByArea(prisma, area){
+    return prisma.query.pharmacies({
+        where: {
+            area
+        }
+    }, '{ id wallet }')
+}
+
+function getRegisTokensByArea(prisma, area){
+    return prisma.query.pharmacies({
+        where: {
+            area
+        }
+    }, '{ registerationToken }')
+}
+
 export {
     queryUser,
     queryDrugById,
     queryDrugByName,
     queryVerification,
     checkPharmacyCode,
-    queryPharmacyWallet
+    queryPharmacyWallet,
+    qureyPhramaciesByArea,
+    getRegisTokensByArea
 }

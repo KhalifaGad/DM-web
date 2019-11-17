@@ -24,8 +24,9 @@ type StoreHaveDrug @embedded {
   store: ID!
   price: Float!
   discount: Float @default(value: 0)
-  deferredDiscount: Float @default(value: 0)
+  deferredDiscount: Float @default(value: 0.0)
   onlyCash: Boolean!
+  count: Int! @default(value: 1)
 }
 
 enum OrderStatus {
@@ -52,6 +53,7 @@ type Pharmacy {
   wallet: Float @default(value: 0.0)
   phone: String!
   confirmed: Boolean! @default(value: false)
+  registerationToken: String @default(value: "unknown")
 }
 
 type Order {
@@ -82,4 +84,9 @@ type OrderDrugsList @embedded {
 type Verification {
   id: ID! @id
   code: String! @unique
+}
+
+type BlockList {
+  id: ID! @id
+  pharmacy: Pharmacy! @relation(link: INLINE)
 }
