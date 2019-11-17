@@ -19,7 +19,7 @@ services:
       - ./src/:/app/src
     ports:
     - "80:4000"
-    command: wait-for-it/wait-for-it.sh -h prisma -p 4466 -t 30 -- ./run.sh
+    command: ./wait-for-it.sh -h prisma -p 4466 -t 30 -- ./run.sh
   prisma:
     image: prismagraphql/prisma:1.34
     restart: always
