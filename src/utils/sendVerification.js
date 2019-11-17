@@ -7,8 +7,8 @@ const mailer = async (name, code, email, isStore) => {
         service: 'Gmail',
         port: 25,
         auth: {
-            user: 'khalidgad23@gmail.com',
-            pass: 'Password&&7elw'
+            user: process.env.EMAIL,
+            pass: process.env.EMAIL_PASSWORD
         }
     });
     //client id: 134971666526-c8r2b1ctp18sdc4uc07mciq0ed303eg2.apps.googleusercontent.com
@@ -19,12 +19,11 @@ const mailer = async (name, code, email, isStore) => {
             console.log(err)
         }else {
             const mailOptions = {
-                from: '"Khalid Gad" <khalidgad23@gmail.com>',
+                from: `"Drug1Market" <${process.env.EMAIL}>` ,
                 to: email,
                 subject: 'Account Verification',
                 html: data
             }
-            console.log("html data ======================>", mailOptions.html);
             transporter.sendMail(mailOptions, function (err, info) {
                 if (err) {
                     console.log(err);

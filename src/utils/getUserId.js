@@ -4,8 +4,12 @@ import jwt from 'jsonwebtoken'
 const getUserId = (req, fromSubscription = false) => {
     let header
     if(fromSubscription){
+	console.log('get in =================')
         header = req.connection.context.authorization
+	//console.log(header)
     } else {
+	//console.log('else ==================')
+	//console.log(req)
         header = req.req.headers.authorization
     }
     

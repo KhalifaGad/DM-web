@@ -3,7 +3,6 @@ import prisma from './prisma'
 import typeDefs from './schema'
 import {resolvers, fragmentReplacements } from './resolvers/index'
 
-
 const server = new ApolloServer({ 
     typeDefs,
     resolvers, 
@@ -22,3 +21,7 @@ server.listen({port: process.env.PORT || 4000}).then(({ url }) => {
   console.log('hello')
   console.log(`🚀  Server ready at ${url}`);
 });
+
+/* 
+
+*/

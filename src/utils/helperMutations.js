@@ -9,6 +9,20 @@ function updatePharmacyWallet(id, wallet, prisma) {
     }, '{ id }')
 }
 
+function addDiscount2Pharmacies(prisma, phramacies, discount){
+    for(let i = 0; i < phramacies.length; i++){
+        prisma.mutation.updatePharmacy({
+            where: {
+                id: phramacies[i].id
+            },
+            data: {
+                wallet: phramacies[i].wallet + discount 
+            }
+        })
+    }
+}
+
 export {
-    updatePharmacyWallet
+    updatePharmacyWallet,
+    addDiscount2Pharmacies
 }

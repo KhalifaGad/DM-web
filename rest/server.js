@@ -4,11 +4,13 @@ import fileUpload from 'express-fileupload'
 import bodyParser from 'body-parser'
 
 var cors = require('cors')
+
 const server = express()
 
 server.use(cors())
-server.use(bodyParser.urlencoded({ extended: false }))
-server.use(bodyParser.json())
+
+server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json());
 server.use(fileUpload())
 
 server.use('/api/v1', router)

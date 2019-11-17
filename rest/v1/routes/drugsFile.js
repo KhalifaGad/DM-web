@@ -19,7 +19,10 @@ drugsFileRouter.get('/', (req, res) => {
 // storeId must exist in field 'id'
 drugsFileRouter.post('/', (req, res) => {
   let resultArrays
-  let {
+console.log(req.body)
+console.log('=========================================')
+console.log(req.body.id) 
+ let {
     drugsFile,
     storeId,
     filePath

@@ -13,23 +13,10 @@ type Query {
   order(id: ID!): Order
   drugs(skip: Int, first: Int, name: String, onlyCash: Boolean!,storeId: ID): [Drug]!
   drugsHaveStores(skip: Int, first: Int): [Drug]!
-  drug(drugQueryInput: DrugQueryInput!, onlyCash: Boolean!): [Drug]!
+  drug(drugQueryInput: DrugQueryInput!): Drug
   stores(city: String, area: String, storeName_contains: String): [Store]!
   store(id: ID, storeName: String): Store
   pharmacy: Pharmacy!
-  topDrugsSelling: JSON!
-  drugsWithoutStores: [Drug]!
-  pharmacyFromCode(code: String!): Pharmacy
-  checkPharmacyEmail(email: String!): Boolean!
-  admin_ordersInADay(date: String!): [Order]!
-  admin_topDrugsSelling: JSON!
-  admin_monthTopDrugsSelling(month: String!): JSON!
-  admin_fromMonthTopDrugsSelling(month: String!): JSON!
-  admin_fromToMonthTopDrugsSelling(from: String!, to: String!): JSON!
-  admin_topDrugsSellingByValue: JSON!
-  admin_monthTopDrugsSellingByValue(month: String!): JSON!
-  admin_fromToMonthTopDrugsSellingByValue(from: String!, to: String!): JSON!
-  admin_fromMonthTopDrugsSellingByValue(month: String!): JSON!
 }
 
 type Mutation {
@@ -73,7 +60,7 @@ type Mutation {
     city: String!,
     area: String!,
     street: String!,
-    wallet: Float!,
+    wallet: Float,
     phone: String!): Pharmacy!
 
   updatePharmacy(firstName: String,
@@ -83,10 +70,10 @@ type Mutation {
     password: String,
     lat: Float,
     long: Float,
-    city: String,
-    area: String,
-    street: String,
-    wallet: Float,
+    city: String!,
+    area: String!,
+    street: String!,
+    wallet: Float!,
     phone: String): Pharmacy!
 
   addDrug(name: String!,
@@ -102,24 +89,11 @@ type Mutation {
 
   makeOrder( total: Float!,
     to: ID!,
-    drugList: [OrderDrugsListInput!]!,
-    walletDiscount: Float!
+    drugList: [OrderDrugsListInput!]!
     ): Order!
 
   orderAction(orderId: ID!, 
     orderActionInput: OrderActionInput!): Order!
-
-  addPharmacyPromo(oldPharmacyCode: String!): Boolean!
-  decreasePharmacyWallet(val: Float!): Boolean! 
-
-  resetPassword(email: String!): Boolean!
-
-  addRegisToken(registToken: String!): Pharmacy
-
-  admin_addDiscountByArea(area: String!, ratio: Float!): Boolean!
-  admin_addDiscount2Pharmacy(id: ID!, ratio: Float!): Boolean!
-
-  admin_sendNotificationByArea(area: String!, title: String!, body: String!): Boolean!
 
 }
 
@@ -140,14 +114,13 @@ input OrderDrugsListInput {
 }
 
 type Subscription {
-  order(areYouStore: Boolean!): OrderSubsciptionPayload!
+  order: OrderSubsciptionPayload!
 }
 
 #<--------------------- End of Mutation, Query & Subscription ---------------------->
 #<---------------------------- Non-types declaration ------------------------------->
 
 scalar Date
-scalar JSON
 
 enum OrderStatus {
   ACCEPTED
@@ -236,9 +209,6 @@ type Order {
   to: Store!
   drugsList: [OrderDrugsList]!
   orderStatus: OrderStatus!
-  code: String!
-  DMFees: Float!
-  walletDiscount: Float
   total: Float!
   createdAt: Date!
   acceptingDate: Date
@@ -269,11 +239,6 @@ type AuthPayload {
 type OrderSubsciptionPayload {
   mutation: MutationType!
   node: Order
-}
-
-type topDrugsSellingPayload{
-  id: ID
-  quantity: Int
 }
 
 # <--------------------------- End of types ------------------------------->

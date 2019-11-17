@@ -3,6 +3,7 @@ import getUserId from '../utils/getUserId'
 const Subscription = {
     order: {
         subscribe(parent, args, { prisma, req }, info) {
+		//console.log(req)
             const userId = getUserId(req, true)
 
             let subscribeOption = {}

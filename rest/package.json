@@ -19,6 +19,7 @@
     "express": "^4.17.1",
     "express-fileupload": "^1.1.5",
     "graphql": "^14.4.2",
-    "graphql-tag": "^2.10.1"
+    "graphql-tag": "^2.10.1",
+    "nodemon": "^1.19.1"
   }
 }
