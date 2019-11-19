@@ -3,3 +3,4 @@ dist
 db
 rest/node_modules
 src/utils/drug1market-firebase-adminsdk-oi8k5-b97d6e144a.json
+env_file_web
