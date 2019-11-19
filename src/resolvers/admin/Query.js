@@ -251,10 +251,5 @@ const adminQueries = {
     }
 }
 
-<<<<<<< HEAD
 export { adminQueries }
-=======
-export {
-    adminQueries
-}
->>>>>>> a55794c88acc1b2d0129a9a9e361b100102c5584
+
