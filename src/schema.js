@@ -30,6 +30,8 @@ type Query {
   admin_monthTopDrugsSellingByValue(month: String!): JSON!
   admin_fromToMonthTopDrugsSellingByValue(from: String!, to: String!): JSON!
   admin_fromMonthTopDrugsSellingByValue(month: String!): JSON!
+  admin_totalSales: Float!
+  admin_totalSalesThisMonth: Float!
 }
 
 type Mutation {

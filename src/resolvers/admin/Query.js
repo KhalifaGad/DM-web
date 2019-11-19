@@ -191,6 +191,41 @@ const adminQueries = {
                 }
             }
         }, info)
+    },
+    async admin_totalSales(parent, args, {
+        prisma,
+        req
+    }, info){
+        let ordersTotal = await prisma.query.orders({
+            where: {
+                acceptingDate_gte: "2019"
+            }
+        }, '{ total walletDiscount }')
+        let totalsales = 0
+        for(let i = 0; i < ordersTotal.length; i++){
+            totalsales += ordersTotal[i].total - 
+                ordersTotal[i].total * (ordersTotal[i].walletDiscount / 100) 
+        }
+
+        return totalsales
+    },
+    async admin_totalSalesThisMonth(parent, args, {
+        prisma,
+        req
+    }, info){
+        let nowDate = new Date()
+        let ordersTotal = await prisma.query.orders({
+            where: {
+                acceptingDate_gte: new Date(nowDate.getFullYear(), nowDate.getMonth())
+            }
+        }, '{ total walletDiscount }')
+        let totalsales = 0
+        for(let i = 0; i < ordersTotal.length; i++){
+            totalsales += ordersTotal[i].total - 
+                ordersTotal[i].total * (ordersTotal[i].walletDiscount / 100) 
+        }
+
+        return totalsales
     }
 }
 
