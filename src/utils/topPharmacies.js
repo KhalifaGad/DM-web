@@ -1,11 +1,12 @@
 function getTopPharmacies(orders) {
     let pharmaciesSet = new Map()
-    let total = 0
+    let total = 0, obj = {}
     for (let i = 0; i < orders.length; i++) {
         if (pharmaciesSet.has(orders[i].from.code)) {
-            total = pharmaciesSet.get(orders[i].from.code).total
-            total += orders[i].total
-            pharmaciesSet.set(orders[i].from.code, total)
+            obj = pharmaciesSet.get(orders[i].from.code)
+            obj.total += orders[i].total
+
+            pharmaciesSet.set(orders[i].from.code, obj)
         } else {
             pharmaciesSet.set(orders[i].from.code, {
                 total: orders[i].total,
