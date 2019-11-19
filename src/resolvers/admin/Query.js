@@ -1,5 +1,6 @@
 import {
-    getTopDrugs, getTopDrugsByValue
+    getTopDrugs,
+    getTopDrugsByValue
 } from '../../utils/topDrugsSellingHelper'
 
 const adminQueries = {
@@ -17,7 +18,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugs(drugsLists)
         return topDrugs
     },
@@ -41,7 +42,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugs(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -65,7 +66,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugs(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -84,7 +85,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugs(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -103,7 +104,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugsByValue(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -128,7 +129,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugsByValue(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -152,7 +153,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugsByValue(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -171,7 +172,7 @@ const adminQueries = {
         await orderDrugsListArrOfObj.forEach((order) => {
             drugsLists.push(order.drugsList)
         })
-        
+
         let topDrugs = await getTopDrugsByValue(drugsLists)
         console.log(JSON.stringify(topDrugs))
         return topDrugs
@@ -179,7 +180,7 @@ const adminQueries = {
     async admin_ordersInADay(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let requiredDay = new Date(args.date)
         let nextDay = new Date(args.date)
         nextDay.setDate(requiredDay.getDate() + 1)
@@ -195,16 +196,16 @@ const adminQueries = {
     async admin_totalSales(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let ordersTotal = await prisma.query.orders({
             where: {
                 acceptingDate_gte: "2019"
             }
         }, '{ total walletDiscount }')
         let totalsales = 0
-        for(let i = 0; i < ordersTotal.length; i++){
-            totalsales += ordersTotal[i].total - 
-                ordersTotal[i].total * (ordersTotal[i].walletDiscount / 100) 
+        for (let i = 0; i < ordersTotal.length; i++) {
+            totalsales += ordersTotal[i].total -
+                ordersTotal[i].total * (ordersTotal[i].walletDiscount / 100)
         }
 
         return totalsales
@@ -212,7 +213,7 @@ const adminQueries = {
     async admin_totalSalesThisMonth(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let nowDate = new Date()
         let ordersTotal = await prisma.query.orders({
             where: {
@@ -220,13 +221,40 @@ const adminQueries = {
             }
         }, '{ total walletDiscount }')
         let totalsales = 0
-        for(let i = 0; i < ordersTotal.length; i++){
-            totalsales += ordersTotal[i].total - 
-                ordersTotal[i].total * (ordersTotal[i].walletDiscount / 100) 
+        for (let i = 0; i < ordersTotal.length; i++) {
+            totalsales += ordersTotal[i].total -
+                ordersTotal[i].total * (ordersTotal[i].walletDiscount / 100)
         }
-
         return totalsales
+    },
+    async admin_pharmaciesCount(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let pharmacies = await prisma.query.pharmacies({}, '{ id }')
+        let count = 0
+        for (let i = 0; i < pharmacies.length; i++) {
+            count ++
+        }
+        return count
+    },
+    async admin_storesCount(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let stores = await prisma.query.stores({}, '{ id }')
+        let count = 0
+        for (let i = 0; i < stores.length; i++) {
+            count ++
+        }
+        return count
     }
 }
 
+<<<<<<< HEAD
 export { adminQueries }
+=======
+export {
+    adminQueries
+}
+>>>>>>> a55794c88acc1b2d0129a9a9e361b100102c5584
