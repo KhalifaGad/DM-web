@@ -298,7 +298,7 @@ const adminQueries = {
         req
     }, info){
         let orders = await prisma.query.orders({},
-            ' { from { code } total } ')
+            ' { from { pharmacyName code } total } ')
 
         return getTopPharmacies(orders)
     }
