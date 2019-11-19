@@ -13,7 +13,7 @@ function getTopPharmacies(orders) {
             })
         }
     }
-    return Array.from(new Map([...pharmaciesSet.entries()].sort((a, b) => b[1] - a[1])))
+    return Array.from(new Map([...pharmaciesSet.entries()].sort((a, b) => b[1].total - a[1].total)))
 }
 
 export {
