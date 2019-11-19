@@ -111,7 +111,8 @@ type Mutation {
   makeOrder( total: Float!,
     to: ID!,
     drugList: [OrderDrugsListInput!]!,
-    walletDiscount: Float!
+    walletDiscount: Float!,
+    payment: PaymentMethod!
     ): Order!
 
   orderAction(orderId: ID!, 
@@ -163,6 +164,11 @@ enum OrderStatus {
   ACTIVE
   DELIVERED
   PENDING
+}
+
+enum PaymentMethod {
+  CASH
+  DEFERRED
 }
 
 enum MutationType {

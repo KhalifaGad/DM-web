@@ -267,7 +267,8 @@ const clientsMutatins = {
                     create: args.drugList
                 },
                 code: orderCode,
-                walletDiscount: args.walletDiscount
+                walletDiscount: args.walletDiscount,
+                payment: args.payment
             }
         }, info)
     },

@@ -37,6 +37,11 @@ enum OrderStatus {
   PENDING
 }
 
+enum PaymentMethod {
+  CASH
+  DEFERRED
+}
+
 type Pharmacy {
   id: ID! @id
   firstName: String!
@@ -71,6 +76,7 @@ type Order {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
+  payment: PaymentMethod @default(PaymentMethod.CASH)
 }
 
 type OrderDrugsList @embedded {
