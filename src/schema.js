@@ -260,6 +260,7 @@ type Order {
   refusingingDate: Date
   deliveringDate: Date
   refusingNote: String
+  payment: PaymentMethod
 }
 
 type OrderDrugsList {
