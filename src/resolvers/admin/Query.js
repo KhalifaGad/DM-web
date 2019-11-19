@@ -2,6 +2,7 @@ import {
     getTopDrugs,
     getTopDrugsByValue
 } from '../../utils/topDrugsSellingHelper'
+import { getTopPharmacies } from '../../utils/topPharmacies'
 
 const adminQueries = {
     async admin_topDrugsSelling(parent, args, {
@@ -291,6 +292,15 @@ const adminQueries = {
             count ++
         }
         return count
+    },
+    async admin_topPharmacies(parent, args, {
+        prisma,
+        req
+    }, info){
+        let orders = await prisma.query.orders({},
+            ' { from { code } total } ')
+
+        return getTopPharmacies(orders)
     }
     
 }
