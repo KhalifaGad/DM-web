@@ -34,6 +34,8 @@ type Query {
   admin_totalSalesThisMonth: Float!
   admin_pharmaciesCount: Int!
   admin_storesCount: Int!
+  admin_ordersCount: Int!
+  admin_pendingOrdersCount: Int!
 }
 
 type Mutation {
