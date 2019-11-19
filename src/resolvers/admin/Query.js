@@ -248,13 +248,35 @@ const adminQueries = {
             count ++
         }
         return count
+    },
+    async admin_ordersCount(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let orders = await prisma.query.orders({}, '{ id }')
+        let count = 0
+        for (let i = 0; i < orders.length; i++) {
+            count ++
+        }
+        return count
+    },
+    async admin_pendingOrdersCount(parent, args, {
+        prisma,
+        req
+    }, info) {
+
+        let orders = await prisma.query.orders({
+            where: {
+                orderStatus_in: ['PENDING']
+            }
+        }, '{ id }')
+        let count = 0
+        for (let i = 0; i < orders.length; i++) {
+            count ++
+        }
+        return count
     }
+    //admin_deliveriedOrdersCount: Int!
 }
 
-<<<<<<< HEAD
 export { adminQueries }
-=======
-export {
-    adminQueries
-}
->>>>>>> a55794c88acc1b2d0129a9a9e361b100102c5584
