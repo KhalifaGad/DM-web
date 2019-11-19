@@ -275,8 +275,24 @@ const adminQueries = {
             count ++
         }
         return count
+    },
+    async admin_deliveriedOrdersCount(parent, args, {
+        prisma,
+        req
+    }, info) {
+
+        let orders = await prisma.query.orders({
+            where: {
+                orderStatus_in: ['DELIVERED']
+            }
+        }, '{ id }')
+        let count = 0
+        for (let i = 0; i < orders.length; i++) {
+            count ++
+        }
+        return count
     }
-    //admin_deliveriedOrdersCount: Int!
+    
 }
 
 export { adminQueries }

@@ -36,6 +36,7 @@ type Query {
   admin_storesCount: Int!
   admin_ordersCount: Int!
   admin_pendingOrdersCount: Int!
+  admin_deliveriedOrdersCount: Int!
 }
 
 type Mutation {
