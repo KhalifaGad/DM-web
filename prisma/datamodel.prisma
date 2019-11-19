@@ -76,7 +76,7 @@ type Order {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
-  payment: PaymentMethod @default(PaymentMethod.CASH)
+  payment: PaymentMethod @default(value: CASH)
 }
 
 type OrderDrugsList @embedded {
