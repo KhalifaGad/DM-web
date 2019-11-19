@@ -29,7 +29,7 @@ function getTopDrugsByValue(drugsLists) {
                 drugsMap.set(drugList[i].drug.id, obj)
             } else {
                 drugsMap.set(drugList[i].drug.id, {
-                    name: drugList[i].name,
+                    name: drugList[i].drug.name,
                     quantity: drugList[i].quantity,
                     total: drugList[i].total
                 })
