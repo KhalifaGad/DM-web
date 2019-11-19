@@ -19,16 +19,20 @@ function getTopDrugs(drugsLists) {
 
 function getTopDrugsByValue(drugsLists) {
     let drugsMap = new Map();
-    let oldValue = 0,
-        newValue = 0;
+    let obj = {}
     drugsLists.forEach((drugList) => {
         for (let i = 0; i < drugList.length; i++) {
             if (drugsMap.has(drugList[i].drug.id)) {
-                oldValue = drugsMap.get(drugList[i].drug.id)
-                newValue = oldValue + drugList[i].total
-                drugsMap.set(drugList[i].drug.id, newValue)
+                obj = drugsMap.get(drugList[i].drug.id)
+                obj.total += drugList[i].total
+                obj.quantity += drugList[i].quantity
+                drugsMap.set(drugList[i].drug.id, obj)
             } else {
-                drugsMap.set(drugList[i].drug.id, drugList[i].total)
+                drugsMap.set(drugList[i].drug.id, {
+                    name: drugList[i].name,
+                    quantity: drugList[i].quantity,
+                    total: drugList[i].total
+                })
             }
         }
     })

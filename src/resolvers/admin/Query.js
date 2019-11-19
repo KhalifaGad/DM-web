@@ -99,7 +99,7 @@ const adminQueries = {
             where: {
                 acceptingDate_gte: new Date('2019')
             }
-        }, '{ drugsList{ drug { id } total } }')
+        }, '{ drugsList{ drug { id name } quantity total } }')
 
         let drugsLists = []
         await orderDrugsListArrOfObj.forEach((order) => {
@@ -107,7 +107,7 @@ const adminQueries = {
         })
 
         let topDrugs = await getTopDrugsByValue(drugsLists)
-        console.log(JSON.stringify(topDrugs))
+        
         return topDrugs
     },
     async admin_monthTopDrugsSellingByValue(parent, args, {
