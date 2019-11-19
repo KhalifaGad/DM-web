@@ -38,6 +38,7 @@ type Query {
   admin_pendingOrdersCount: Int!
   admin_deliveriedOrdersCount: Int!
   admin_topPharmacies: JSON!
+  admin_orders: [Order]!
 }
 
 type Mutation {

@@ -301,6 +301,12 @@ const adminQueries = {
             ' { from { pharmacyName code } total } ')
 
         return getTopPharmacies(orders)
+    },
+    async admin_orders(parent, args, {
+        prisma,
+        req
+    }, info) {
+        return prisma.query.orders({}, info)
     }
     
 }
