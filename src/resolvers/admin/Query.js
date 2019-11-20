@@ -307,6 +307,16 @@ const adminQueries = {
         req
     }, info) {
         return prisma.query.orders({}, info)
+    },
+    admin_order(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.order({
+            where: {
+                code: args.code
+            }
+        }, info) 
     }
     
 }
