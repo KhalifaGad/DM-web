@@ -239,9 +239,9 @@ type Pharmacy {
   code: String!
   lat: Float!
   long: Float!
-  city: String!
-  area: String!
-  street: String!
+  city: String
+  area: String
+  street: String
   wallet: Float!
   phone: String!
 }
