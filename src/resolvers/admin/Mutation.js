@@ -36,6 +36,19 @@ const adminMutations = {
         let pharmacies = await getRegisTokensByArea(prisma, args.area)
         notificationOperations(pharmacies, args.title, args.body)
         return true
+    },
+    admin_orderAction(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.mutation.updateOrder({
+            where: {
+                code: args.code
+            },
+            data: {
+                orderStatus: args.status
+            }
+        }, info)
     }
 }
 
