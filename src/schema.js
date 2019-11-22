@@ -40,6 +40,8 @@ type Query {
   admin_topPharmacies: JSON!
   admin_orders: [Order]!
   admin_order(code: String!): Order!
+  admin_pharmacies: [Pharmacy]!
+  admin_stores: [Store]!
 }
 
 type Mutation {
@@ -133,8 +135,6 @@ type Mutation {
   admin_sendNotificationByArea(area: String!, title: String!, body: String!): Boolean!
 
   admin_orderAction(code: String!, status: OrderStatus!): Order
-  admin_pharmacies: [Pharmacy]!
-  admin_stores: [Store]!
 }
 
 input orderConnectDrugId {
