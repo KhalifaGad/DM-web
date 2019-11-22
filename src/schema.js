@@ -133,6 +133,8 @@ type Mutation {
   admin_sendNotificationByArea(area: String!, title: String!, body: String!): Boolean!
 
   admin_orderAction(code: String!, status: OrderStatus!): Order
+  admin_pharmacies: [Pharmacy]!
+  admin_stores: [Store]!
 }
 
 input orderConnectDrugId {

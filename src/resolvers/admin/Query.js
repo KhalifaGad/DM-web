@@ -317,6 +317,18 @@ const adminQueries = {
                 code: args.code
             }
         }, info) 
+    },
+    admin_pharmacies(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.pharmacies({}, info)
+    },
+    admin_stores(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.stores({}, info)
     }
     
 }
