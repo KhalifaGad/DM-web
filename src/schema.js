@@ -41,7 +41,11 @@ type Query {
   admin_orders: [Order]!
   admin_order(code: String!): Order!
   admin_pharmacies: [Pharmacy]!
+  admin_pharmacy(id: ID!): Pharmacy!
+  admin_store(id: ID!): Store!
   admin_stores: [Store]!
+  admin_pharmacyOrders(id: ID!): [Order]!
+  admin_storeOrders: [Order]!
 }
 
 type Mutation {

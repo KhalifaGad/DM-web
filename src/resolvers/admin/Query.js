@@ -329,6 +329,50 @@ const adminQueries = {
         req
     }, info){
         return prisma.query.stores({}, info)
+    },
+    admin_pharmacy(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.pharmacy({
+            where: {
+                id: args.id
+            }
+        }, info)
+    },
+    admin_store(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.store({
+            where: {
+                id: args.id
+            }
+        }, info)
+    },
+    admin_pharmacyOrders(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.orders({
+            where: {
+                from: {
+                    id: args.id
+                }
+            }
+        }, info)
+    },
+    admin_storeOrders(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.orders({
+            where: {
+                to: {
+                    id: args.id
+                }
+            }
+        }, info)
     }
     
 }
