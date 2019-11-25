@@ -45,7 +45,7 @@ type Query {
   admin_store(id: ID!): Store!
   admin_stores: [Store]!
   admin_pharmacyOrders(id: ID!): [Order]!
-  admin_storeOrders: [Order]!
+  admin_storeOrders(id: ID!): [Order]!
 }
 
 type Mutation {
