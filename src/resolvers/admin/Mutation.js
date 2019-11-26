@@ -1,12 +1,21 @@
-import { qureyPhramaciesByArea, queryPharmacyWallet, getRegisTokensByArea, getRegisTokensById } from "../../utils/queriesHelpers"
-import { addDiscount2Pharmacies } from "../../utils/helperMutations"
-import { notificationOperations } from "../../utils/cloudMessaging"
+import {
+    qureyPhramaciesByArea,
+    queryPharmacyWallet,
+    getRegisTokensByArea,
+    getRegisTokensById
+} from "../../utils/queriesHelpers"
+import {
+    addDiscount2Pharmacies
+} from "../../utils/helperMutations"
+import {
+    notificationOperations
+} from "../../utils/cloudMessaging"
 
 const adminMutations = {
     async admin_addDiscountByArea(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let pharmacies = await qureyPhramaciesByArea(prisma, args.area)
         addDiscount2Pharmacies(prisma, pharmacies, args.ratio)
         return true
@@ -14,11 +23,11 @@ const adminMutations = {
     async admin_addDiscount2Pharmacy(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let pharmacy = await queryPharmacyWallet(prisma, args.id)
-        
-        if(pharmacy == null) return false
-        
+
+        if (pharmacy == null) return false
+
         await prisma.mutation.updatePharmacy({
             where: {
                 id: args.id
@@ -32,7 +41,7 @@ const adminMutations = {
     async admin_sendNotificationByArea(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let pharmacies = await getRegisTokensByArea(prisma, args.area)
         notificationOperations(pharmacies, args.title, args.body)
         return true
@@ -40,7 +49,7 @@ const adminMutations = {
     admin_orderAction(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.mutation.updateOrder({
             where: {
                 code: args.code
@@ -53,12 +62,38 @@ const adminMutations = {
     async admin_sendNtfc2Pharmacy(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         //getRegisTokensById
         let pharmacies = await getRegisTokensById(prisma, args.id)
         notificationOperations(pharmacies, args.title, args.body)
         return true
+    },
+    async admin_add2BlackList(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let res = await prisma.mutation.createBlackList({
+            data: {
+                pharmacyId: args.pharmacyId
+            }
+        }, '{ id }')
+        return res ? true : false
+    },
+    async admin_removeFromBlackList(parent, args, {
+        prisma,
+        req
+    }, info) {
+        let res = await prisma.mutation.deleteBlackList({
+            where: {
+                pharmacyId: args.pharmacyId
+            }
+        }, '{ id }')
+
+        return res ? true : false
     }
 }
 
-export { adminMutations }
+
+export {
+    adminMutations
+}

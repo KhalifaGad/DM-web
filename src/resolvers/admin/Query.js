@@ -373,6 +373,18 @@ const adminQueries = {
                 }
             }
         }, info)
+    },
+    admin_isBlackListed(parent, args, {
+        prisma,
+        req
+    }, info){
+        let res = await prisma.query.blackList({
+            where: {
+                pharmacyId: args.pharmacyId
+            }
+        }, '{ id }')
+
+        return res? true : false
     }
     
 }

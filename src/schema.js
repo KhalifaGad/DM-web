@@ -21,6 +21,7 @@ type Query {
   drugsWithoutStores: [Drug]!
   pharmacyFromCode(code: String!): Pharmacy
   checkPharmacyEmail(email: String!): Boolean!
+  isBlackListed: Boolean!
   admin_ordersInADay(date: String!): [Order]!
   admin_topDrugsSelling: JSON!
   admin_monthTopDrugsSelling(month: String!): JSON!
@@ -46,6 +47,7 @@ type Query {
   admin_stores: [Store]!
   admin_pharmacyOrders(id: ID!): [Order]!
   admin_storeOrders(id: ID!): [Order]!
+  admin_isBlackListed(pharmacyId: ID!): Boolean!
 }
 
 type Mutation {
@@ -140,6 +142,8 @@ type Mutation {
   admin_sendNtfc2Pharmacy(id: ID!, title: String!, body: String!): Boolean!
 
   admin_orderAction(code: String!, status: OrderStatus!): Order
+  admin_add2BlackList(pharmacyId: ID!): Boolean
+  admin_removeFromBlackList(pharmacyId: ID!): Boolean
 }
 
 input orderConnectDrugId {
@@ -252,6 +256,11 @@ type Pharmacy {
   street: String
   wallet: Float!
   phone: String!
+}
+
+type BlackList {
+  id: ID! @id
+  pharmacyId: ID! @unique
 }
 
 type Order {

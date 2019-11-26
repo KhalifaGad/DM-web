@@ -251,6 +251,19 @@ const clientsQueries = {
         } else {
             return false
         }
+    },
+    isBlackListed(parent, args, {
+        prisma,
+        req
+    }, info){
+        let pharmacyId = getUserId(req)
+        let res = await prisma.query.blackList({
+            where: {
+                pharmacyId: pharmacyId
+            }
+        }, '{ id }')
+
+        return res? true : false
     }
 }
 
