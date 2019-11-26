@@ -137,6 +137,7 @@ type Mutation {
   admin_addDiscount2Pharmacy(id: ID!, ratio: Float!): Boolean!
 
   admin_sendNotificationByArea(area: String!, title: String!, body: String!): Boolean!
+  admin_sendNtfc2Pharmacy(id: ID!, title: String!, body: String!): Boolean!
 
   admin_orderAction(code: String!, status: OrderStatus!): Order
 }

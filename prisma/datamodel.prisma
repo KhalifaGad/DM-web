@@ -92,7 +92,7 @@ type Verification {
   code: String! @unique
 }
 
-type BlockList {
+type BlackList {
   id: ID! @id
-  pharmacy: Pharmacy! @relation(link: INLINE)
+  pharmacyId: ID! @unique
 }

@@ -70,6 +70,14 @@ function getRegisTokensByArea(prisma, area){
     }, '{ registerationToken }')
 }
 
+function getRegisTokensById(prisma, id){
+    return prisma.query.pharmacies({
+        where: {
+            id
+        }
+    }, '{ registerationToken }')
+}
+
 export {
     queryUser,
     queryDrugById,
@@ -78,5 +86,6 @@ export {
     checkPharmacyCode,
     queryPharmacyWallet,
     qureyPhramaciesByArea,
-    getRegisTokensByArea
+    getRegisTokensByArea,
+    getRegisTokensById
 }

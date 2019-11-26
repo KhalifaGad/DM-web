@@ -1,4 +1,4 @@
-import { qureyPhramaciesByArea, queryPharmacyWallet, getRegisTokensByArea } from "../../utils/queriesHelpers"
+import { qureyPhramaciesByArea, queryPharmacyWallet, getRegisTokensByArea, getRegisTokensById } from "../../utils/queriesHelpers"
 import { addDiscount2Pharmacies } from "../../utils/helperMutations"
 import { notificationOperations } from "../../utils/cloudMessaging"
 
@@ -49,6 +49,15 @@ const adminMutations = {
                 orderStatus: args.status
             }
         }, info)
+    },
+    async admin_sendNtfc2Pharmacy(parent, args, {
+        prisma,
+        req
+    }, info){
+        //getRegisTokensById
+        let pharmacies = await getRegisTokensById(prisma, args.id)
+        notificationOperations(pharmacies, args.title, args.body)
+        return true
     }
 }
 
