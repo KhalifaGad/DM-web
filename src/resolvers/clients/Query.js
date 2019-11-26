@@ -252,7 +252,7 @@ const clientsQueries = {
             return false
         }
     },
-    isBlackListed(parent, args, {
+    async isBlackListed(parent, args, {
         prisma,
         req
     }, info){
