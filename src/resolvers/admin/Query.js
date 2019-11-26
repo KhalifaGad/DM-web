@@ -374,7 +374,7 @@ const adminQueries = {
             }
         }, info)
     },
-    admin_isBlackListed(parent, args, {
+    async admin_isBlackListed(parent, args, {
         prisma,
         req
     }, info){
