@@ -259,8 +259,8 @@ type Pharmacy {
 }
 
 type BlackList {
-  id: ID! @id
-  pharmacyId: ID! @unique
+  id: ID!
+  pharmacyId: ID!
 }
 
 type Order {
