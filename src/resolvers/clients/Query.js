@@ -256,7 +256,7 @@ const clientsQueries = {
         prisma,
         req
     }, info){
-        let pharmacyId = getUserId(req)
+        let pharmacyId = await getUserId(req)
         let res = await prisma.query.blackList({
             where: {
                 pharmacyId: pharmacyId
