@@ -46,18 +46,24 @@ function drugSellingValue(orders, id) {
         for (let j = 0; j < orders[i].drugsList.length; i++) {
             if (orders[i].drugsList[j].drug.id === id) {
                 sellingVal +=
-                    parseFloat(orders[i].drugsList[j].quantity) *
-                    parseFloat(orders[i].drugsList[j].quantity.unitPrice) -
-                    (parseFloat(orders[i].drugsList[j].quantity) *
-                        parseFloat(orders[i].drugsList[j].quantity.unitPrice) *
-                        parseFloat(orders[i].drugsList[j].quantity.discount))
+                    orders[i].drugsList[j].quantity *
+                    orders[i].drugsList[j].unitPrice -
+                    (orders[i].drugsList[j].quantity *
+                        orders[i].drugsList[j].unitPrice *
+                        orders[i].drugsList[j].discount)
 
                 console.log(sellingVal)
                 break;
             }
         }
     }
-
+    /* 
+    parseFloat(orders[i].drugsList[j].quantity) *
+    parseFloat(orders[i].drugsList[j].unitPrice) -
+    (parseFloat(orders[i].drugsList[j].quantity) *
+        parseFloat(orders[i].drugsList[j].unitPrice) *
+        parseFloat(orders[i].drugsList[j].discount))
+    */
     return sellingVal
 }
 
