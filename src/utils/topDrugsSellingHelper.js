@@ -50,7 +50,7 @@ function drugSellingValue(orders, id) {
                     orders[i].drugsList[j].unitPrice -
                     (orders[i].drugsList[j].quantity *
                         orders[i].drugsList[j].unitPrice *
-                        orders[i].drugsList[j].discount)
+                        (orders[i].drugsList[j].discount / 100))
 
                 console.log(sellingVal)
                 break;
