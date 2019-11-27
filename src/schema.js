@@ -48,6 +48,7 @@ type Query {
   admin_pharmacyOrders(id: ID!): [Order]!
   admin_storeOrders(id: ID!): [Order]!
   admin_isBlackListed(pharmacyId: ID!): Boolean!
+  admin_getDrugSellingValue(id: ID!): Float!
 }
 
 type Mutation {
@@ -144,7 +145,7 @@ type Mutation {
   admin_orderAction(code: String!, status: OrderStatus!): Order
   admin_add2BlackList(pharmacyId: ID!): Boolean
   admin_removeFromBlackList(pharmacyId: ID!): Boolean
-  admin_getDrugSellingValue(id: ID!): Float!
+
 }
 
 input orderConnectDrugId {
