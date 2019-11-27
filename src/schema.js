@@ -256,6 +256,7 @@ type Pharmacy {
   street: String
   wallet: Float!
   phone: String!
+  registerationToken: String
 }
 
 type BlackList {
