@@ -28,12 +28,15 @@ async function notificationOperations(pharmacies, title, body) {
     let regisTokens = getRegisTokens(pharmacies)
 
     while (regisTokens.length) {
+        console.log("iteration ####################")
         let subRegistTokensGroup = regisTokens.splice(0, 20),
             deviceGroupName = shortid.generate()
         let notificationKey = await createDeviceGroup(subRegistTokensGroup, deviceGroupName)
-        console.log(notificationKey)
-        sendNotification(notificationKey, payload)
-        removeDevicesFromGroup(subRegistTokensGroup, deviceGroupName, notificationKey)
+
+        let successCount = await sendNotification(notificationKey, payload)
+        if(successCount > 0){
+            removeDevicesFromGroup(subRegistTokensGroup, deviceGroupName, notificationKey)
+        }
     }
 }
 
@@ -76,15 +79,18 @@ async function removeDevicesFromGroup(regisTokens, groupName, notificationKey) {
     return done
 }
 
-function sendNotification(notificationKey, payload) {
-    admin.messaging().sendToDeviceGroup(notificationKey, payload)
+async function sendNotification(notificationKey, payload) {
+    let successCount = 0
+    await admin.messaging().sendToDeviceGroup(notificationKey, payload)
         .then((response) => {
             // Response is a message ID string.
+            successCount = response.successCount
             console.log('Successfully sent message:', response);
         })
         .catch((error) => {
             console.log('Error sending message:', error);
         })
+        return successCount
 }
 
 export {
