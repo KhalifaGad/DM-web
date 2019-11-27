@@ -401,8 +401,6 @@ const adminQueries = {
             }
         }, '{ drugsList { quantity unitPrice discount drug { id } } }')
 
-        console.log(orders[0].drugsList)
-        console.log("orders[0].drugsList")
         let sellingValue = await drugSellingValue(orders, args.id)
         
         return sellingValue

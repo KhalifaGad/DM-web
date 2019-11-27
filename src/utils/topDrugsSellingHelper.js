@@ -42,9 +42,9 @@ function getTopDrugsByValue(drugsLists) {
 
 function drugSellingValue(orders, id) {
     let sellingVal = 0
-    console.log(orders)
+    
     for (let i = 0; i < orders.length; i++) {
-        for (let j = 0; j < orders[i].drugsList.length; i++) {
+        for (let j = 0; j < orders[i].drugsList.length; j++) {
             if (orders[i].drugsList[j].drug.id === id) {
                 sellingVal +=
                     orders[i].drugsList[j].quantity *
@@ -56,13 +56,7 @@ function drugSellingValue(orders, id) {
             }
         }
     }
-    /* 
-    parseFloat(orders[i].drugsList[j].quantity) *
-    parseFloat(orders[i].drugsList[j].unitPrice) -
-    (parseFloat(orders[i].drugsList[j].quantity) *
-        parseFloat(orders[i].drugsList[j].unitPrice) *
-        parseFloat(orders[i].drugsList[j].discount))
-    */
+    
     return sellingVal
 }
 
