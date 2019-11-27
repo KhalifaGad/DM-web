@@ -26,6 +26,7 @@ async function notificationOperations(pharmacies, title, body) {
     }
 
     let regisTokens = getRegisTokens(pharmacies)
+    console.log(regisTokens)
 
     while (regisTokens.length) {
         let subRegistTokensGroup = regisTokens.splice(0, 20),
