@@ -40,7 +40,27 @@ function getTopDrugsByValue(drugsLists) {
     return Array.from(new Map([...drugsMap.entries()].sort((a, b) => b[1] - a[1])))
 }
 
+function drugSellingValue(orders, id) {
+    let sellingVal = 0
+    for (let i = 0; i < orders.length; i++) {
+        for (let j = 0; j < orders[i].drugsList.length; i++) {
+            if (orders[i].drugsList[j].drug.id === id) {
+                sellingVal +=
+                    orders[i].drugsList[j].quantity *
+                    orders[i].drugsList[j].quantity.unitPrice -
+                    (orders[i].drugsList[j].quantity *
+                        orders[i].drugsList[j].quantity.unitPrice *
+                        orders[i].drugsList[j].quantity.discount)
+                break;
+            }
+        }
+    }
+
+    return sellingVal
+}
+
 export {
     getTopDrugs,
-    getTopDrugsByValue
+    getTopDrugsByValue,
+    drugSellingValue
 }

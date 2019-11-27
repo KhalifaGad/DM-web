@@ -1,6 +1,7 @@
 import {
     getTopDrugs,
-    getTopDrugsByValue
+    getTopDrugsByValue,
+    drugSellingValue
 } from '../../utils/topDrugsSellingHelper'
 import { getTopPharmacies } from '../../utils/topPharmacies'
 
@@ -400,8 +401,9 @@ const adminQueries = {
             }
         }, '{ drugsList { quantity unitPrice discount drug { id } } }')
 
-        console.log(orders)
-        return 2.2
+        let sellingValue = await drugSellingValue(orders, args.id)
+
+        return sellingValue
 
     }
     
