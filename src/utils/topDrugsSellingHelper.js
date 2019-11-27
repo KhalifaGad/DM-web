@@ -42,6 +42,7 @@ function getTopDrugsByValue(drugsLists) {
 
 function drugSellingValue(orders, id) {
     let sellingVal = 0
+    console.log(orders)
     for (let i = 0; i < orders.length; i++) {
         for (let j = 0; j < orders[i].drugsList.length; i++) {
             if (orders[i].drugsList[j].drug.id === id) {
@@ -51,8 +52,6 @@ function drugSellingValue(orders, id) {
                     (orders[i].drugsList[j].quantity *
                         orders[i].drugsList[j].unitPrice *
                         (orders[i].drugsList[j].discount / 100))
-
-                console.log(sellingVal)
                 break;
             }
         }
