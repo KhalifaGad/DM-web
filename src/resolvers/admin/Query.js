@@ -385,6 +385,24 @@ const adminQueries = {
         }, '{ id }')
 
         return res? true : false
+    },
+    async admin_getDrugSellingValue(parent, args, {
+        prisma,
+        req
+    }, info){
+        let orders = await prisma.query.orders({
+            where: {
+                drugsList_some: {
+                    drug: {
+                        id: args.id
+                    }
+                }
+            }
+        }, '{ drugsList { quantity unitPrice discount drug { id } } }')
+
+        console.log(orders)
+        return 2.2
+
     }
     
 }
