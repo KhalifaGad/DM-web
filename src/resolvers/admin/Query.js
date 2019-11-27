@@ -399,7 +399,7 @@ const adminQueries = {
         let drugs = await prisma.query.drugs({}, '{ id name }')
         let orders
         for (let i = 0; i < drugs.length; i++) {
-            orders = getOrdersHaveDrug(prisma, drugs[i].id)
+            orders = await getOrdersHaveDrug(prisma, drugs[i].id)
             drugs[i].sellingValue = await drugSellingValue(orders, drugs[i].id)
         }
         return drugs
