@@ -26,12 +26,12 @@ async function notificationOperations(pharmacies, title, body) {
     }
 
     let regisTokens = getRegisTokens(pharmacies)
-    console.log(regisTokens)
 
     while (regisTokens.length) {
         let subRegistTokensGroup = regisTokens.splice(0, 20),
             deviceGroupName = shortid.generate()
         let notificationKey = await createDeviceGroup(subRegistTokensGroup, deviceGroupName)
+        console.log(notificationKey)
         sendNotification(notificationKey, payload)
         removeDevicesFromGroup(subRegistTokensGroup, deviceGroupName, notificationKey)
     }
