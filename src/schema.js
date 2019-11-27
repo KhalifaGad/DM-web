@@ -133,7 +133,7 @@ type Mutation {
 
   resetPassword(email: String!): Boolean!
 
-  addRegisToken(registToken: String!): Pharmacy
+  addRegisToken(regisToken: String!): Pharmacy
 
   admin_addDiscountByArea(area: String!, ratio: Float!): Boolean!
   admin_addDiscount2Pharmacy(id: ID!, ratio: Float!): Boolean!
