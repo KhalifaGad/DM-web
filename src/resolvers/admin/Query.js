@@ -400,7 +400,11 @@ const adminQueries = {
         let orders
         for (let i = 0; i < drugs.length; i++) {
             orders = await getOrdersHaveDrug(prisma, drugs[i].id)
-            drugs[i].sellingValue = await drugSellingValue(orders, drugs[i].id)
+            if(orders.length <= 0){
+                drugs[i].sellingValue = 0
+            } else {
+                drugs[i].sellingValue = await drugSellingValue(orders, drugs[i].id)
+            }
         }
         return drugs
     }
