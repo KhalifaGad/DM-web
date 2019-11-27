@@ -402,7 +402,7 @@ const adminQueries = {
         }, '{ drugsList { quantity unitPrice discount drug { id } } }')
 
         let sellingValue = await drugSellingValue(orders, args.id)
-
+        console.log("TEST: " + sellingValue)
         return sellingValue
 
     }
