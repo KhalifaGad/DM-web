@@ -54,7 +54,7 @@ function queryPharmacyWallet(prisma, id) {
     }, '{ wallet }')
 }
 
-function qureyPhramaciesByArea(prisma, area){
+function qureyPhramaciesByArea(prisma, area) {
     return prisma.query.pharmacies({
         where: {
             area
@@ -62,7 +62,7 @@ function qureyPhramaciesByArea(prisma, area){
     }, '{ id wallet }')
 }
 
-function getRegisTokensByArea(prisma, area){
+function getRegisTokensByArea(prisma, area) {
     return prisma.query.pharmacies({
         where: {
             area
@@ -70,12 +70,25 @@ function getRegisTokensByArea(prisma, area){
     }, '{ registerationToken }')
 }
 
-function getRegisTokensById(prisma, id){
+function getRegisTokensById(prisma, id) {
     return prisma.query.pharmacies({
         where: {
             id
         }
     }, '{ registerationToken }')
+}
+
+function getOrdersHaveDrug(prisma, id) {
+    return prisma.query.orders({
+        where: {
+            drugsList_some: {
+                drug: {
+                    id
+                }
+            }
+        }
+    }, '{ drugsList { quantity unitPrice discount drug { id } } }')
+
 }
 
 export {
@@ -87,5 +100,6 @@ export {
     queryPharmacyWallet,
     qureyPhramaciesByArea,
     getRegisTokensByArea,
-    getRegisTokensById
+    getRegisTokensById,
+    getOrdersHaveDrug
 }

@@ -48,7 +48,7 @@ type Query {
   admin_pharmacyOrders(id: ID!): [Order]!
   admin_storeOrders(id: ID!): [Order]!
   admin_isBlackListed(pharmacyId: ID!): Boolean!
-  admin_getDrugSellingValue(id: ID!): Float!
+  admin_getDrugsWtihSellingValue: JSON!
 }
 
 type Mutation {

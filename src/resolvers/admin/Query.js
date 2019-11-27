@@ -3,7 +3,12 @@ import {
     getTopDrugsByValue,
     drugSellingValue
 } from '../../utils/topDrugsSellingHelper'
-import { getTopPharmacies } from '../../utils/topPharmacies'
+import {
+    getTopPharmacies
+} from '../../utils/topPharmacies'
+import {
+    getOrdersHaveDrug
+} from '../../utils/queriesHelpers'
 
 const adminQueries = {
     async admin_topDrugsSelling(parent, args, {
@@ -108,7 +113,7 @@ const adminQueries = {
         })
 
         let topDrugs = await getTopDrugsByValue(drugsLists)
-        
+
         return topDrugs
     },
     async admin_monthTopDrugsSellingByValue(parent, args, {
@@ -236,7 +241,7 @@ const adminQueries = {
         let pharmacies = await prisma.query.pharmacies({}, '{ id }')
         let count = 0
         for (let i = 0; i < pharmacies.length; i++) {
-            count ++
+            count++
         }
         return count
     },
@@ -247,7 +252,7 @@ const adminQueries = {
         let stores = await prisma.query.stores({}, '{ id }')
         let count = 0
         for (let i = 0; i < stores.length; i++) {
-            count ++
+            count++
         }
         return count
     },
@@ -258,7 +263,7 @@ const adminQueries = {
         let orders = await prisma.query.orders({}, '{ id }')
         let count = 0
         for (let i = 0; i < orders.length; i++) {
-            count ++
+            count++
         }
         return count
     },
@@ -274,7 +279,7 @@ const adminQueries = {
         }, '{ id }')
         let count = 0
         for (let i = 0; i < orders.length; i++) {
-            count ++
+            count++
         }
         return count
     },
@@ -290,14 +295,14 @@ const adminQueries = {
         }, '{ id }')
         let count = 0
         for (let i = 0; i < orders.length; i++) {
-            count ++
+            count++
         }
         return count
     },
     async admin_topPharmacies(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let orders = await prisma.query.orders({},
             ' { from { pharmacyName code } total } ')
 
@@ -312,29 +317,29 @@ const adminQueries = {
     admin_order(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.order({
             where: {
                 code: args.code
             }
-        }, info) 
+        }, info)
     },
     admin_pharmacies(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.pharmacies({}, info)
     },
     admin_stores(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.stores({}, info)
     },
     admin_pharmacy(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.pharmacy({
             where: {
                 id: args.id
@@ -344,7 +349,7 @@ const adminQueries = {
     admin_store(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.store({
             where: {
                 id: args.id
@@ -354,7 +359,7 @@ const adminQueries = {
     admin_pharmacyOrders(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.orders({
             where: {
                 from: {
@@ -366,7 +371,7 @@ const adminQueries = {
     admin_storeOrders(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         return prisma.query.orders({
             where: {
                 to: {
@@ -378,35 +383,30 @@ const adminQueries = {
     async admin_isBlackListed(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let res = await prisma.query.blackList({
             where: {
                 pharmacyId: args.pharmacyId
             }
         }, '{ id }')
 
-        return res? true : false
+        return res ? true : false
     },
-    async admin_getDrugSellingValue(parent, args, {
+    async admin_getDrugsWtihSellingValue(parent, args, {
         prisma,
         req
-    }, info){
-        let orders = await prisma.query.orders({
-            where: {
-                drugsList_some: {
-                    drug: {
-                        id: args.id
-                    }
-                }
-            }
-        }, '{ drugsList { quantity unitPrice discount drug { id } } }')
-
-        let sellingValue = await drugSellingValue(orders, args.id)
-        
-        return sellingValue
-
+    }, info) {
+        let drugs = await prisma.query.drugs({}, '{ id name }')
+        let orders
+        for (let i = 0; i < drugs.length; i++) {
+            orders = getOrdersHaveDrug(prisma, drugs[i].id)
+            drugs[i].sellingValue = await drugSellingValue(orders, drugs[i].id)
+        }
+        return drugs
     }
-    
+
 }
 
-export { adminQueries }
+export {
+    adminQueries
+}
