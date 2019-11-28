@@ -90,6 +90,21 @@ const adminMutations = {
         }, '{ id }')
 
         return res ? true : false
+    },
+    async admin_updateDrugName(parent, args, {
+        prisma,
+        req
+    }, info){
+        let res = await prisma.mutation.updateDrug({
+            where: {
+                name: args.oldName
+            },
+            data: {
+                name: args.newName
+            }
+        }, '{ name }')
+
+        return res? true : false
     }
 }
 
