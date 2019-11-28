@@ -400,12 +400,12 @@ const adminQueries = {
         let orders
         for (let i = 0; i < drugs.length; i++) {
             orders = await getOrdersHaveDrug(prisma, drugs[i].id)
-            if(orders.length <= 0){
+            if (orders.length <= 0) {
                 drugs[i].sellingValue = 0
             } else {
                 drugs[i].sellingValue = parseFloat(
                     drugSellingValue(orders, drugs[i].id)
-                  ).toLocaleString("en")
+                )
             }
             drugs[i].storesCount = drugs[i].stores.length
         }
