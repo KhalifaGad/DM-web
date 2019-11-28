@@ -396,7 +396,7 @@ const adminQueries = {
         prisma,
         req
     }, info) {
-        let drugs = await prisma.query.drugs({}, '{ id name }')
+        let drugs = await prisma.query.drugs({}, '{ id name stores { store } }')
         let orders
         for (let i = 0; i < drugs.length; i++) {
             orders = await getOrdersHaveDrug(prisma, drugs[i].id)
@@ -406,6 +406,7 @@ const adminQueries = {
                 drugs[i].sellingValue = parseFloat(
                     await drugSellingValue(orders, drugs[i].id)
                   ).toLocaleString("en")
+                  drugs[i].storesCount = drugs[i].stores.length
             }
         }
         return drugs
