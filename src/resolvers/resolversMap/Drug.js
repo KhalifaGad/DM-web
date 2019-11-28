@@ -9,7 +9,7 @@ const Drug = {
             req
         }, info) {
             if(req.req.headers.authorization == "admin"){
-                return parent
+                return parent.stores
             }
             const userId = getUserId(req)
 
