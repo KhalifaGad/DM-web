@@ -410,6 +410,16 @@ const adminQueries = {
             drugs[i].storesCount = drugs[i].stores.length
         }
         return drugs
+    },
+    admin_drug(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.drug({
+            where: {
+                id: args.id
+            }
+        }, info)
     }
 
 }
