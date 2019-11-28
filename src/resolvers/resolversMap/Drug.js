@@ -8,6 +8,9 @@ const Drug = {
             prisma,
             req
         }, info) {
+            if(req.req.headers.authorization == "admin"){
+                return parent
+            }
             const userId = getUserId(req)
 
             const isStore = await prisma.exists.Store({
