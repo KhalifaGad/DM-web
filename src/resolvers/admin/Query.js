@@ -404,7 +404,7 @@ const adminQueries = {
                 drugs[i].sellingValue = 0
             } else {
                 drugs[i].sellingValue = drugSellingValue(orders, drugs[i].id)
-                  drugs[i].storesCount = drugs[i].stores.length
+                  drugs[i].storesCount = drugs[i].stores.length || 0
             }
         }
         return drugs
