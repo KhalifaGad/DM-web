@@ -420,6 +420,12 @@ const adminQueries = {
                 id: args.id
             }
         }, info)
+    },
+    admin_drugs(parent, args, {
+        prisma,
+        req
+    }, info){
+        return prisma.query.drug({}, info)
     }
 
 }
