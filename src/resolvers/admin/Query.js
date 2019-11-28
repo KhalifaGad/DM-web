@@ -403,9 +403,7 @@ const adminQueries = {
             if(orders.length <= 0){
                 drugs[i].sellingValue = 0
             } else {
-                drugs[i].sellingValue = parseFloat(
-                    await drugSellingValue(orders, drugs[i].id)
-                  ).toLocaleString("en")
+                drugs[i].sellingValue = drugSellingValue(orders, drugs[i].id)
                   drugs[i].storesCount = drugs[i].stores.length
             }
         }
