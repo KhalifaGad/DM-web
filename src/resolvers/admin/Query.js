@@ -403,7 +403,7 @@ const adminQueries = {
             if (orders.length <= 0) {
                 drugs[i].sellingValue = 0
             } else {
-                drugs[i].sellingValue = parseFloat(
+                drugs[i].sellingValue = parseInt(
                     drugSellingValue(orders, drugs[i].id)
                 )
             }
