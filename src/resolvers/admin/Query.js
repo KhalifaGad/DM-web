@@ -406,8 +406,8 @@ const adminQueries = {
                 drugs[i].sellingValue = parseFloat(
                     drugSellingValue(orders, drugs[i].id)
                   ).toLocaleString("en")
-                  drugs[i].storesCount = drugs[i].stores.length + ""
             }
+            drugs[i].storesCount = drugs[i].stores.length
         }
         return drugs
     }
