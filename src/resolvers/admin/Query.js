@@ -420,6 +420,17 @@ const adminQueries = {
                 id: args.id
             }
         }, info)
+    },
+    async admin_pharmaciesArea(parent, args, {
+        prisma,
+        req
+    }, info){
+
+        let pharmacies = await prisma.query.pharmacies({}, '{ area }')
+        let areas = new Set()
+        
+        areas.add(...pharmacies.map(pharmacy => pharmacy.area))
+        return areas
     }
 }
 
