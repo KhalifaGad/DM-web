@@ -429,7 +429,10 @@ const adminQueries = {
         let pharmacies = await prisma.query.pharmacies({}, '{ area }')
         let areas = new Set()
         
-        areas.add(...pharmacies.map(pharmacy => pharmacy.area))
+        for(let i = 0; i < pharmacies.length; i++) {
+            areas.add(pharmacies[i].area)
+        }
+
         return areas
     }
 }
