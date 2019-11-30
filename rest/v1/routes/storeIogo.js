@@ -15,7 +15,7 @@ storeLogoRouter.get('/', (req, res) => {
 // imageName = storeLogo
 storeLogoRouter.post('/', (req, res) => {
     
-    console.log(req.files)
+    console.log(req)
 
 	/* console.log(req.body)
     let storeLogo = req.files.storeLogo
