@@ -42,6 +42,21 @@ enum PaymentMethod {
   DEFERRED
 }
 
+enum Pages {
+  MAIN
+  HOME
+  DRUG
+  PROFILE
+  SETTINGS
+  CONTACTUS
+}
+
+type ads {
+  id: ID! @id
+  page: Pages! @unique
+  url: String!
+}
+
 type Pharmacy {
   id: ID! @id
   firstName: String!

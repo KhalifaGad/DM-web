@@ -94,7 +94,7 @@ const adminMutations = {
     async admin_updateDrugName(parent, args, {
         prisma,
         req
-    }, info){
+    }, info) {
         let res = await prisma.mutation.updateDrug({
             where: {
                 name: args.oldName
@@ -104,7 +104,25 @@ const adminMutations = {
             }
         }, '{ name }')
 
-        return res? true : false
+        return res ? true : false
+    },
+    upsertAd(parent, args, {
+        prisma,
+        req
+    }, info) {
+        return prisma.mutation.upsertads({
+            where: {
+                page: args.page
+            },
+            create: {
+                page: args.page,
+                url: args.url
+            },
+            update: {
+                page: args.page,
+                url: args.url
+            }
+        }, info)
     }
 }
 

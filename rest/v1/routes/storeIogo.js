@@ -14,8 +14,7 @@ storeLogoRouter.get('/', (req, res) => {
 
 // imageName = storeLogo
 storeLogoRouter.post('/', (req, res) => {
-    
-	console.log(req.body)
+
     let storeLogo = req.files.storeLogo
     if (!storeLogo) {
         throw new Error('File not found in the request')
@@ -27,14 +26,15 @@ storeLogoRouter.post('/', (req, res) => {
     
     let filePath = __dirname + '/filez/' + storeIdHyphenated +
         storeLogo.name
-    storeLogo.mv(filePath, (err) => {
+    storeLogo.mv(filePath, async (err) => {
         if (err) throw new Error(err)
         console.log('logo successfully moved.')
-        let added = addLogoURL(filePath, storeId)
+        let added = await addLogoURL( '/static/' + storeIdHyphenated +
+            storeLogo.name, storeId)
         res.send({
             code: 200,
             message: 'Ok',
-            added 
+            added
         })
     })
 })

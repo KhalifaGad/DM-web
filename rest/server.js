@@ -20,6 +20,8 @@ server.use(fileUpload())
 
 server.use('/api/v1', router)
 
+server.use('/static',express.static(__dirname + '/v1/routes/filez'))
+
 server.listen(3000, ()=> {
     console.log('🚀 REST api is running on port 3000')
 })

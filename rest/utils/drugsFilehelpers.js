@@ -17,7 +17,7 @@ function fromXCL2JSON(sourceFile) {
             A: 'name',
             B: 'price',
             C: 'discount',
-	    D: 'deferredDiscount',
+            D: 'deferredDiscount',
             E: 'onlyCash'
         }
     })
@@ -35,8 +35,6 @@ async function drugsArrayProcessing(drugsArr, storeId) {
     for (let i = 0; i < drugsArr.length; i++) {
         checkingData = await check4Drug(drugsArr[i].name)
         if (checkingData.data.drug != null) {
-	console.log('CCCCCCCcccccCCCCCCCccc')
-	console.log(checkingData.data)
             drugId = checkingData.data.drug.id
             isAdded2Store = await addDrug2Store(storeId, drugId, drugsArr[i].price,
                 drugsArr[i].discount, drugsArr[i].deferredDiscount, drugsArr[i].onlyCash.toLowerCase())
@@ -63,20 +61,22 @@ async function newDrugsArrayProcessing(drugsArr, storeId, storeInfoProvided) {
         failureArr = [],
         existedArr = []
     let drugName
-	console.log('hitted')
+    console.log('hitted')
     for (let i = 0; i < drugsArr.length; i++) {
         drugName = drugsArr[i].name.replace(/[^a-zA-Z0-9- ]/g, "").replace(/\s+/g, ' ').trim()
-	
-	if(drugName === '') {continue;}
-	checkingData = await check4Drug(drugName)
-        
+
+        if (drugName === '') {
+            continue;
+        }
+        checkingData = await check4Drug(drugName)
+
         if (checkingData.data.drug == null) {
             if (storeInfoProvided) {
                 let newDrugStoreInfo = {
                     storeId,
                     price: drugsArr[i].price,
                     discount: drugsArr[i].discount,
-		    deferredDiscount: drugsArr[i].deferredDiscount,
+                    deferredDiscount: drugsArr[i].deferredDiscount,
                     onlyCash: drugsArr[i].onlyCash.toLowerCase()
                 }
                 isAdded2Store = await
@@ -125,7 +125,7 @@ function check4Drug(drugName) {
         })
 }
 
-function addDrug2Store(storeId, drugId, price, discount, deferredDiscount=0, onlyCash) {
+function addDrug2Store(storeId, drugId, price, discount, deferredDiscount = 0, onlyCash) {
     return apolloClient.mutate({
             mutation: gql `
       mutation {
@@ -134,7 +134,7 @@ function addDrug2Store(storeId, drugId, price, discount, deferredDiscount=0, onl
             drugId: "${drugId}",
             price: ${price},
             discount: ${discount},
-	    deferredDiscount: ${deferredDiscount},
+	        deferredDiscount: ${deferredDiscount},
             onlyCash: ${onlyCash}
         ){
           id
@@ -177,17 +177,17 @@ function createDrugAndAddStore(name, newDrugStoreInfo = null) {
 }
 
 function refactorRequest(req) {
-console.log(req.body)
-console.log(req.body.id)
+    console.log(req.body)
+    console.log(req.body.id)
     let drugsFile = req.files.drugsFile
     let storeId
-    if(req.body.id){
-	storeId = req.body.id
-} else {
-	console.log('XXXXXXXXxxxxxx test faild')
-	throw new Error('id not found')
-	return
-}
+    if (req.body.id) {
+        storeId = req.body.id
+    } else {
+        console.log('XXXXXXXXxxxxxx test faild')
+        throw new Error('id not found')
+        return
+    }
     let storeIdHyphenated = storeId + '-'
     let filePath = __dirname + '/../v1/routes/filez/' + storeIdHyphenated +
         drugsFile.name
