@@ -51,6 +51,7 @@ type Query {
   admin_getDrugsWtihSellingValue: JSON!
   admin_drug(id: ID!): Drug!
   admin_pharmaciesArea: JSON!
+  ads(page: Pages!): ads!
 }
 
 type Mutation {
@@ -148,7 +149,7 @@ type Mutation {
   admin_add2BlackList(pharmacyId: ID!): Boolean
   admin_removeFromBlackList(pharmacyId: ID!): Boolean
   admin_updateDrugName(oldName: String!, newName: String!): Boolean
-
+  upsertAd(url: String!, page: Pages!): ads
 }
 
 input orderConnectDrugId {
@@ -194,6 +195,15 @@ enum MutationType {
   CREATED
   UPDATED
   DELETED
+}
+
+enum Pages {
+  MAIN
+  HOME
+  DRUG
+  PROFILE
+  SETTINGS
+  CONTACTUS
 }
 
 input OrderActionInput {
@@ -286,6 +296,12 @@ type Order {
   deliveringDate: Date
   refusingNote: String
   payment: PaymentMethod
+}
+
+type ads {
+  id: ID!
+  page: Pages!
+  url: String!
 }
 
 type OrderDrugsList {

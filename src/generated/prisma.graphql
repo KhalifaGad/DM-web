@@ -1,5 +1,196 @@
 # source: http://prisma:4466
-# timestamp: Sat Nov 30 2019 02:51:54 GMT+0000 (Coordinated Universal Time)
+# timestamp: Sat Nov 30 2019 19:58:51 GMT+0000 (Coordinated Universal Time)
+
+type ads implements Node {
+  id: ID!
+  page: Pages!
+  url: String!
+}
+
+"""A connection to a list of items."""
+type adsConnection {
+  """Information to aid in pagination."""
+  pageInfo: PageInfo!
+
+  """A list of edges."""
+  edges: [adsEdge]!
+  aggregate: Aggregateads!
+}
+
+input adsCreateInput {
+  id: ID
+  page: Pages!
+  url: String!
+}
+
+"""An edge in a connection."""
+type adsEdge {
+  """The item at the end of the edge."""
+  node: ads!
+
+  """A cursor for use in pagination."""
+  cursor: String!
+}
+
+enum adsOrderByInput {
+  id_ASC
+  id_DESC
+  page_ASC
+  page_DESC
+  url_ASC
+  url_DESC
+}
+
+type adsPreviousValues {
+  id: ID!
+  page: Pages!
+  url: String!
+}
+
+type adsSubscriptionPayload {
+  mutation: MutationType!
+  node: ads
+  updatedFields: [String!]
+  previousValues: adsPreviousValues
+}
+
+input adsSubscriptionWhereInput {
+  """Logical AND on all given filters."""
+  AND: [adsSubscriptionWhereInput!]
+
+  """The subscription event gets dispatched when it's listed in mutation_in"""
+  mutation_in: [MutationType!]
+
+  """
+  The subscription event gets only dispatched when one of the updated fields names is included in this list
+  """
+  updatedFields_contains: String
+
+  """
+  The subscription event gets only dispatched when all of the field names included in this list have been updated
+  """
+  updatedFields_contains_every: [String!]
+
+  """
+  The subscription event gets only dispatched when some of the field names included in this list have been updated
+  """
+  updatedFields_contains_some: [String!]
+  node: adsWhereInput
+}
+
+input adsUpdateInput {
+  page: Pages
+  url: String
+}
+
+input adsUpdateManyMutationInput {
+  page: Pages
+  url: String
+}
+
+input adsWhereInput {
+  """Logical AND on all given filters."""
+  AND: [adsWhereInput!]
+  id: ID
+
+  """All values that are not equal to given value."""
+  id_not: ID
+
+  """All values that are contained in given list."""
+  id_in: [ID!]
+
+  """All values that are not contained in given list."""
+  id_not_in: [ID!]
+
+  """All values less than the given value."""
+  id_lt: ID
+
+  """All values less than or equal the given value."""
+  id_lte: ID
+
+  """All values greater than the given value."""
+  id_gt: ID
+
+  """All values greater than or equal the given value."""
+  id_gte: ID
+
+  """All values containing the given string."""
+  id_contains: ID
+
+  """All values not containing the given string."""
+  id_not_contains: ID
+
+  """All values starting with the given string."""
+  id_starts_with: ID
+
+  """All values not starting with the given string."""
+  id_not_starts_with: ID
+
+  """All values ending with the given string."""
+  id_ends_with: ID
+
+  """All values not ending with the given string."""
+  id_not_ends_with: ID
+  page: Pages
+
+  """All values that are not equal to given value."""
+  page_not: Pages
+
+  """All values that are contained in given list."""
+  page_in: [Pages!]
+
+  """All values that are not contained in given list."""
+  page_not_in: [Pages!]
+  url: String
+
+  """All values that are not equal to given value."""
+  url_not: String
+
+  """All values that are contained in given list."""
+  url_in: [String!]
+
+  """All values that are not contained in given list."""
+  url_not_in: [String!]
+
+  """All values less than the given value."""
+  url_lt: String
+
+  """All values less than or equal the given value."""
+  url_lte: String
+
+  """All values greater than the given value."""
+  url_gt: String
+
+  """All values greater than or equal the given value."""
+  url_gte: String
+
+  """All values containing the given string."""
+  url_contains: String
+
+  """All values not containing the given string."""
+  url_not_contains: String
+
+  """All values starting with the given string."""
+  url_starts_with: String
+
+  """All values not starting with the given string."""
+  url_not_starts_with: String
+
+  """All values ending with the given string."""
+  url_ends_with: String
+
+  """All values not ending with the given string."""
+  url_not_ends_with: String
+}
+
+input adsWhereUniqueInput {
+  id: ID
+  page: Pages
+}
+
+type Aggregateads {
+  count: Int!
+}
 
 type AggregateBlackList {
   count: Int!
@@ -390,36 +581,42 @@ Long can represent values between -(2^63) and 2^63 - 1.
 scalar Long
 
 type Mutation {
+  createads(data: adsCreateInput!): ads!
   createOrder(data: OrderCreateInput!): Order!
   createVerification(data: VerificationCreateInput!): Verification!
   createBlackList(data: BlackListCreateInput!): BlackList!
   createDrug(data: DrugCreateInput!): Drug!
   createStore(data: StoreCreateInput!): Store!
   createPharmacy(data: PharmacyCreateInput!): Pharmacy!
+  updateads(data: adsUpdateInput!, where: adsWhereUniqueInput!): ads
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
   updateVerification(data: VerificationUpdateInput!, where: VerificationWhereUniqueInput!): Verification
   updateBlackList(data: BlackListUpdateInput!, where: BlackListWhereUniqueInput!): BlackList
   updateDrug(data: DrugUpdateInput!, where: DrugWhereUniqueInput!): Drug
   updateStore(data: StoreUpdateInput!, where: StoreWhereUniqueInput!): Store
   updatePharmacy(data: PharmacyUpdateInput!, where: PharmacyWhereUniqueInput!): Pharmacy
+  deleteads(where: adsWhereUniqueInput!): ads
   deleteOrder(where: OrderWhereUniqueInput!): Order
   deleteVerification(where: VerificationWhereUniqueInput!): Verification
   deleteBlackList(where: BlackListWhereUniqueInput!): BlackList
   deleteDrug(where: DrugWhereUniqueInput!): Drug
   deleteStore(where: StoreWhereUniqueInput!): Store
   deletePharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
+  upsertads(where: adsWhereUniqueInput!, create: adsCreateInput!, update: adsUpdateInput!): ads!
   upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
   upsertVerification(where: VerificationWhereUniqueInput!, create: VerificationCreateInput!, update: VerificationUpdateInput!): Verification!
   upsertBlackList(where: BlackListWhereUniqueInput!, create: BlackListCreateInput!, update: BlackListUpdateInput!): BlackList!
   upsertDrug(where: DrugWhereUniqueInput!, create: DrugCreateInput!, update: DrugUpdateInput!): Drug!
   upsertStore(where: StoreWhereUniqueInput!, create: StoreCreateInput!, update: StoreUpdateInput!): Store!
   upsertPharmacy(where: PharmacyWhereUniqueInput!, create: PharmacyCreateInput!, update: PharmacyUpdateInput!): Pharmacy!
+  updateManyAdses(data: adsUpdateManyMutationInput!, where: adsWhereInput): BatchPayload!
   updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
   updateManyVerifications(data: VerificationUpdateManyMutationInput!, where: VerificationWhereInput): BatchPayload!
   updateManyBlackLists(data: BlackListUpdateManyMutationInput!, where: BlackListWhereInput): BatchPayload!
   updateManyDrugs(data: DrugUpdateManyMutationInput!, where: DrugWhereInput): BatchPayload!
   updateManyStores(data: StoreUpdateManyMutationInput!, where: StoreWhereInput): BatchPayload!
   updateManyPharmacies(data: PharmacyUpdateManyMutationInput!, where: PharmacyWhereInput): BatchPayload!
+  deleteManyAdses(where: adsWhereInput): BatchPayload!
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
   deleteManyVerifications(where: VerificationWhereInput): BatchPayload!
   deleteManyBlackLists(where: BlackListWhereInput): BatchPayload!
@@ -1252,6 +1449,15 @@ type PageInfo {
   endCursor: String
 }
 
+enum Pages {
+  MAIN
+  HOME
+  DRUG
+  PROFILE
+  SETTINGS
+  CONTACTUS
+}
+
 enum PaymentMethod {
   CASH
   DEFERRED
@@ -2032,18 +2238,21 @@ input PharmacyWhereUniqueInput {
 }
 
 type Query {
+  adses(where: adsWhereInput, orderBy: adsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [ads]!
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
   verifications(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Verification]!
   blackLists(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlackList]!
   drugs(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Drug]!
   stores(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Store]!
   pharmacies(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pharmacy]!
+  ads(where: adsWhereUniqueInput!): ads
   order(where: OrderWhereUniqueInput!): Order
   verification(where: VerificationWhereUniqueInput!): Verification
   blackList(where: BlackListWhereUniqueInput!): BlackList
   drug(where: DrugWhereUniqueInput!): Drug
   store(where: StoreWhereUniqueInput!): Store
   pharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
+  adsesConnection(where: adsWhereInput, orderBy: adsOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): adsConnection!
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
   verificationsConnection(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VerificationConnection!
   blackListsConnection(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlackListConnection!
@@ -3184,6 +3393,7 @@ input StoreWhereUniqueInput {
 }
 
 type Subscription {
+  ads(where: adsSubscriptionWhereInput): adsSubscriptionPayload
   order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
   verification(where: VerificationSubscriptionWhereInput): VerificationSubscriptionPayload
   blackList(where: BlackListSubscriptionWhereInput): BlackListSubscriptionPayload

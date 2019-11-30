@@ -264,6 +264,17 @@ const clientsQueries = {
         }, '{ id }')
 
         return res? true : false
+    },
+    async ads(parent, args, {
+        prisma,
+        req
+    }, info){
+        await getUserId(req)
+        return prisma.query.ads({
+            where: {
+                page: args.page
+            }
+        }, info)
     }
 }
 
