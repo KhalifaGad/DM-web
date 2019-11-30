@@ -9,8 +9,14 @@ const server = express()
 
 server.use(cors())
 
-server.use(bodyParser.urlencoded({ extended: false }));
-server.use(bodyParser.json());
+// for application/json requests
+server.use(express.json())
+
+// for application/x-www-form-urlencoded requests
+server.use(express.urlencoded({ extended: true }))
+
+/* server.use(bodyParser.urlencoded({ extended: false }));
+server.use(bodyParser.json()); */
 server.use(fileUpload())
 
 server.use('/api/v1', router)
