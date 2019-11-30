@@ -1,7 +1,6 @@
 import express from 'express'
 import { router } from './v1/routes/router'
 import fileUpload from 'express-fileupload'
-/* import bodyParser from 'body-parser' */
 
 var cors = require('cors')
 
