@@ -192,7 +192,7 @@ input adsWhereUniqueInput {
 type Aggregateads {
   count: Int!
 }
->>>>>>> c3fb72ac9abe213ec140514fd132f571f69cdad9
+
 
 type AggregateBlackList {
   count: Int!
