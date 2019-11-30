@@ -1,7 +1,7 @@
 # source: http://prisma:4466
-# timestamp: Tue Nov 12 2019 08:54:53 GMT+0000 (Coordinated Universal Time)
+# timestamp: Tue Nov 26 2019 15:48:21 GMT+0000 (Coordinated Universal Time)
 
-type AggregateBlockList {
+type AggregateBlackList {
   count: Int!
 }
 
@@ -30,54 +30,57 @@ type BatchPayload {
   count: Long!
 }
 
-type BlockList implements Node {
+type BlackList implements Node {
   id: ID!
-  pharmacy: Pharmacy!
+  pharmacyId: ID!
 }
 
 """A connection to a list of items."""
-type BlockListConnection {
+type BlackListConnection {
   """Information to aid in pagination."""
   pageInfo: PageInfo!
 
   """A list of edges."""
-  edges: [BlockListEdge]!
-  aggregate: AggregateBlockList!
+  edges: [BlackListEdge]!
+  aggregate: AggregateBlackList!
 }
 
-input BlockListCreateInput {
+input BlackListCreateInput {
   id: ID
-  pharmacy: PharmacyCreateOneInput!
+  pharmacyId: ID!
 }
 
 """An edge in a connection."""
-type BlockListEdge {
+type BlackListEdge {
   """The item at the end of the edge."""
-  node: BlockList!
+  node: BlackList!
 
   """A cursor for use in pagination."""
   cursor: String!
 }
 
-enum BlockListOrderByInput {
+enum BlackListOrderByInput {
   id_ASC
   id_DESC
+  pharmacyId_ASC
+  pharmacyId_DESC
 }
 
-type BlockListPreviousValues {
+type BlackListPreviousValues {
   id: ID!
+  pharmacyId: ID!
 }
 
-type BlockListSubscriptionPayload {
+type BlackListSubscriptionPayload {
   mutation: MutationType!
-  node: BlockList
+  node: BlackList
   updatedFields: [String!]
-  previousValues: BlockListPreviousValues
+  previousValues: BlackListPreviousValues
 }
 
-input BlockListSubscriptionWhereInput {
+input BlackListSubscriptionWhereInput {
   """Logical AND on all given filters."""
-  AND: [BlockListSubscriptionWhereInput!]
+  AND: [BlackListSubscriptionWhereInput!]
 
   """The subscription event gets dispatched when it's listed in mutation_in"""
   mutation_in: [MutationType!]
@@ -96,16 +99,20 @@ input BlockListSubscriptionWhereInput {
   The subscription event gets only dispatched when some of the field names included in this list have been updated
   """
   updatedFields_contains_some: [String!]
-  node: BlockListWhereInput
+  node: BlackListWhereInput
 }
 
-input BlockListUpdateInput {
-  pharmacy: PharmacyUpdateOneRequiredInput
+input BlackListUpdateInput {
+  pharmacyId: ID
 }
 
-input BlockListWhereInput {
+input BlackListUpdateManyMutationInput {
+  pharmacyId: ID
+}
+
+input BlackListWhereInput {
   """Logical AND on all given filters."""
-  AND: [BlockListWhereInput!]
+  AND: [BlackListWhereInput!]
   id: ID
 
   """All values that are not equal to given value."""
@@ -146,11 +153,51 @@ input BlockListWhereInput {
 
   """All values not ending with the given string."""
   id_not_ends_with: ID
-  pharmacy: PharmacyWhereInput
+  pharmacyId: ID
+
+  """All values that are not equal to given value."""
+  pharmacyId_not: ID
+
+  """All values that are contained in given list."""
+  pharmacyId_in: [ID!]
+
+  """All values that are not contained in given list."""
+  pharmacyId_not_in: [ID!]
+
+  """All values less than the given value."""
+  pharmacyId_lt: ID
+
+  """All values less than or equal the given value."""
+  pharmacyId_lte: ID
+
+  """All values greater than the given value."""
+  pharmacyId_gt: ID
+
+  """All values greater than or equal the given value."""
+  pharmacyId_gte: ID
+
+  """All values containing the given string."""
+  pharmacyId_contains: ID
+
+  """All values not containing the given string."""
+  pharmacyId_not_contains: ID
+
+  """All values starting with the given string."""
+  pharmacyId_starts_with: ID
+
+  """All values not starting with the given string."""
+  pharmacyId_not_starts_with: ID
+
+  """All values ending with the given string."""
+  pharmacyId_ends_with: ID
+
+  """All values not ending with the given string."""
+  pharmacyId_not_ends_with: ID
 }
 
-input BlockListWhereUniqueInput {
+input BlackListWhereUniqueInput {
   id: ID
+  pharmacyId: ID
 }
 
 scalar DateTime
@@ -345,36 +392,37 @@ scalar Long
 type Mutation {
   createOrder(data: OrderCreateInput!): Order!
   createVerification(data: VerificationCreateInput!): Verification!
-  createBlockList(data: BlockListCreateInput!): BlockList!
+  createBlackList(data: BlackListCreateInput!): BlackList!
   createDrug(data: DrugCreateInput!): Drug!
   createStore(data: StoreCreateInput!): Store!
   createPharmacy(data: PharmacyCreateInput!): Pharmacy!
   updateOrder(data: OrderUpdateInput!, where: OrderWhereUniqueInput!): Order
   updateVerification(data: VerificationUpdateInput!, where: VerificationWhereUniqueInput!): Verification
-  updateBlockList(data: BlockListUpdateInput!, where: BlockListWhereUniqueInput!): BlockList
+  updateBlackList(data: BlackListUpdateInput!, where: BlackListWhereUniqueInput!): BlackList
   updateDrug(data: DrugUpdateInput!, where: DrugWhereUniqueInput!): Drug
   updateStore(data: StoreUpdateInput!, where: StoreWhereUniqueInput!): Store
   updatePharmacy(data: PharmacyUpdateInput!, where: PharmacyWhereUniqueInput!): Pharmacy
   deleteOrder(where: OrderWhereUniqueInput!): Order
   deleteVerification(where: VerificationWhereUniqueInput!): Verification
-  deleteBlockList(where: BlockListWhereUniqueInput!): BlockList
+  deleteBlackList(where: BlackListWhereUniqueInput!): BlackList
   deleteDrug(where: DrugWhereUniqueInput!): Drug
   deleteStore(where: StoreWhereUniqueInput!): Store
   deletePharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
   upsertOrder(where: OrderWhereUniqueInput!, create: OrderCreateInput!, update: OrderUpdateInput!): Order!
   upsertVerification(where: VerificationWhereUniqueInput!, create: VerificationCreateInput!, update: VerificationUpdateInput!): Verification!
-  upsertBlockList(where: BlockListWhereUniqueInput!, create: BlockListCreateInput!, update: BlockListUpdateInput!): BlockList!
+  upsertBlackList(where: BlackListWhereUniqueInput!, create: BlackListCreateInput!, update: BlackListUpdateInput!): BlackList!
   upsertDrug(where: DrugWhereUniqueInput!, create: DrugCreateInput!, update: DrugUpdateInput!): Drug!
   upsertStore(where: StoreWhereUniqueInput!, create: StoreCreateInput!, update: StoreUpdateInput!): Store!
   upsertPharmacy(where: PharmacyWhereUniqueInput!, create: PharmacyCreateInput!, update: PharmacyUpdateInput!): Pharmacy!
   updateManyOrders(data: OrderUpdateManyMutationInput!, where: OrderWhereInput): BatchPayload!
   updateManyVerifications(data: VerificationUpdateManyMutationInput!, where: VerificationWhereInput): BatchPayload!
+  updateManyBlackLists(data: BlackListUpdateManyMutationInput!, where: BlackListWhereInput): BatchPayload!
   updateManyDrugs(data: DrugUpdateManyMutationInput!, where: DrugWhereInput): BatchPayload!
   updateManyStores(data: StoreUpdateManyMutationInput!, where: StoreWhereInput): BatchPayload!
   updateManyPharmacies(data: PharmacyUpdateManyMutationInput!, where: PharmacyWhereInput): BatchPayload!
   deleteManyOrders(where: OrderWhereInput): BatchPayload!
   deleteManyVerifications(where: VerificationWhereInput): BatchPayload!
-  deleteManyBlockLists(where: BlockListWhereInput): BatchPayload!
+  deleteManyBlackLists(where: BlackListWhereInput): BatchPayload!
   deleteManyDrugs(where: DrugWhereInput): BatchPayload!
   deleteManyStores(where: StoreWhereInput): BatchPayload!
   deleteManyPharmacies(where: PharmacyWhereInput): BatchPayload!
@@ -407,6 +455,7 @@ type Order implements Node {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
+  payment: PaymentMethod
 }
 
 """A connection to a list of items."""
@@ -430,6 +479,7 @@ input OrderCreateInput {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
+  payment: PaymentMethod
   from: PharmacyCreateOneInput!
   to: StoreCreateOneInput!
   drugsList: OrderDrugsListCreateManyInput
@@ -791,6 +841,8 @@ enum OrderOrderByInput {
   deliveringDate_DESC
   refusingNote_ASC
   refusingNote_DESC
+  payment_ASC
+  payment_DESC
 }
 
 type OrderPreviousValues {
@@ -805,6 +857,7 @@ type OrderPreviousValues {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
+  payment: PaymentMethod
 }
 
 enum OrderStatus {
@@ -856,6 +909,7 @@ input OrderUpdateInput {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
+  payment: PaymentMethod
   from: PharmacyUpdateOneRequiredInput
   to: StoreUpdateOneRequiredInput
   drugsList: OrderDrugsListUpdateManyInput
@@ -871,6 +925,7 @@ input OrderUpdateManyMutationInput {
   refusingingDate: DateTime
   deliveringDate: DateTime
   refusingNote: String
+  payment: PaymentMethod
 }
 
 input OrderWhereInput {
@@ -1160,6 +1215,16 @@ input OrderWhereInput {
 
   """All values not ending with the given string."""
   refusingNote_not_ends_with: String
+  payment: PaymentMethod
+
+  """All values that are not equal to given value."""
+  payment_not: PaymentMethod
+
+  """All values that are contained in given list."""
+  payment_in: [PaymentMethod!]
+
+  """All values that are not contained in given list."""
+  payment_not_in: [PaymentMethod!]
   from: PharmacyWhereInput
   to: StoreWhereInput
   drugsList_some: OrderDrugsListWhereInput
@@ -1185,6 +1250,11 @@ type PageInfo {
 
   """When paginating forwards, the cursor to continue."""
   endCursor: String
+}
+
+enum PaymentMethod {
+  CASH
+  DEFERRED
 }
 
 type Pharmacy implements Node {
@@ -1964,19 +2034,19 @@ input PharmacyWhereUniqueInput {
 type Query {
   orders(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Order]!
   verifications(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Verification]!
-  blockLists(where: BlockListWhereInput, orderBy: BlockListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlockList]!
+  blackLists(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [BlackList]!
   drugs(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Drug]!
   stores(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Store]!
   pharmacies(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): [Pharmacy]!
   order(where: OrderWhereUniqueInput!): Order
   verification(where: VerificationWhereUniqueInput!): Verification
-  blockList(where: BlockListWhereUniqueInput!): BlockList
+  blackList(where: BlackListWhereUniqueInput!): BlackList
   drug(where: DrugWhereUniqueInput!): Drug
   store(where: StoreWhereUniqueInput!): Store
   pharmacy(where: PharmacyWhereUniqueInput!): Pharmacy
   ordersConnection(where: OrderWhereInput, orderBy: OrderOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): OrderConnection!
   verificationsConnection(where: VerificationWhereInput, orderBy: VerificationOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): VerificationConnection!
-  blockListsConnection(where: BlockListWhereInput, orderBy: BlockListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlockListConnection!
+  blackListsConnection(where: BlackListWhereInput, orderBy: BlackListOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): BlackListConnection!
   drugsConnection(where: DrugWhereInput, orderBy: DrugOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): DrugConnection!
   storesConnection(where: StoreWhereInput, orderBy: StoreOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): StoreConnection!
   pharmaciesConnection(where: PharmacyWhereInput, orderBy: PharmacyOrderByInput, skip: Int, after: String, before: String, first: Int, last: Int): PharmacyConnection!
@@ -3116,7 +3186,7 @@ input StoreWhereUniqueInput {
 type Subscription {
   order(where: OrderSubscriptionWhereInput): OrderSubscriptionPayload
   verification(where: VerificationSubscriptionWhereInput): VerificationSubscriptionPayload
-  blockList(where: BlockListSubscriptionWhereInput): BlockListSubscriptionPayload
+  blackList(where: BlackListSubscriptionWhereInput): BlackListSubscriptionPayload
   drug(where: DrugSubscriptionWhereInput): DrugSubscriptionPayload
   store(where: StoreSubscriptionWhereInput): StoreSubscriptionPayload
   pharmacy(where: PharmacySubscriptionWhereInput): PharmacySubscriptionPayload
