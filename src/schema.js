@@ -244,6 +244,7 @@ type StoreHaveDrug {
   discount: Float
   deferredDiscount: Float
   onlyCash: Boolean!
+  count: Int
 }
 
 type Pharmacy {

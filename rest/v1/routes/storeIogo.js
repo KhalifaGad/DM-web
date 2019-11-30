@@ -14,8 +14,10 @@ storeLogoRouter.get('/', (req, res) => {
 
 // imageName = storeLogo
 storeLogoRouter.post('/', (req, res) => {
-	
-	console.log(req.body)
+    
+    console.log(req.files)
+
+	/* console.log(req.body)
     let storeLogo = req.files.storeLogo
     if (!storeLogo) {
         throw new Error('File not found in the request')
@@ -36,7 +38,7 @@ storeLogoRouter.post('/', (req, res) => {
             message: 'Ok',
             added 
         })
-    })
+    }) */
 })
 
 export {
