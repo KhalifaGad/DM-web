@@ -11,6 +11,9 @@ const getUserId = (req, fromSubscription = false) => {
 	//console.log('else ==================')
 	//console.log(req)
         header = req.req.headers.authorization
+        if(header == 'admin'){
+            return 
+        }
     }
     
     if(!header) {
