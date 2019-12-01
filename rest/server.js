@@ -8,19 +8,7 @@ var cors = require('cors')
 
 const server = express()
 
-let whiteList = ["http://localhost:8080"]
-
-let corsOptions = {
-    origin(origin, callback) {
-        if (whiteList.indexOf(origin) !== -1) {
-            callback(null, true)
-        } else {
-            callback(new Error('Not allowed by CORS'))
-        }
-    }
-}
-
-server.use(cors(corsOptions))
+server.use(cors())
 
 // for application/json requests
 server.use(express.json())

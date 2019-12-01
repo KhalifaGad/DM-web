@@ -193,7 +193,6 @@ type Aggregateads {
   count: Int!
 }
 
-
 type AggregateBlackList {
   count: Int!
 }
