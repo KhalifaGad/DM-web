@@ -150,6 +150,7 @@ type Mutation {
   admin_removeFromBlackList(pharmacyId: ID!): Boolean
   admin_updateDrugName(oldName: String!, newName: String!): Boolean
   upsertAd(url: String!, page: Pages!): ads
+  deleteAd(page: Pages!): Boolean
 }
 
 input orderConnectDrugId {

@@ -123,6 +123,21 @@ const adminMutations = {
                 url: args.url
             }
         }, info)
+    },
+    deleteAd(parent, args, {
+        prisma,
+        req
+    }, info) {
+        prisma.mutation.updateads({
+            data: {
+                url: ""
+            },
+            where: {
+                page: args.page,
+            }
+        }, '{ url }')
+
+        return true
     }
 }
 
